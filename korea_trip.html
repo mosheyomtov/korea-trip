@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e1a">
+<title>🇰🇷 קוריאה 2026 — משה ופז</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   THEME VARIABLES
+   ═══════════════════════════════════════════════════════════════ */
+:root[data-theme="dark"] {
+  --bg-0: #050810;
+  --bg-1: #0a0e1a;
+  --bg-2: #0f1424;
+  --bg-3: #161c30;
+  --bg-4: #1d243c;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.15);
+  --text-1: #e8edf5;
+  --text-2: #9ba8c2;
+  --text-3: #5c6781;
+  --text-muted: #3d4660;
+  --accent: #6ee7f7;
+  --accent-2: #a78bfa;
+  --accent-3: #f472b6;
+  --gold: #fbbf24;
+  --green: #34d399;
+  --red: #f87171;
+  --orange: #fb923c;
+  --glow-1: rgba(110,231,247,0.18);
+  --glow-2: rgba(167,139,250,0.18);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.3);
+  --gradient-1: linear-gradient(135deg, #6ee7f7 0%, #a78bfa 50%, #f472b6 100%);
+}
+:root[data-theme="light"] {
+  --bg-0: #f4f6fb;
+  --bg-1: #ffffff;
+  --bg-2: #f8f9fc;
+  --bg-3: #eff2f8;
+  --bg-4: #e6ebf3;
+  --border: rgba(0,0,0,0.06);
+  --border-strong: rgba(0,0,0,0.12);
+  --text-1: #0f172a;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --text-muted: #cbd5e1;
+  --accent: #0284c7;
+  --accent-2: #7c3aed;
+  --accent-3: #db2777;
+  --gold: #d97706;
+  --green: #059669;
+  --red: #dc2626;
+  --orange: #ea580c;
+  --glow-1: rgba(2,132,199,0.12);
+  --glow-2: rgba(124,58,237,0.12);
+  --shadow-card: 0 4px 16px rgba(15,23,42,0.06);
+  --gradient-1: linear-gradient(135deg, #0284c7 0%, #7c3aed 50%, #db2777 100%);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg-0);
+  color: var(--text-1);
+  font-family: 'Heebo', sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* ─── BACKGROUND BLOBS ─── */
+.blob {
+  position:fixed;
+  border-radius:50%;
+  filter:blur(100px);
+  pointer-events:none;
+  z-index:0;
+  animation: float 14s ease-in-out infinite;
+}
+.b1 { width:420px; height:420px; background:var(--glow-1); top:-120px; right:-120px; }
+.b2 { width:380px; height:380px; background:var(--glow-2); bottom:15%; left:-100px; animation-delay:-5s; }
+.b3 { width:300px; height:300px; background:rgba(244,114,182,0.08); top:45%; right:-80px; animation-delay:-9s; }
+
+@keyframes float {
+  0%,100% { transform:translateY(0) scale(1); }
+  50% { transform:translateY(-40px) scale(1.05); }
+}
+
+/* ─── HEADER ─── */
+.header {
+  position:relative; z-index:10;
+  background: linear-gradient(180deg, var(--glow-1) 0%, transparent 100%);
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+}
+.header-inner {
+  padding: 28px 20px 18px;
+  position:relative;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+.header-text { flex:1; }
+.flag {
+  font-size:38px; display:block; margin-bottom:4px;
+  animation: wave 4s ease-in-out infinite;
+  filter: drop-shadow(0 2px 8px var(--glow-1));
+}
+@keyframes wave {
+  0%,100% { transform:rotate(-4deg) translateY(0); }
+  50% { transform:rotate(4deg) translateY(-3px); }
+}
+.h-title {
+  font-size:24px; font-weight:900;
+  background: var(--gradient-1);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.15; margin-bottom:2px;
+  font-family:'Rubik', sans-serif;
+}
+.h-sub { font-size:12px; color:var(--text-2); font-weight:500; }
+
+.theme-toggle {
+  width:44px; height:44px;
+  border-radius:50%;
+  background: var(--bg-2);
+  border:1px solid var(--border-strong);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  font-size:20px;
+  transition: all 0.3s ease;
+  flex-shrink:0;
+}
+.theme-toggle:hover { transform: rotate(20deg) scale(1.05); border-color:var(--accent); }
+
+.user-pill {
+  position:absolute; top:8px; right:20px;
+  font-size:10px; padding:3px 8px;
+  background: var(--bg-3);
+  border-radius: 20px;
+  border:1px solid var(--border);
+  color: var(--text-3);
+  font-weight:700;
+  display:flex; align-items:center; gap:4px;
+}
+.sync-dot {
+  width:6px; height:6px; border-radius:50%;
+  background: var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+.sync-dot.offline { background: var(--text-muted); animation:none; }
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(1.2); }
+}
+
+/* ─── COUNTDOWN ─── */
+.countdown {
+  display:flex; gap:8px;
+  padding: 14px 20px 16px;
+  background: var(--bg-1);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto; scrollbar-width:none;
+}
+.countdown::-webkit-scrollbar { display:none; }
+
+.cd-item {
+  flex-shrink:0;
+  background: var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding: 10px 14px;
+  text-align:center;
+  min-width:64px;
+  position:relative;
+  overflow:hidden;
+  box-shadow: var(--shadow-card);
+}
+.cd-item::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background: var(--gradient-1);
+}
+.cd-num {
+  font-size:22px; font-weight:900;
+  color:var(--accent);
+  display:block; line-height:1;
+  font-family:'Rubik', sans-serif;
+}
+.cd-lbl { font-size:10px; color:var(--text-2); margin-top:3px; display:block; font-weight:600; }
+
+/* ─── NAV ─── */
+nav {
+  display:flex;
+  background: var(--bg-1);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto; scrollbar-width:none;
+  position:sticky; top:0; z-index:100;
+  backdrop-filter: blur(12px);
+}
+nav::-webkit-scrollbar { display:none; }
+.nb {
+  flex-shrink:0;
+  padding: 14px 18px;
+  font-size:13px;
+  font-family:'Heebo', sans-serif; font-weight:600;
+  color:var(--text-2);
+  background:none; border:none;
+  border-bottom:2px solid transparent;
+  cursor:pointer;
+  transition: all 0.2s;
+  white-space:nowrap;
+}
+.nb.active {
+  color:var(--accent);
+  border-bottom-color:var(--accent);
+}
+.nb:hover { color:var(--text-1); }
+
+/* ─── PAGES ─── */
+.page { display:none; padding: 20px; position:relative; z-index:1; padding-bottom:100px; }
+.page.active { display:block; animation: pageIn 0.4s cubic-bezier(0.16,1,0.3,1); }
+@keyframes pageIn {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ─── SECTION TITLE ─── */
+.stl {
+  font-size:11px; font-weight:800; letter-spacing:2px;
+  color:var(--text-3); text-transform:uppercase;
+  margin-bottom:14px; margin-top:28px;
+  display:flex; align-items:center; gap:8px;
+}
+.stl:first-child { margin-top:0; }
+.stl::after {
+  content:''; flex:1; height:1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ─── TODAY HERO ─── */
+.today-hero {
+  background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:22px;
+  margin-bottom:14px;
+  position:relative;
+  overflow:hidden;
+  box-shadow: var(--shadow-card);
+}
+.today-hero::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background: var(--gradient-1);
+}
+.today-hero::after {
+  content:''; position:absolute; bottom:-50px; left:-50px;
+  width:150px; height:150px; border-radius:50%;
+  background: var(--glow-2); filter:blur(40px);
+  pointer-events:none;
+}
+.td-date { font-size:13px; color:var(--text-2); margin-bottom:6px; font-weight:600; }
+.td-title { font-size:22px; font-weight:800; color:var(--text-1); margin-bottom:10px; line-height:1.3; }
+.td-loc {
+  display:inline-flex; align-items:center; gap:6px;
+  background: var(--glow-1);
+  border:1px solid var(--border-strong);
+  border-radius:24px;
+  padding:6px 14px;
+  font-size:13px; color:var(--accent); font-weight:700;
+}
+
+/* ─── PROGRESS BAR ─── */
+.trip-prog {
+  background: var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:14px;
+  box-shadow: var(--shadow-card);
+}
+.tp-lbl {
+  display:flex; justify-content:space-between;
+  font-size:12px; color:var(--text-2);
+  margin-bottom:10px; font-weight:600;
+}
+.tp-bg { height:8px; background:var(--bg-3); border-radius:6px; overflow:hidden; }
+.tp-fill {
+  height:100%; background: var(--gradient-1);
+  border-radius:6px; transition: width 1s cubic-bezier(0.16,1,0.3,1);
+  box-shadow: 0 0 12px var(--glow-1);
+}
+
+/* ─── INFO GRID ─── */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.ic {
+  background: var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px 16px;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  position:relative; overflow:hidden;
+  box-shadow: var(--shadow-card);
+}
+.ic:active { transform:scale(0.97); }
+.ic::before {
+  content:''; position:absolute; top:0; right:0;
+  width:60px; height:60px; border-radius:50%;
+  background: var(--glow-1); filter:blur(20px);
+  opacity:0.5; transform:translate(20px,-20px);
+}
+.ic-icon { font-size:26px; margin-bottom:10px; display:block; position:relative; z-index:1; }
+.ic-lbl { font-size:11px; color:var(--text-2); margin-bottom:4px; font-weight:600; letter-spacing:0.5px; }
+.ic-val { font-size:18px; font-weight:800; color:var(--text-1); font-family:'Rubik', sans-serif; }
+.ic-sub { font-size:11px; color:var(--text-3); margin-top:2px; }
+
+/* ─── DAY SELECTOR ─── */
+.day-sel {
+  display:flex; gap:8px;
+  overflow-x:auto; scrollbar-width:none;
+  padding-bottom:6px; margin-bottom:18px;
+  scroll-snap-type: x mandatory;
+}
+.day-sel::-webkit-scrollbar { display:none; }
+.db {
+  flex-shrink:0;
+  background: var(--bg-2);
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  padding:10px 14px;
+  cursor:pointer;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+  text-align:center;
+  min-width:64px;
+  scroll-snap-align: start;
+  font-family:'Heebo', sans-serif;
+}
+.db:active { transform:scale(0.95); }
+.db .dd { font-size:11px; color:var(--text-3); display:block; font-weight:600; }
+.db .dy { font-size:15px; font-weight:800; color:var(--text-1); display:block; margin:2px 0; }
+.db .dc { font-size:10px; color:var(--text-2); display:block; font-weight:500; }
+.db.active {
+  background: linear-gradient(135deg, var(--glow-1), var(--glow-2));
+  border-color:var(--accent);
+  box-shadow: 0 4px 20px var(--glow-1);
+  transform:translateY(-2px);
+}
+.db.active .dy { color:var(--accent); }
+.db.today {
+  border-color:var(--gold);
+  box-shadow: 0 0 12px rgba(251,191,36,0.2);
+}
+.db.today .dd { color:var(--gold); }
+
+/* ─── CITY BADGE ─── */
+.city-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 14px;
+  border-radius:24px;
+  font-size:12px; font-weight:700;
+  margin-bottom:14px;
+  font-family:'Heebo', sans-serif;
+}
+.cs { background: var(--glow-1); border:1px solid var(--border-strong); color:var(--accent); }
+.cj { background: rgba(52,211,153,0.12); border:1px solid rgba(52,211,153,0.3); color:var(--green); }
+.cb { background: rgba(244,114,182,0.12); border:1px solid rgba(244,114,182,0.3); color:var(--accent-3); }
+
+.day-title {
+  font-size:18px; font-weight:800;
+  color:var(--text-1);
+  margin-bottom:18px; line-height:1.4;
+}
+
+/* ─── TIMELINE ─── */
+.timeline {
+  position:relative;
+  padding-right:32px;
+}
+.timeline::before {
+  content:''; position:absolute;
+  top:8px; bottom:8px; right:8px;
+  width:2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2), transparent);
+  border-radius:2px;
+}
+
+.ti {
+  position:relative;
+  margin-bottom:6px;
+  animation: slideIn 0.5s cubic-bezier(0.16,1,0.3,1) backwards;
+}
+@keyframes slideIn {
+  from { opacity:0; transform:translateX(20px); }
+  to { opacity:1; transform:translateX(0); }
+}
+
+.tdot {
+  position:absolute;
+  right:-32px; top:18px;
+  width:14px; height:14px;
+  border-radius:50%;
+  background: var(--bg-0);
+  border:2.5px solid var(--accent);
+  box-shadow: 0 0 12px var(--glow-1);
+  z-index:2;
+  transition: all 0.3s;
+}
+.ti:hover .tdot {
+  transform:scale(1.3);
+  background: var(--accent);
+  box-shadow: 0 0 16px var(--accent);
+}
+
+.tc {
+  background: var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:14px 16px;
+  cursor:pointer;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  margin-bottom:8px;
+  box-shadow: var(--shadow-card);
+}
+.tc:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-3);
+  transform: translateX(-4px);
+}
+.tc.ex {
+  border-color: var(--accent);
+  background: var(--bg-3);
+}
+
+.tc-top { display:flex; align-items:center; gap:10px; }
+.tc-t {
+  font-size:13px; font-weight:800;
+  color:var(--accent);
+  min-width:42px;
+  font-family:'Rubik', sans-serif;
+}
+.tc-e { font-size:20px; flex-shrink:0; }
+.tc-n { font-size:14px; font-weight:700; color:var(--text-1); flex:1; line-height:1.4; }
+.tc-arr {
+  font-size:14px; color:var(--text-3);
+  transition: transform 0.3s;
+  flex-shrink:0;
+}
+.tc.ex .tc-arr { transform: rotate(90deg); color:var(--accent); }
+
+.tc-tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+.tag {
+  font-size:10px; padding:3px 9px;
+  border-radius:20px; font-weight:700;
+  letter-spacing:0.3px;
+}
+.tf { background:rgba(52,211,153,0.15); color:var(--green); border:1px solid rgba(52,211,153,0.3); }
+.ta { background:var(--glow-1); color:var(--accent); border:1px solid rgba(110,231,247,0.3); }
+.tani { background:rgba(167,139,250,0.15); color:var(--accent-2); border:1px solid rgba(167,139,250,0.3); }
+.ts { background:rgba(244,114,182,0.15); color:var(--accent-3); border:1px solid rgba(244,114,182,0.3); }
+.tn { background:rgba(251,191,36,0.15); color:var(--gold); border:1px solid rgba(251,191,36,0.3); }
+.tt { background:rgba(100,116,139,0.2); color:var(--text-2); border:1px solid var(--border-strong); }
+.th { background:rgba(52,211,153,0.1); color:var(--green); border:1px solid rgba(52,211,153,0.2); }
+
+.tc-det {
+  display:none;
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  animation: fadeDown 0.3s ease;
+}
+.tc-det.show { display:block; }
+@keyframes fadeDown {
+  from { opacity:0; transform:translateY(-8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.tc-desc {
+  font-size:13px;
+  color:var(--text-2);
+  line-height:1.75;
+  margin-bottom:10px;
+}
+
+.tc-section {
+  border-radius:12px;
+  padding:10px 12px;
+  margin-bottom:8px;
+  font-size:12.5px;
+  line-height:1.65;
+}
+.tc-section-lbl {
+  font-size:10px; font-weight:800; letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:5px;
+  display:flex; align-items:center; gap:5px;
+}
+
+.tc-how {
+  background:var(--glow-1);
+  border:1px solid rgba(110,231,247,0.25);
+  color:var(--accent);
+}
+.tc-how .tc-section-lbl { color:var(--accent); }
+.tc-how-body { color:var(--text-1); }
+
+.tc-warn {
+  background: rgba(248,113,113,0.1);
+  border:1px solid rgba(248,113,113,0.25);
+  color:var(--red);
+}
+.tc-warn .tc-section-lbl { color:var(--red); }
+.tc-warn-body { color:var(--text-1); }
+
+.tc-tip {
+  background: rgba(52,211,153,0.1);
+  border:1px solid rgba(52,211,153,0.25);
+}
+.tc-tip .tc-section-lbl { color:var(--green); }
+.tc-tip-body { color:var(--text-1); }
+
+/* ─── MAP BUTTON ─── */
+.maps-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  background: linear-gradient(135deg, #03c75a, #00a73c);
+  color:#fff !important;
+  padding:7px 12px;
+  border-radius:10px;
+  font-size:11.5px; font-weight:700;
+  text-decoration:none;
+  margin-top:10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(3,199,90,0.3);
+  border:none; cursor:pointer;
+  font-family:'Heebo', sans-serif;
+}
+.maps-btn:active { transform:scale(0.96); }
+.maps-btn:hover { box-shadow: 0 4px 14px rgba(3,199,90,0.4); }
+
+/* ─── ITEM ACTIONS ─── */
+.item-actions {
+  display:flex; gap:6px;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px dashed var(--border);
+}
+.action-btn {
+  flex:1;
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:11.5px; font-weight:700;
+  font-family:'Heebo', sans-serif;
+  cursor:pointer;
+  border:1px solid var(--border-strong);
+  background: var(--bg-3);
+  color: var(--text-2);
+  transition: all 0.2s;
+}
+.action-btn:active { transform:scale(0.95); }
+.action-btn.edit { color: var(--accent); border-color: rgba(110,231,247,0.3); }
+.action-btn.del { color: var(--red); border-color: rgba(248,113,113,0.3); }
+
+/* ─── ADD ITEM BUTTON ─── */
+.add-item-btn {
+  width:100%;
+  padding: 14px;
+  background: var(--bg-2);
+  border:2px dashed var(--border-strong);
+  border-radius:16px;
+  color: var(--text-2);
+  font-size:14px; font-weight:600;
+  font-family:'Heebo', sans-serif;
+  cursor:pointer;
+  margin-top:12px;
+  transition: all 0.2s;
+}
+.add-item-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--glow-1);
+}
+
+/* ─── HOTEL CARDS ─── */
+.hotel-card {
+  background: var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:12px;
+  display:flex; align-items:center; gap:16px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s;
+}
+.hotel-card:active { transform:scale(0.98); }
+.hc-icon {
+  width:54px; height:54px;
+  border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:26px; flex-shrink:0;
+}
+.hc-name { font-size:15px; font-weight:800; color:var(--text-1); }
+.hc-dates { font-size:12px; color:var(--text-2); margin-top:3px; font-weight:500; }
+.hc-city { font-size:11px; color:var(--accent-2); margin-top:5px; font-weight:700; }
+
+/* ─── TIP CARD ─── */
+.tip-card {
+  background: var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  display:flex; gap:14px; align-items:flex-start;
+  box-shadow: var(--shadow-card);
+}
+.tc-ico { font-size:22px; flex-shrink:0; }
+.tip-title { font-size:14px; font-weight:800; color:var(--text-1); margin-bottom:5px; }
+.tip-body { font-size:12.5px; color:var(--text-2); line-height:1.65; }
+
+/* ─── CHECKLIST ─── */
+.check-item {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  transition: padding 0.2s;
+}
+.check-item:last-child { border-bottom:none; }
+.check-item:active { padding-left:6px; }
+
+.cb-box {
+  width:24px; height:24px;
+  border-radius:7px;
+  border:2px solid var(--border-strong);
+  flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition: all 0.25s;
+  font-size:13px;
+  background: var(--bg-2);
+}
+.check-item.done .cb-box {
+  background: var(--green);
+  border-color: var(--green);
+  color:#fff;
+  transform: scale(1.05);
+}
+.check-item.done .ct {
+  color: var(--text-3);
+  text-decoration: line-through;
+}
+.ct { font-size:14.5px; color:var(--text-1); flex:1; font-weight:500; }
+
+.del-btn {
+  background: transparent;
+  border:none;
+  color: var(--red);
+  font-size:14px;
+  cursor:pointer;
+  padding:6px;
+  opacity:0.6;
+  transition: opacity 0.2s;
+}
+.del-btn:hover { opacity:1; }
+
+/* ─── PHRASES ─── */
+.phrase-card {
+  background: var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  box-shadow: var(--shadow-card);
+}
+.pk { font-size:22px; font-weight:700; color:var(--accent); margin-bottom:4px; line-height:1.2; }
+.pt { font-size:13.5px; color:var(--text-1); margin-bottom:3px; font-weight:600; }
+.pp { font-size:12px; color:var(--text-3); font-style:italic; }
+
+/* ─── FAB ─── */
+.fab {
+  position:fixed;
+  bottom:24px; left:20px;
+  width:56px; height:56px;
+  border-radius:50%;
+  background: var(--gradient-1);
+  border:none;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px;
+  box-shadow: 0 10px 30px var(--glow-1);
+  z-index:200;
+  transition: transform 0.25s, box-shadow 0.25s;
+  color:#fff;
+}
+.fab:active { transform: scale(0.92); }
+.fab:hover { box-shadow: 0 12px 36px var(--glow-1); transform:scale(1.05); }
+
+/* ─── MODAL ─── */
+.mo {
+  position:fixed; inset:0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(12px);
+  z-index:300;
+  display:none;
+  align-items:flex-end; justify-content:center;
+}
+.mo.show { display:flex; animation:moIn 0.3s ease; }
+@keyframes moIn { from {opacity:0;} to {opacity:1;} }
+
+.modal {
+  background: var(--bg-1);
+  border:1px solid var(--border);
+  border-radius: 28px 28px 0 0;
+  padding: 24px 20px 40px;
+  width:100%;
+  max-height: 90vh;
+  overflow-y:auto;
+  animation: slideUp 0.35s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.mhandle {
+  width:42px; height:5px;
+  background: var(--border-strong);
+  border-radius:3px;
+  margin: 0 auto 22px;
+}
+.mtitle {
+  font-size:19px; font-weight:800;
+  color:var(--text-1);
+  margin-bottom:18px;
+}
+
+.minput, .mtextarea, .mselect {
+  width:100%;
+  background: var(--bg-2);
+  border:1.5px solid var(--border);
+  border-radius:14px;
+  padding:13px 16px;
+  font-size:14px;
+  color:var(--text-1);
+  font-family:'Heebo', sans-serif;
+  outline:none;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom:10px;
+  direction:rtl;
+}
+.minput:focus, .mtextarea:focus, .mselect:focus {
+  border-color: var(--accent);
+  background: var(--bg-3);
+}
+.mtextarea { resize:vertical; min-height:80px; font-family:'Heebo', sans-serif; }
+.mlabel {
+  display:block;
+  font-size:11px; font-weight:700;
+  color:var(--text-2);
+  margin-bottom:6px;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+}
+
+.mbtn {
+  width:100%;
+  padding:15px;
+  border-radius:14px;
+  font-size:15px; font-weight:800;
+  font-family:'Heebo', sans-serif;
+  cursor:pointer;
+  border:none;
+  margin-top:8px;
+  transition: transform 0.15s;
+}
+.mbtn:active { transform: scale(0.97); }
+.mbtn-p { background: var(--gradient-1); color:#fff; }
+.mbtn-s { background: var(--bg-2); color:var(--text-1); border:1.5px solid var(--border-strong); }
+.mbtn-d { background: rgba(248,113,113,0.1); color:var(--red); border:1.5px solid rgba(248,113,113,0.3); }
+
+/* ─── REVEAL ─── */
+.reveal { opacity:0; transform:translateY(20px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ─── LOADING SCREEN ─── */
+.loader {
+  position:fixed; inset:0;
+  background: var(--bg-0);
+  z-index:1000;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:20px;
+  transition: opacity 0.5s;
+}
+.loader.hide { opacity:0; pointer-events:none; }
+.loader-flag { font-size:64px; animation: wave 2s ease-in-out infinite; }
+.loader-text {
+  font-size:14px; color:var(--text-2); font-weight:600;
+}
+.loader-dots span {
+  display:inline-block;
+  width:6px; height:6px; border-radius:50%;
+  background: var(--accent);
+  margin: 0 2px;
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+.loader-dots span:nth-child(2) { animation-delay:0.2s; }
+.loader-dots span:nth-child(3) { animation-delay:0.4s; }
+@keyframes dotPulse {
+  0%,80%,100% { transform:scale(0.8); opacity:0.3; }
+  40% { transform:scale(1.3); opacity:1; }
+}
+
+/* ─── TOAST ─── */
+.toast {
+  position:fixed;
+  bottom:90px; left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background: var(--bg-3);
+  border:1px solid var(--border-strong);
+  border-radius:14px;
+  padding:12px 18px;
+  font-size:13px; font-weight:600;
+  color:var(--text-1);
+  z-index:400;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+  pointer-events:none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ─── EMPTY STATE ─── */
+.empty {
+  text-align:center;
+  padding:40px 20px;
+  color: var(--text-3);
+}
+.empty-icon { font-size:48px; margin-bottom:12px; opacity:0.5; }
+.empty-text { font-size:14px; }
+
+/* ─── SCROLL HINT ─── */
+.scroll-hint {
+  text-align:center;
+  font-size:11px; color:var(--text-3);
+  margin: -8px 0 12px;
+  opacity:0.7;
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-flag">🇰🇷</div>
+  <div class="loader-text">טוען את הטיול...</div>
+  <div class="loader-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- BG BLOBS -->
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="user-pill"><span class="sync-dot" id="syncDot"></span><span id="syncText">מסונכרן</span></div>
+  <div class="header-inner">
+    <div class="header-text">
+      <span class="flag">🇰🇷</span>
+      <div class="h-title">קוריאה 2026</div>
+      <div class="h-sub">משה ופז · 27 אפריל – 10 מאי</div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="החלף מצב"><span id="themeIcon">☀️</span></button>
+  </div>
+  <div class="countdown" id="countdown"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <button class="nb active" onclick="showPage('dash',this)">🏠 בית</button>
+  <button class="nb" onclick="showPage('sched',this)">📅 לוז</button>
+  <button class="nb" onclick="showPage('hotels',this)">🏨 מלונות</button>
+  <button class="nb" onclick="showPage('checks',this)">✅ רשימה</button>
+  <button class="nb" onclick="showPage('tips',this)">💡 טיפים</button>
+  <button class="nb" onclick="showPage('phrases',this)">🗣️ קוריאנית</button>
+</nav>
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dash">
+  <div class="stl">היום שלכם</div>
+  <div class="today-hero reveal" id="todayCard">
+    <div class="td-date" id="todayDate"></div>
+    <div class="td-title" id="todayTitle">בדרך לקוריאה! 🛫</div>
+    <div class="td-loc" id="todayLoc">✈️ טרום טיול</div>
+  </div>
+
+  <div class="stl">התקדמות הטיול</div>
+  <div class="trip-prog reveal">
+    <div class="tp-lbl"><span>תחילת טיול</span><span id="progPct">0%</span></div>
+    <div class="tp-bg"><div class="tp-fill" id="progBar" style="width:0%"></div></div>
+    <div class="tp-lbl" style="margin-top:10px;margin-bottom:0"><span>27 אפר׳</span><span>10 מאי</span></div>
+  </div>
+
+  <div class="stl">סטטיסטיקות</div>
+  <div class="grid2">
+    <div class="ic reveal"><span class="ic-icon">🌙</span><div class="ic-lbl">לילות</div><div class="ic-val">13</div><div class="ic-sub">3 ערים</div></div>
+    <div class="ic reveal"><span class="ic-icon">📍</span><div class="ic-lbl">אטרקציות</div><div class="ic-val" id="statAttract">—</div><div class="ic-sub">מתוכנן</div></div>
+    <div class="ic reveal"><span class="ic-icon">🍜</span><div class="ic-lbl">מסעדות</div><div class="ic-val" id="statFood">—</div><div class="ic-sub">חייבים</div></div>
+    <div class="ic reveal"><span class="ic-icon">⚡</span><div class="ic-lbl">WOW רגעים</div><div class="ic-val">8</div><div class="ic-sub">תכננו</div></div>
+  </div>
+
+  <div class="stl">מידע שימושי</div>
+  <div class="grid2">
+    <div class="ic reveal"><span class="ic-icon">🕯️</span><div class="ic-lbl">כניסת שבת</div><div class="ic-val">19:20</div><div class="ic-sub">שישי + שבת</div></div>
+    <div class="ic reveal"><span class="ic-icon">💳</span><div class="ic-lbl">T-money</div><div class="ic-val">לקנות</div><div class="ic-sub">בשדה Incheon</div></div>
+    <div class="ic reveal"><span class="ic-icon">📱</span><div class="ic-lbl">אפליקציות</div><div class="ic-val">Kakao T</div><div class="ic-sub">Naver Map</div></div>
+    <div class="ic reveal"><span class="ic-icon">🚨</span><div class="ic-lbl">חירום</div><div class="ic-val">112</div><div class="ic-sub">כל שירות</div></div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="page" id="page-sched">
+  <div class="day-sel" id="daySel"></div>
+  <div class="scroll-hint">החלק כדי לגלול בין הימים</div>
+  <div id="schedContent"></div>
+</div>
+
+<!-- HOTELS -->
+<div class="page" id="page-hotels">
+  <div class="stl">המלונות שלכם</div>
+  <div class="hotel-card reveal">
+    <div class="hc-icon" style="background:var(--glow-1)">🏙️</div>
+    <div style="flex:1">
+      <div class="hc-name">L7 Hongdae by Lotte</div>
+      <div class="hc-city">סיאול — שכונת Hongdae</div>
+      <div class="hc-dates">27 אפר׳ – 3 מאי · 6 לילות</div>
+      <button class="maps-btn" onclick="openNaverMap('L7 Hongdae Hotel Seoul')" style="margin-top:8px">📍 פתח במפה</button>
+    </div>
+  </div>
+
+  <div class="hotel-card reveal">
+    <div class="hc-icon" style="background:rgba(52,211,153,0.1)">🌿</div>
+    <div style="flex:1">
+      <div class="hc-name">Hidden Cliff Hotel & Nature</div>
+      <div class="hc-city">ג׳ג׳ו — Jungmun, Seogwipo</div>
+      <div class="hc-dates">3 מאי – 6 מאי · 3 לילות</div>
+      <button class="maps-btn" onclick="openNaverMap('Hidden Cliff Hotel Nature Jeju')" style="margin-top:8px">📍 פתח במפה</button>
+    </div>
+  </div>
+
+  <div class="hotel-card reveal">
+    <div class="hc-icon" style="background:rgba(244,114,182,0.1)">🌊</div>
+    <div style="flex:1">
+      <div class="hc-name">מלון בוסאן (לסיום)</div>
+      <div class="hc-city">בוסאן — לקבוע</div>
+      <div class="hc-dates">6 מאי – 10 מאי · 4 לילות</div>
+    </div>
+  </div>
+
+  <div class="stl">טיסות</div>
+  <div class="tip-card reveal"><div class="tc-ico">✈️</div><div><div class="tip-title">ישראל → סיאול Incheon</div><div class="tip-body">27 אפריל · נחיתה ~16:00<br>AREX כחולה → Hongik Univ · ~55 דק׳ · ₩4,150</div></div></div>
+  <div class="tip-card reveal"><div class="tc-ico">✈️</div><div><div class="tip-title">סיאול Gimpo → ג׳ג׳ו</div><div class="tip-body">3 מאי · ~10:30 · טיסה ~55 דק׳</div></div></div>
+  <div class="tip-card reveal"><div class="tc-ico">✈️</div><div><div class="tip-title">ג׳ג׳ו → בוסאן</div><div class="tip-body">6 מאי · 14:05 · טיסה ~45 דק׳</div></div></div>
+  <div class="tip-card reveal"><div class="tc-ico">🚗</div><div><div class="tip-title">השכרת רכב בג׳ג׳ו</div><div class="tip-body">Lotte Rent-a-Car · יונדאי קספר · 3–6 מאי · חובה — אין מטרו!</div></div></div>
+</div>
+
+<!-- CHECKLIST -->
+<div class="page" id="page-checks">
+  <div class="stl">לפני הטיול</div>
+  <div id="checkList"></div>
+  <button class="add-item-btn" onclick="openAddCheck()">+ הוסף פריט</button>
+</div>
+
+<!-- TIPS -->
+<div class="page" id="page-tips">
+  <div class="stl">כסף ותשלום</div>
+  <div class="tip-card reveal"><div class="tc-ico">💳</div><div><div class="tip-title">T-money Card</div><div class="tip-body">לקנות מיד בשדה Incheon (CU/GS25). לטעון ₩30,000 לאדם <strong>במזומן בלבד</strong>. שימוש בכל המטרו, אוטובוסים וחנויות נוחות.</div></div></div>
+  <div class="tip-card reveal"><div class="tc-ico">🏧</div><div><div class="tip-title">כסף מזומן</div><div class="tip-body">שווקים ומקומות קטנים — מזומן בלבד. כספומטים של GS25/CU מקבלים כרטיסי חוץ. להכין ₩50,000-100,000.</div></div></div>
+  <div class="tip-card reveal"><div class="tc-ico">🧾</div><div><div class="tip-title">Tax Refund</div><div class="tip-body">Olive Young ומקומות רבים — חובה דרכון פיזי! Tax Refund מיידי בקופה.</div></div></div>
+
+  <div class="stl">תחבורה</div>
+  <div class="tip-card reveal"><div class="tc-ico">🚇</div><div><div class="tip-title">Naver Map</div><div class="tip-body">הניווט הכי טוב בקוריאה — מטרו, אוטובוסים, הליכה. Google Maps פחות טוב שם!</div></div></div>
+  <div class="tip-card reveal"><div class="tc-ico">🚕</div><div><div class="tip-title">Kakao T</div><div class="tip-body">להוריד לפני! מוניות בלחיצה, תשלום בכרטיס. זול ומהיר.</div></div></div>
+  <div class="tip-card reveal"><div class="tc-ico">🚗</div><div><div class="tip-title">רכב בג׳ג׳ו</div><div class="tip-body">חובה! אין מטרו. נסיעה בצד ימין כמו ישראל. להוריד Naver Map עם מפות אופליין לפני.</div></div></div>
+
+  <div class="stl">שבת</div>
+  <div class="tip-card reveal"><div class="tc-ico">🕯️</div><div><div class="tip-title">כניסת שבת</div><div class="tip-body">שישי 01.05 וכל שבת — שקיעה ~19:20. לתכנן להיות בקרבת מקום.</div></div></div>
+
+  <div class="stl">אוכל</div>
+  <div class="tip-card reveal"><div class="tc-ico">🍖</div><div><div class="tip-title">משה — הגבלות</div><div class="tip-body">ללא חזיר, ללא פירות ים, ללא בשר נא. Gwangjang: לא Yukhoe!</div></div></div>
+  <div class="tip-card reveal"><div class="tc-ico">🥗</div><div><div class="tip-title">פז — הגבלות</div><div class="tip-body">ללא בשר. רוב הכיסונים, אטריות וירקות מתאימות. "Gogi eopseoyo?" = יש בלי בשר?</div></div></div>
+</div>
+
+<!-- PHRASES -->
+<div class="page" id="page-phrases">
+  <div class="stl">ביטויים בסיסיים</div>
+  <div class="phrase-card reveal"><div class="pk">안녕하세요</div><div class="pt">שלום (רשמי)</div><div class="pp">Annyeonghaseyo</div></div>
+  <div class="phrase-card reveal"><div class="pk">감사합니다</div><div class="pt">תודה רבה</div><div class="pp">Gamsahamnida</div></div>
+  <div class="phrase-card reveal"><div class="pk">얼마예요?</div><div class="pt">כמה זה עולה?</div><div class="pp">Eolmayeyo?</div></div>
+  <div class="phrase-card reveal"><div class="pk">이거 주세요</div><div class="pt">את זה, בבקשה</div><div class="pp">Igeo juseyo</div></div>
+  <div class="phrase-card reveal"><div class="pk">고기 없어요?</div><div class="pt">יש בלי בשר?</div><div class="pp">Gogi eopseoyo?</div></div>
+  <div class="phrase-card reveal"><div class="pk">맛있어요!</div><div class="pt">טעים!</div><div class="pp">Masiteoyo!</div></div>
+  <div class="phrase-card reveal"><div class="pk">화장실 어디예요?</div><div class="pt">איפה השירותים?</div><div class="pp">Hwajangsil eodiyeyo?</div></div>
+  <div class="phrase-card reveal"><div class="pk">사진 찍어도 돼요?</div><div class="pt">אפשר לצלם?</div><div class="pp">Sajin jjigeodo dwaeyo?</div></div>
+  <div class="phrase-card reveal"><div class="pk">영어 할 수 있어요?</div><div class="pt">אתה מדבר אנגלית?</div><div class="pp">Yeongeo hal su isseoyo?</div></div>
+  <div class="phrase-card reveal"><div class="pk">계산서 주세요</div><div class="pt">החשבון, בבקשה</div><div class="pp">Gyesanseo juseyo</div></div>
+</div>
+
+<!-- FAB -->
+<button class="fab" onclick="openContextualAdd()">✏️</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: Add/Edit Check -->
+<div class="mo" id="moCheck" onclick="closeMO(event,'moCheck')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhandle"></div>
+    <div class="mtitle">הוסף פריט לרשימה</div>
+    <input class="minput" id="checkInput" placeholder="מה צריך לעשות לפני הטיול?">
+    <button class="mbtn mbtn-p" onclick="saveCheck()">שמור</button>
+    <button class="mbtn mbtn-s" onclick="closeMOD('moCheck')">ביטול</button>
+  </div>
+</div>
+
+<!-- MODAL: Add/Edit Item -->
+<div class="mo" id="moItem" onclick="closeMO(event,'moItem')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="itemModalTitle">הוסף פעילות</div>
+    
+    <label class="mlabel">שעה</label>
+    <input class="minput" id="iTime" type="time" placeholder="HH:MM">
+
+    <label class="mlabel">אמוג'י</label>
+    <input class="minput" id="iEmoji" placeholder="🍜" maxlength="3">
+    
+    <label class="mlabel">שם</label>
+    <input class="minput" id="iName" placeholder="שם הפעילות">
+    
+    <label class="mlabel">תיאור</label>
+    <textarea class="mtextarea" id="iDesc" placeholder="תיאור מפורט"></textarea>
+    
+    <label class="mlabel">כתובת / שם לחיפוש במפה</label>
+    <input class="minput" id="iAddr" placeholder="לדוגמה: Olive Young Myeongdong">
+    
+    <label class="mlabel">איך מגיעים</label>
+    <textarea class="mtextarea" id="iHow" placeholder="קו 2 → תחנה X..."></textarea>
+    
+    <label class="mlabel">אזהרה (אופציונלי)</label>
+    <input class="minput" id="iWarn" placeholder="⚠️ סגור שלישי">
+    
+    <label class="mlabel">טיפ (אופציונלי)</label>
+    <input class="minput" id="iTip" placeholder="✓ להגיע מוקדם">
+    
+    <label class="mlabel">קטגוריה</label>
+    <select class="mselect" id="iTag">
+      <option value="ta">📍 אטרקציה</option>
+      <option value="tf">🍽️ אוכל</option>
+      <option value="tani">🎌 אנימה</option>
+      <option value="ts">🛍️ קניות</option>
+      <option value="tn">🌙 לילה</option>
+      <option value="tt">🚇 נסיעה</option>
+      <option value="th">🏨 מלון</option>
+    </select>
+    
+    <button class="mbtn mbtn-p" onclick="saveItem()">שמור</button>
+    <button class="mbtn mbtn-d" id="itemDelBtn" onclick="deleteCurrentItem()" style="display:none;">מחק פריט</button>
+    <button class="mbtn mbtn-s" onclick="closeMOD('moItem')">ביטול</button>
+  </div>
+</div>
+
+<!-- Firebase + App Logic -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, set, onValue, off } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBXQmpKLk-SNA875wVtEjpztInmDtbDyr0",
+  authDomain: "korea-trip-2026-cbc2e.firebaseapp.com",
+  databaseURL: "https://korea-trip-2026-cbc2e-default-rtdb.firebaseio.com",
+  projectId: "korea-trip-2026-cbc2e",
+  storageBucket: "korea-trip-2026-cbc2e.firebasestorage.app",
+  messagingSenderId: "117825579213",
+  appId: "1:117825579213:web:30d01a13b53a8a9d9fe184"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+window._fb = { db, ref, set, onValue };
+
+// Signal that Firebase is ready
+window._fbReady = true;
+window.dispatchEvent(new Event('fbready'));
+</script>
+
+<script>
+// ════════════════════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════════════════════
+const TRIP_START = new Date('2026-04-27T16:00:00');
+const TRIP_END   = new Date('2026-05-10T23:59:00');
+
+// ════════════════════════════════════════════════════════
+// DEFAULT DATA — FROM USER'S DOCUMENT
+// ════════════════════════════════════════════════════════
+const DEFAULT_DAYS = [
+  {
+    date:'27.04', day:'ב׳', city:'סיאול', label:'הגעה', cc:'cs', ci:'🏙️',
+    title:'נחיתה, התאקלמות וסיפתח בהונגדה',
+    items:[
+      { t:'16:00', e:'✈️', n:'נחיתה — Incheon Airport (ICN)', tags:['tt'],
+        d:'מעבר ביקורת גבולות, איסוף מזוודות. לפני העלייה לרכבת — חובה לרכוש כרטיס T-money באחת מחנויות הנוחות (CU, GS25, 7-Eleven) באולם קבלת הפנים. חובה לטעון במזומן בלבד (וון קוריאני). מומלץ לטעון ₩30,000 לאדם להתחלה.',
+        addr:'Incheon Airport ICN',
+        h:'הולכים בעקבות השילוט לרכבת AREX. לקחת רכבת כחולה (All-Stop) — לא הכתומה Express! כ-₩4,150 (מה-T-money). זמן נסיעה: ~55 דקות. לרדת ב-Hongik University, יציאה 1.',
+        w:'⚠️ אל תקחו רכבת Express כתומה — היא נוסעת ישירות לתחנת סיאול ולא עוצרת!' },
+      { t:'18:30', e:'🏨', n:'צ׳ק-אין במלון L7 Hongdae', tags:['th'],
+        d:'התארגנות קצרה בחדר, פריקת מזוודות.',
+        addr:'L7 Hongdae Seoul',
+        h:'המלון ממול יציאה 1 של תחנת Hongik Univ.' },
+      { t:'19:30', e:'🥟', n:'ארוחת ערב — ChangHwaDang (창화당)', tags:['tf'],
+        d:'מסעדה קטנה ומפורסמת בזכות הכיסונים הקוריאניים (Mandu) שלה — קריספיים מבחוץ, רותחים מבפנים. המקום מעוצב באווירת רטרו קוריאנית עם שולחנות עשויים ממגשי פנינה מסורתיים.',
+        addr:'ChangHwaDang Hongdae',
+        h:'מרחק 2-3 דקות הליכה רגלית מהמלון, בתוך סמטאות הונגדה.' },
+      { t:'20:30', e:'🌙', n:'שוטטות לילה — Hongdae Walking Street', tags:['tn'],
+        d:'הלב הפועם של תרבות הצעירים של סיאול. הרחוב המרכזי שבו מתרחשות הופעות רחוב (Busking) של זמרים, ראפרים וקבוצות ריקוד K-Pop עצמאיות. הכל מואר בניאון, המון חנויות אופנה, וברים. הזמן לספוג את "ההלם התרבותי" החיובי של הערב הראשון.',
+        addr:'Hongdae Walking Street',
+        h:'פשוט לצאת מהמסעדה וללכת בעקבות הרעש והאורות. כל האזור שמסביב לתחנת Hongik Univ הוא ה-Walking Street.',
+        tip:'✓ חינם. השיא אחרי 20:00.' },
+    ]
+  },
+  {
+    date:'28.04', day:'ג׳', city:'סיאול', label:'שווקים', cc:'cs', ci:'🏙️',
+    title:'יום השווקים והתצפית (WOW #1)',
+    items:[
+      { t:'09:00', e:'🍳', n:'ארוחת בוקר — Namdaemun Market', tags:['tf'],
+        d:'השוק המסורתי הגדול והוותיק ביותר בקוריאה (פעיל משנת 1414). בבוקר הוא בשיא הפעילות. המטרה קולינרית: Hotteok (פנקייק רחוב מטוגן במילוי סוכר חום, קינמון ואגוזים) וקערת Kalguksu (אטריות עבודת יד בציר) ב"סמטת האטריות" המפורסמת.',
+        addr:'Namdaemun Market Seoul',
+        h:'מטרו: Hongik Univ → AREX (תכלת) → Seoul Station (~7 דק׳) → קו 4 → תחנה אחת ל-Hoehyeon. יציאה 5 — ישר לתוך השוק.',
+        w:'⚠️ סגור ראשון' },
+      { t:'11:00', e:'🛍️', n:'קניות — Myeongdong', tags:['ts'],
+        d:'אזור הקניות המסחרי הראשי. שתי מטרות עוגן: Olive Young Myeongdong Flagship — סניף הדגל העצום של רשת ה-K-Beauty (חובה דרכון פיזי לקופות Tax Refund Immediate). NyuNyu Myeongdong — בניין 4 קומות עמוס באקססוריז (תכשיטים, תיקים, משקפיים) במחירי סיטונאות.',
+        addr:'Myeongdong Seoul',
+        h:'הליכה רגלית פשוטה של ~10 דק׳ משוק Namdaemun למרכז Myeongdong.' },
+      { t:'13:30', e:'🍜', n:'ארוחת צהריים — Myeongdong Kyoja', tags:['tf'],
+        d:'מוסד קולינרי הפועל מ-1966, מישלן Bib Gourmand. תפריט בסיסי: Kalguksu (אטריות משי בציר עוף/שום עמוק) ו-Mandu (כיסוני בשר ושמן שומשום). משלמים מראש בשולחן מיד כשמזמינים.',
+        addr:'Myeongdong Kyoja',
+        h:'בלב מדרחוב הקניות של מיונגדונג. חפשו את השלט עם הלוגו המפורסם.',
+        w:'⚠️ תור 20 דק׳ — נורמלי, זז מהר. משלמים מראש.' },
+      { t:'15:00', e:'🏘️', n:'Ikseon-dong + Ikseon Station Cafe', tags:['ta'],
+        d:'השכונה העתיקה (1920) שהפכה למקום הטרנדי ביותר בסיאול. סמטאות האנוק צרות ששופצו והפכו לבתי קפה קונספטואליים. הפסקת קפה ב-Ikseon Station — בית קפה מעוצב כתחנת רכבת רטרו. המטרה: שוטטות, אווירה, צילומים.',
+        addr:'Ikseon-dong',
+        h:'מטרו: Myeongdong (קו 4) → תחנה אחת צפונה ל-Chungmuro → קו 3 (כתום) → 2 תחנות ל-Jongno 3-ga → יציאה 4. ממש מול סמטאות השכונה.' },
+      { t:'17:30', e:'🌇', n:'הצרחת ה-WOW + שקיעה — N Seoul Tower', tags:['ta'],
+        d:'מגדל התקשורת האייקוני שיושב על הר Namsan במרכז העיר. גובה המגדל (236 מ׳) + גובה ההר = תצפית 360° ב-498 מ׳ מעל פני הים. העלייה בתזמון הזה מכוונת לשקיעה ולרגע שבו אורות הכרך נדלקים.',
+        addr:'N Seoul Tower',
+        h:'מטרו: Jongno 3-ga → קו 3 → Chungmuro → קו 4 → Myeongdong (כן, חזרנו לנקודת הצהריים). יציאה 3 → הליכה 10-15 דק׳ בעלייה קלה ל-Namsan Oreumi (מעלית זכוכית משופעת חינמית) → תחנת הרכבל התחתונה. כרטיס הלוך-חזור לרכבל ~₩14,000.',
+        tip:'✓ מושלם לצילומי שקיעה' },
+      { t:'19:30', e:'🥞', n:'ארוחת ערב אותנטית — Gwangjang Market', tags:['tf'],
+        d:'בניגוד לבוקר, גוואנגג׳אנג הוא מפלצת לילה של אוכל רחוב — תחת גג מקורה, עשרות דוכנים מוארים בנורות חשופות. לאכול: Bindaetteok (לביבות שעועית מטוגנות בשמן עמוק, פריכות עם רוטב סויה ובצל) + Mayak Gimbap (מיני-רולים אורז ואצות, "גימבאפ סמים" — ממכרים, נטבלים ברוטב חרדל חריף). מתאים לשניכם — ללא בשר/חזיר.',
+        addr:'Gwangjang Market',
+        h:'מההר: ירידה ברכבל למטה → מונית Kakao T ישירות לשוק (~10 דק׳, חוסך הליכה והחלפת רכבות). אם מתעקשים מטרו: הליכה ל-Myeongdong (קו 4) → Dongdaemun → קו 1 → Jongno 5-ga (יציאה 8).',
+        w:'⚠️ משה: לא Yukhoe — בשר נא!' },
+      { t:'21:00', e:'🌊', n:'צ׳יל לילי — Cheonggyecheon Stream', tags:['ta'],
+        d:'נחל מלאכותי באורך 11 ק"מ שזורם מתחת למפלס הרחוב. ב-2005 שוחזר לחלוטין (לפני כן עבר מעליו כביש מהיר). הליכה לאורכו בלילה מציעה שקט כמעט מוחלט בלב המטרופולין. הנחל מואר בתאורה רכה.',
+        addr:'Cheonggyecheon Stream',
+        h:'יוצאים משוק גוואנגג׳אנג (יציאות דרומיות) → חוצים את הכביש → מדרגות יורדות ישירות לתוך מפלס הנחל. הולכים מערבה (כיוון מרכז העיר). חזרה: עולים למפלס הרחוב ולוקחים רכבת מכל תחנה מרכזית חזרה ל-Hongik Univ.' },
+    ]
+  },
+  {
+    date:'29.04', day:'ד׳', city:'סיאול', label:'מסורת', cc:'cs', ci:'🏙️',
+    title:'מסורת, וינטג׳ וחללית (WOW #2)',
+    items:[
+      { t:'09:30', e:'🏯', n:'ארמון Gyeongbokgung + טקס המשמרות', tags:['ta'],
+        d:'הארמון המרכזי והגדול ביותר מבין חמשת ארמונות שושלת ג׳וסון (1395). המבנה המרשים ביותר הוא אולם הכס (Geonjeongjeon). בשעה 10:00 בדיוק — טקס חילופי המשמרות בשער הראשי (Gwanghwamun): תלבושות היסטוריות, דגלים ומוזיקה מסורתית.',
+        addr:'Gyeongbokgung Palace',
+        h:'מטרו: Hongik Univ → קו 2 (ירוק) → Euljiro 3-ga → קו 3 (כתום) → 2 תחנות ל-Gyeongbokgung → יציאה 5 ישירות לחצר הארמון.',
+        tip:'✓ טקס המשמרות מתחיל בדיוק 10:00' },
+      { t:'11:30', e:'🏘️', n:'כפר ההאנוק Bukchon', tags:['ta'],
+        d:'שכונת מגורים היסטורית על גבעה בין שני ארמונות. ~900 בתי עץ מסורתיים (Hanok). זהו המקום היחיד שבו רואים גגות רעפים עתיקים על רקע גורדי השחקים של סיאול המודרנית. נקודות הצילום הטובות ביותר הן Bukchon 5th & 6th Views.',
+        addr:'Bukchon Hanok Village',
+        h:'הליכה רגלית של ~15 דק׳ מהארמון מזרחה (חפשו שילוט או עקבו אחרי תיירים בהנבוק).',
+        w:'⚠️ אנשים חיים בבתים האלה. שקט מוחלט חובה — יש שלטים.' },
+      { t:'13:00', e:'🍲', n:'צהריים מותאם — Osegaehyang (오세계향)', tags:['tf'],
+        d:'מסעדה טבעונית יוקרתית בתוך מבנה האנוק מסורתי. פותרת את כל הבעיות: פז יכולה להזמין הכל (כולל גרסאות טבעוניות למנות קוריאניות קלאסיות כמו Jajangmyeon או Bulgogi). משה: אוכל איכותי ללא חשש לחזיר או פירות ים.',
+        addr:'Osegaehyang Insadong',
+        h:'ירידה רגלית מהגבעה של בוקצ׳ון דרומה לכיוון רובע Insadong. המסעדה בסמטה צדדית מהמדרחוב הראשי.' },
+      { t:'14:30', e:'🎨', n:'רובע האומנות Insadong + Ssamziegil', tags:['ta','ts'],
+        d:'המרכז של האומנות המסורתית. גולת הכותרת — Ssamziegil: מתחם קניות בנוי כספירלה אחת ארוכה ללא מדרגות. מעל 70 חנויות של מעצבים מקומיים, עבודות יד, אקססוריז ואמנות רחוב. מקום מעולה למתנות מקוריות.',
+        addr:'Ssamziegil Insadong',
+        h:'המשך הליכה רגלית בסיום הארוחה, בתוך המדרחוב של אינסאדונג.' },
+      { t:'16:00', e:'🛻', n:'שוק הפשפשים Dongmyo', tags:['ta'],
+        d:'הניגוד המוחלט לנקיון של סיאול. שוק "כאוטי" של וינטג׳ — ערימות בגדי יד שנייה על הרצפה, מכשירי רדיו ישנים, תקליטים ופריטי אספנות. חוויה צילומית ואנתרופולוגית מטורפת.',
+        addr:'Dongmyo Flea Market',
+        h:'חוזרים לתחנת Jongno 3-ga (קו 1 הכחול) → 3 תחנות מזרחה ל-Dongmyo → יציאה 3.' },
+      { t:'17:30', e:'📱', n:'דונגדאמון DIY — כיסויי טלפון (5072)', tags:['ts'],
+        d:'מתחם Dongdaemun Shopping Complex — מבוך של טקסטיל ואביזרים. באגף A, קומה 5, דוכן 5072: בוחרים כיסוי טלפון שקוף ומדביקים עליו בשיטת DIY דמויות תלת-מימדיות (אנימה, חיות, פירות). תהליך הבחירה וההדבקה ~20-30 דקות.',
+        addr:'Dongdaemun Shopping Complex',
+        h:'הליכה רגלית של ~10 דק׳ משוק דונגמיו מערבה לאורך הנחל, או נסיעה תחנה אחת במטרו ל-Dongdaemun.' },
+      { t:'18:00', e:'🛸', n:'ה"חוויה החללית" — DDP', tags:['ta'],
+        d:'המבנה האייקוני של האדריכלית זאחה חדיד. סיבוב חיצוני ופנימי במבנה האלומיניום העצום. בתוך המבנה — מתחם B-the B (מעבדת יופי עתידנית). סביב 18:45 התאורה החיצונית נדלקת והמבנה נראה כמו חללית שחנתה בעיר.',
+        addr:'Dongdaemun Design Plaza DDP',
+        h:'המבנה ממש מעבר לכביש של מתחם הכיסויים.',
+        tip:'✓ להגיע סביב 18:45 לשעת התאורה' },
+      { t:'20:00', e:'🍱', n:'ארוחת ערב — Anteiku (Sinchon)', tags:['tf','tani'],
+        d:'מסעדת קונספט של אנימה. העיצוב כולו מוקדש לסדרות כמו Attack on Titan ו-Demon Slayer. האוכל יפני-קוריאני מודרני — מאפשר למצוא מנות ללא בשר או חזיר בקלות.',
+        addr:'Anteiku Sinchon',
+        h:'מטרו: Dongdaemun History & Culture Park (קו 2 הירוק) → Sinchon (~20 דק׳). הליכה קצרה מהתחנה למסעדה.' },
+    ]
+  },
+  {
+    date:'30.04', day:'ה׳', city:'סיאול', label:'Seongsu', cc:'cs', ci:'🏙️',
+    title:'עיצוב, קצה טכנולוגי ומזרקות',
+    items:[
+      { t:'10:00', e:'☕', n:'קפה בוקר תעשייתי — Cafe Onion Seongsu', tags:['tf','ta'],
+        d:'אחד מבתי הקפה האייקוניים בעיר. המבנה — מפעל בטון נטוש ששומר במצבו הגולמי (קירות חשופים, חלודה וברזל). המאפה המפורסם: Pandoro (הר מושלג של אבקת סוכר).',
+        addr:'Cafe Onion Seongsu',
+        h:'מטרו: Hongik Univ → קו 2 (ירוק) → Seongsu → יציאה 2 → 5 דק׳ הליכה.',
+        tip:'✓ המקום היחיד בשכונה שנפתח מוקדם — לבוא לפני המוני התיירים' },
+      { t:'11:00', e:'🎨', n:'Tamburins + Dior Seongsu', tags:['ts'],
+        d:'Tamburins: מותג בישום וטיפוח קוריאני (מבית Gentle Monster). חנות מעוצבת כחלל אומנות מינימליסטי. Dior Seongsu: מבנה זכוכית מרהיב כתחרה צרפתית, מוקף בגן ורדים מטופח. אחד המקומות המצולמים ביותר באינסטגרם העולמי.',
+        addr:'Dior Seongsu',
+        h:'הליכה רגלית של ~7 דק׳ מ-Cafe Onion לכיוון מרכז השכונה.' },
+      { t:'11:45', e:'🤖', n:'חוויית קצה — Haus Noware (Gentle Monster)', tags:['ta'],
+        d:'בניין הדגל של מותג המשקפיים. זה לא חנות — זה מוזיאון לאומנות מודרנית. בתוך 5 הקומות: מיצגים של רובוטים ענקיים שזזים בצורה אנושית, פסלי ענק ואווירה של סרט מדע בדיוני.',
+        addr:'Haus Nowhere Seongsu',
+        h:'מרחק הליכה קצר מ-Dior בתוך סונגסו.',
+        tip:'✓ חינם לכניסה' },
+      { t:'13:00', e:'🍔', n:'צהריים — Ryong Ryong Burger House', tags:['tf'],
+        d:'המבורגר פרימיום הידוע במנת ה-Mara Cheese — בקר איכותי עם חריפות מארה וגבינה שנמסה מולכם.',
+        addr:'Ryong Ryong Burger Seongsu',
+        h:'בלב סונגסו.',
+        w:'⚠️ פז: אם אין אופציה צמחונית מספקת, השכונה מלאה במאפיות ומסעדות בריאות (כמו Salady) במרחק דקה הליכה.' },
+      { t:'14:00', e:'🚇', n:'חציית הנהר דרומה', tags:['tt'],
+        d:'נסיעה קצרה דרומה לגאנגנם.',
+        h:'חוזרים לתחנת Seongsu (קו 2 הירוק) → ~20 דק׳ עד Samseong → יציאות 5 או 6 ישירות לתוך הקניון.' },
+      { t:'14:40', e:'📚', n:'COEX Mall + Starfield Library', tags:['ta'],
+        d:'הקניון התת-קרקעי הגדול באסיה. המוקד — ספריית Starfield: חלל פתוח עם מדפי ספרים בגובה 13 מטרים ותאורה טבעית מהתקרה. צילומים בספרייה ושיטוט קצר במתחם הגאדג׳טים והטכנולוגיה.',
+        addr:'Starfield Library COEX',
+        h:'תחנת Samseong, יציאות 5/6.' },
+      { t:'16:30', e:'🍦', n:'Baskin Robbins Workshop', tags:['ta'],
+        d:'סניף דגל עתידני. בניגוד לסניף רגיל, כאן יש מעל 100 טעמים (כולל פרימיום בלעדיים), הדפסות על גלידה ועיצוב אולטרה-מודרני.',
+        addr:'Baskin Robbins Workshop Gangnam',
+        h:'נסיעה קצרה בקו 2 או במונית (~10 דק׳) לכיוון מרכז גאנגנם (Gangnam או Yangjae).' },
+      { t:'18:15', e:'⛲', n:'מופע WOW — Banpo Bridge Rainbow Fountain', tags:['ta'],
+        d:'מופע המזרקות הארוך בעולם המותקן על גשר. המים נורים ישירות לתוך נהר ההאן בליווי מוזיקה ותאורת LED ב-7 צבעי הקשת. המופע מתחיל באור ומשתלב לתוך השקיעה (~19:20).',
+        addr:'Banpo Hangang Park',
+        h:'הדרך המהירה ביותר מגאנגנם: מונית (Kakao T) ל-Banpo Hangang Park. נסיעה ~15 דקות.' },
+      { t:'20:00', e:'🍸', n:'סגירה בניו-יורק — Drunken Bean', tags:['tn'],
+        d:'בר/קפה מעוצב בדיוק כמו תחנת מטרו בניו-יורק של שנות ה-80. מושלם לדרינק של סוף יום באווירה אורבנית ייחודית.',
+        addr:'Drunken Bean Gangnam',
+        h:'נסיעה קצרה במונית (10-15 דק׳) חזרה לאזור גאנגנם.' },
+    ]
+  },
+  {
+    date:'01.05', day:'ו׳', city:'סיאול', label:'פוקימון', cc:'cs', ci:'🏙️',
+    title:'יום הפועלים: פוקימון, אדרנלין ובייסבול',
+    items:[
+      { t:'10:00', e:'⚡', n:'Pokemon Mega Festa — Seoul Forest', tags:['tani','ta'],
+        d:'אירוע שנתי ענק שמתקיים בסיאול בתקופה זו. הפארק הופך למתחם פוקימון: מיצגי ענק מתנפחים (פיקאצ׳ו, לאפרס בגובה 15 מ׳), חנות פופ-אפ רשמית עם מרצ׳נדייז בלעדי לקוריאה (שלא תמצאו ביפן), אזורי צילום מעוצבים. ה"מכה" של חובבי הפוקימון.',
+        addr:'Seoul Forest Park',
+        h:'מטרו: Hongik Univ → קו 2 → Wangsimni → קו Suin-Bundang (צהוב) → תחנה אחת ל-Seoul Forest → יציאה 4. הפארק ממש מולכם.',
+        w:'⚠️ 1 במאי = יום הפועלים בקוריאה. עומס גדול במקום!' },
+      { t:'13:00', e:'🎌', n:'Lotte World Mall — אנימה וגאדג׳טים', tags:['tani','ts'],
+        d:'לא קניות בגדים — קומות הצעצועים והאנימה: Bandai Namco Store (החנות הרשמית ל-Gunpla ופיגורטים), Gashapon Street (מאות מכונות אוטומטיות שמוציאות כדורי הפתעה — אנימה, חיות, אקססוריז), Crayon Shin-chan Bakery (קפה מבוסס על "שין צ׳אן" עם מאפים מעוצבים).',
+        addr:'Lotte World Mall Jamsil',
+        h:'מ-Seoul Forest: → Wangsimni → קו 2 → Jamsil → יציאות 1/2 ישירות לתוך הקניון התת-קרקעי.' },
+      { t:'17:00', e:'⚾', n:'משחק בייסבול — LG Twins (Jamsil)', tags:['ta'],
+        d:'בייסבול בקוריאה הוא לא רק ספורט — הוא מופע בידור פסיכי. לכל שחקן שיר עידוד וריקוד ספציפי שכל 25,000 האוהדים שרים בתיאום מושלם. מעודדות על במות ורעש מחשמל. טיפ: מקובל לקנות "Chimaek" (עוף מטוגן ובירה) בכניסה. עבורכם — דוכני פיצה, ראמן וקימבאפ צמחוני בתוך מתחם האצטדיון.',
+        addr:'Jamsil Baseball Stadium',
+        h:'מהקניון: הליכה רגלית 15-20 דק׳ לאורך הרחוב הראשי מערבה, או 2 תחנות בקו 2 (ירוק) מ-Jamsil ל-Sports Complex → יציאה 5/6.' },
+    ]
+  },
+  {
+    date:'02.05', day:'ש׳', city:'סיאול', label:'שבת', cc:'cs', ci:'🏙️',
+    title:'יום האנימה, האומנות ופסטיבל האביב',
+    items:[
+      { t:'11:00', e:'🎌', n:'AK Plaza Hongdae — "אקיהברה" של סיאול', tags:['tani'],
+        d:'הקניון ממש ליד (ולפעמים מעל) המלון. מתמקדים בקומה 5: Animate (הסניף המרכזי של רשת האנימה היפנית — פיגורטים, מנגה ומרצ׳נדייז רשמי), Ichiban Kuji (דוכני הגרלות — קונים כרטיס וזוכים בפרס מדורג), Megahouse (חנות דמויות אספנות באיכות גבוהה מאוד).',
+        addr:'AK Plaza Hongdae',
+        h:'הליכה רגלית של דקה אחת מהמלון.' },
+      { t:'13:00', e:'🎒', n:'Lashinbang + SPAO Hongdae', tags:['tani','ts'],
+        d:'Lashinbang: מתמחה במוצרי יד שנייה במצב מושלם. המקום למצוא פיגורטים נדירים של Steins;Gate או Death Note במחירים שפויים. SPAO Hongdae: רשת אופנה מקומית — קומת ה-Collaborations עם קולקציות מוגבלות של סדרות אנימה פופולריות (טי-שירטים, פיג׳מות).',
+        addr:'Lashinbang Hongdae',
+        h:'שתי החנויות במרחק הליכה ~5 דק׳ מ-AK Plaza בתוך רובע הונגדה.' },
+      { t:'15:00', e:'🎨', n:'Hongdae Free Market + Wappen House', tags:['ta','ts'],
+        d:'Free Market: מתקיים רק בשבתות ב-Hongdae Playground. יריד של אמנים צעירים וסטודנטים — תכשיטים בעבודת יד, ציורים ופריטי עיצוב מקוריים. אווירה מאוד היפסטרית ואותנטית. Wappen House: חנות לעיצוב פאצ׳ים בהתאמה אישית — בוחרים פריט (תיק, קלמר, כובע) ומדביקים פאצ׳ים של דמויות, אותיות וסמלים.',
+        addr:'Hongdae Playground',
+        h:'הליכה רגלית בתוך סמטאות הונגדה לכיוון אזור האוניברסיטה.',
+        w:'⚠️ Free Market רק בשבתות 13:00-18:00' },
+      { t:'19:30', e:'🎡', n:'פסטיבל Seoul Festa — Yeouido Hangang', tags:['ta','tn'],
+        d:'ה-WOW האחרון של סיאול. פארק ענק על שפת נהר ההאן. במהלך הפסטיבל: Signature Show — מופע לייזרים, מזרקות ואש על המים. דוכני אוכל רחוב (Night Market), קרוסלה מוארת על המים ואווירה חגיגית. נדנדות על גג תחנת Hangang Bus, פרחי דובדבן, Han River Ramen על שפת הנהר.',
+        addr:'Yeouido Hangang Park',
+        h:'מטרו: Hongik Univ → קו 2 (ירוק) → תחנה אחת ל-Dangsan → קו 9 (זהוב) → תחנה אחת ל-Yeouinaru → יציאות 2/3 ישירות לפארק מול הנהר.',
+        tip:'✓ מופעים ב-20:00 ו-21:00' },
+    ]
+  },
+  {
+    date:'03.05', day:'א׳', city:'ג׳ג׳ו', label:'הגעה', cc:'cj', ci:'🌿',
+    title:'נחיתה, קו חוף דרומי וריסט ביער',
+    items:[
+      { t:'12:30', e:'🚗', n:'איסוף הרכב — Lotte Rent-a-Car', tags:['tt'],
+        d:'יציאה מהטרמינל (CJU), לקיחת השאטל של Lotte (~5 דק׳ למתחם) וקבלת היונדאי קספר.',
+        addr:'Lotte Rent-a-Car Jeju',
+        h:'נסיעה ל-Jusangjeolli: ~50-60 דק׳ דרומה. מומלץ דרך כביש 1135 (המהיר והרחב ביותר שחוצה את האי).' },
+      { t:'14:30', e:'🗿', n:'מצוקי Jusangjeolli', tags:['ta'],
+        d:'תופעת טבע גיאולוגית עוצמתית. עמודי בזלת משושים ומושלמים שנוצרו מלבה רותחת שפגעה במי האוקיינוס הקפואים והתקררה במהירות. האתר מסודר עם טיילת עץ תלויה שמשקיפה למטה על הגלים שמתרסקים על המשושים השחורים.',
+        addr:'Jusangjeolli Cliffs Jeju',
+        h:'הליכה קלה של 30-40 דק׳ גג. חניון גדול ומסודר בכניסה.' },
+      { t:'15:15', e:'🌊', n:'מפל Jeongbang (תחנת רשות)', tags:['ta'],
+        d:'המפל היחיד בכל יבשת אסיה שמימיו נופלים ישירות לתוך האוקיינוס (ולא לנהר או בריכה סגורה). גובה 23 מטרים. יורדים במדרגות עד לקו החוף הסלעי, ואפשר להגיע ממש עד לרסיסי המים.',
+        addr:'Jeongbang Waterfall Jeju',
+        h:'~20 דק׳ מזרחה מ-Jusangjeolli. ירידה (ועלייה) של עשרות מדרגות. חניה מסודרת.',
+        tip:'✓ אופציונלי — שווה אם יש כוח' },
+      { t:'16:30', e:'🏨', n:'צ׳ק-אין — Hidden Cliff Hotel', tags:['th'],
+        d:'המלון יושב בתוך עמק מיוער. הזמן לזרוק מזוודות, להתרענן מהטיסה ולהחליף בגדים לקראת הערב.',
+        addr:'Hidden Cliff Hotel Nature Jeju',
+        h:'~25 דק׳ נסיעה חזרה מערבה לאזור Jungmun.' },
+      { t:'17:30', e:'🌅', n:'שקיעה במועדון The Cliff', tags:['tn'],
+        d:'לאונג׳ בר וביץ׳ קלאב על קצה צוק המשקיף לאוקיינוס. אזור פנימי מעוצב + אזור חיצוני ענק עם ספות רביצה, פופים, דק עץ ותאורת ניאון. מוזיקת צ׳יל-אאוט/האוס ברקע. קוקטייל פרימיום + שקיעה על המים = WOW של היום הראשון.',
+        addr:'The Cliff Jeju Jungmun',
+        h:'5 דק׳ נסיעה מהמלון.' },
+      { t:'19:30', e:'🏊', n:'שחייה לילית — בריכת המלון', tags:['ta'],
+        d:'בריכת אינפיניטי שמשקיפה ישירות לתוך היער (לא לים). בערב משנה אווירה: המים מחוממים ל-32°C (קריטי במאי כשבחוץ יכול להיות 14°C), תאורת לייזר כחולה-סגולה מאירה את העצים, ויש דיג׳יי שמנגן בלייב.',
+        tip:'✓ אירוע חובה לזוגות' },
+    ]
+  },
+  {
+    date:'04.05', day:'ב׳', city:'ג׳ג׳ו', label:'מערב', cc:'cj', ci:'🌿',
+    title:'פרויקט המערב — אקסטרים, קפה וזכוכית על הים',
+    items:[
+      { t:'09:30', e:'🚗', n:'יציאה מהמלון', tags:['tt'],
+        d:'',
+        h:'~45 דק׳ נסיעה צפונה דרך כביש 1135 או כביש החוף (202).' },
+      { t:'10:15', e:'☕', n:'קפה בוקר — Aewol Cafe Street', tags:['tf','ta'],
+        d:'רצועת חוף טרשית שמוקדשת כולה לבתי קפה מעוצבים מזכוכית. חונים והולכים על שביל החוף. היעדים: Cafe Noeully (מבנה עצום שמדמה חממה עם צמחייה וגג פתוח) או Aewol the Sunset (מרפסת פתוחה עם דק עץ ונוף נקי לים). קפה איכותי ומאפים לפתיחת היום.',
+        addr:'Aewol Cafe Street Jeju',
+        h:'החניה באזור איוול לפעמים עמוסה. יש חניוני תשלום קטנים ממש מעל רחוב בתי הקפה.' },
+      { t:'11:45', e:'🏎️', n:'אקסטרים טכנולוגי — 9.81 Park', tags:['ta'],
+        d:'מסלול קארטינג המבוסס על כוח המשיכה (Gravity Racing). הרכבים נטולי מנוע — המסלולים בנויים בירידה. הכל מחובר לאפליקציה ייעודית (להוריד מראש) שמקליטה זמני הקפה, מצלמת אתכם נוהגים בווידאו ומשווה תוצאות. המבנה עצמו מינימליסטי ועתידני.',
+        addr:'9.81 Park Jeju',
+        h:'~20 דק׳ נסיעה פנימה לכיוון ההרים.',
+        tip:'✓ פתוח רגיל ביום שני. כולל מתחם אוכל פנימי.' },
+      { t:'14:30', e:'🏖️', n:'חוף Hyeopjae + קפה Bingsu', tags:['ta','tf'],
+        d:'החוף היפה ביותר במערב. חול לבן (משברי צדפות), סלעי בזלת שחורים, ומים צלולים לחלוטין. ממול רואים את האי הקטן Biyangdo. קפה/קינוח: Cafe Comma (Bingsu מפורסם — קרח מגולח עם תוספות מתוקות) או Cafe Beryl (אסתטיקה נקייה ובוגרת).',
+        addr:'Hyeopjae Beach Jeju',
+        h:'~30 דק׳ נסיעה דרום-מערבה חזרה לקו החוף.' },
+      { t:'16:15', e:'🐉', n:'סלעי הדרקון — Yongmeori Coast', tags:['ta'],
+        d:'"יונגמורי" בקוריאנית = "ראש הדרקון". האתר נראה כמו דרקון שצולל לאוקיינוס. מסלול הליכה טבעי, צר ומפותל ממש על קו המים, למרגלות שכבות סלע אבן-חול בנות מיליוני שנים.',
+        addr:'Yongmeori Coast Jeju',
+        h:'~40 דק׳ נסיעה דרומה על כביש החוף (202).',
+        w:'⚠️ מוקש לוגיסטי קריטי: ההליכה על סלעים בגובה פני הים — האתר נסגר בגאות גבוהה או גלים חזקים. חובה לבקש מקבלת המלון לטלפן לאתר בבוקר!' },
+      { t:'19:30', e:'🍕', n:'ארוחת ערב — Pizzeria 3657', tags:['tf'],
+        d:'המסעדה האיטלקית הטובה בדרום — פותרת את אתגר האוכל (בלי בשר, בלי חזיר). מבנה מעוצב בסגנון יווני קלאסי (לבן-כחול), יושב ממש על הים. במרכז המסעדה — טאבון עצים גדול. פיצות נאפוליטניות מצוינות.',
+        addr:'Pizzeria 3657 Jeju',
+        h:'~15-20 דק׳ חזרה לכיוון המלון ב-Jungmun.' },
+      { t:'21:30', e:'🍺', n:'Monkey Beach (תחנת רשות)', tags:['tn'],
+        d:'בר גדול ומוכר באזור הריזורטים של Jungmun. פונה לתיירים, אווירה משוחררת, מוזיקה קצבית, שולחנות ביליארד, קליעה למטרה (Darts) וביר-פונג. סגירת לילה קלילה בלי צורך לנהוג רחוק.',
+        addr:'Monkey Beach Jeju Jungmun',
+        tip:'✓ הבעלים מחזיר עלות מונית בשתייה חינם' },
+    ]
+  },
+  {
+    date:'05.05', day:'ג׳', city:'ג׳ג׳ו', label:'מזרח', cc:'cj', ci:'🌿',
+    title:'פרויקט המזרח והדרום — טבע פראי ולאונג׳ פרימיום',
+    items:[
+      { t:'08:30', e:'🚗', n:'יציאה מהמלון', tags:['tt'],
+        d:'',
+        h:'~70 דק׳ צפון-מזרח. מומלץ דרך כביש 1112 ("כביש הארזים") — אחד הכבישים היפים והמיוערים ביותר באי.' },
+      { t:'09:45', e:'☕', n:'קפה בוקר — Hamdeok Beach + Cafe Delmoondo', tags:['tf','ta'],
+        d:'נחשב לחוף עם המים הצלולים והיפים ביותר באי ("המלדיביים של קוריאה"). מתיישבים ב-Cafe Delmoondo — בית הקפה בנוי על מרפסת עץ ממש מעל קו המים. המקום המושלם להתעורר מול הטורקיז לפני שמתחילים את הטיול הפיזי.',
+        addr:'Hamdeok Beach Cafe Delmoondo' },
+      { t:'11:30', e:'🌋', n:'הר Seongsan Ilchulbong', tags:['ta'],
+        d:'"פסגת הזריחה" — אתר מורשת עולמית של אונסק"ו. מכתש געשי ענק שנוצר מהתפרצות תת-ימית לפני אלפי שנים ועולה מתוך הים. הנוף מלמעלה על המכתש ועל קו החוף — מהמרשימים באסיה.',
+        addr:'Seongsan Ilchulbong Jeju',
+        h:'~35 דק׳ נסיעה דרומה לאורך קו החוף המזרחי. טיפוס מוסדר במדרגות עץ של ~20 דקות עד הפסגה.',
+        tip:'✓ לוודא שהאתר פתוח ביום זה' },
+      { t:'12:45', e:'🌊', n:'מצוקי Seopjikoji', tags:['ta'],
+        d:'לשון יבשה שיוצאת לתוך האוקיינוס. מסלול הליכה נוח על מצוקים געשיים שחורים, עם שדות ירוקים (במאי לעיתים שאריות פריחת קנולה צהובה), מגדלור לבן ומבנים ארכיטקטוניים מיוחדים. אווירה קולנועית ודרמטית. המקום שקט יותר מההר ופתוח לרוח הים.',
+        addr:'Seopjikoji Cape Jeju',
+        h:'10 דק׳ דרומה מ-Seongsan.' },
+      { t:'14:00', e:'🍔', n:'צהריים — Greenroof Jeju / East Forest', tags:['tf'],
+        d:'Greenroof: המבורגרים איכותיים — המבורגר בקר מצוין למשה והמבורגר טבעוני (Vegan Burger) מוערך מאוד לפז. East Forest: אם מעדיפים פסטות/ריזוטו פרימיום — המסעדה האיטלקית הכי מומלצת באזור.',
+        addr:'Greenroof Jeju',
+        h:'10 דק׳ נסיעה לאזור המסעדות.' },
+      { t:'16:30', e:'🛍️', n:'Vibe אורבני — Lee Jung-Seop Art Street', tags:['ts','ta'],
+        d:'רחוב אמנותי ותוסס בעיר סוגוויפו. מדרחוב מלא בחנויות בוטיק של מעצבים קוריאנים צעירים, גלריות, חנויות למזכרות מעוצבות (לא תעשייתיות) ובתי קפה קטנים. מקום מעולה להסתובב בו שעה וחצי, לספוג אווירה עירונית שונה מהטבע של הבוקר.',
+        addr:'Lee Jung-Seop Art Street Seogwipo',
+        h:'~45 דק׳ נסיעה לכיוון העיר סוגוויפו בדרום.' },
+      { t:'18:00', e:'🌅', n:'שעת זהב — Vadada Beach Lounge', tags:['tn'],
+        d:'לאונג׳ בר פרימיום מעוצב בסגנון מינימליסטי מודרני. יושבים על ספות או פופים ממש מעל קו המים, עם מוזיקת האוס/צ׳יל רגועה ברקע. ה"ריסט" האסתטי של סוף היום. הקוקטיילים ברמה גבוהה מאוד והתאורה של שעת השקיעה על המים מייצרת חוויה של יוקרה שקטה.',
+        addr:'Vadada Beach Lounge Seogwipo',
+        h:'~10 דק׳ נסיעה לכיוון החוף של סוגוויפו.' },
+      { t:'19:30', e:'🍜', n:'ארוחת ערב — Seogwipo Olle Market', tags:['tf'],
+        d:'שוק מסורתי מקורה שהופך בערב לחגיגה של אוכל רחוב. מה לאכול: דוכני פירות הים (סשימי טרי במחירים מעולים), עוף מטוגן בשום (Maneul-tongdak) ומיצי המנדרינות המפורסמים (Hallabong).',
+        addr:'Seogwipo Olle Market',
+        h:'10 דק׳ נסיעה למרכז העיר. ~25 דק׳ חזרה ל-Hidden Cliff.',
+        w:'⚠️ משה: להימנע מדוכני החזיר השחור (Black Pork)!' },
+    ]
+  },
+  {
+    date:'06.05', day:'ד׳', city:'בוסאן', label:'מעבר', cc:'cb', ci:'🌊',
+    title:'סגירות אחרונות והמראה לבוסאן',
+    items:[
+      { t:'10:00', e:'☕', n:'בוקר רגוע + צ׳ק-אאוט', tags:['th'],
+        d:'זמן לקפה אחרון במלון או באחד מבתי הקפה הקטנים באזור Jungmun. התארגנות סופית וצ׳ק-אאוט רגוע עד 11:00.' },
+      { t:'11:30', e:'🚗', n:'נסיעה צפונה לשדה התעופה', tags:['tt'],
+        d:'',
+        h:'~50-60 דק׳ נסיעה על כביש 1135 המהיר. לצאת בזמן כדי לא להילחץ מהתנועה בכניסה לעיר ג׳ג׳ו.' },
+      { t:'12:30', e:'🚙', n:'החזרת הרכב — Lotte Rent-a-Car', tags:['tt'],
+        d:'מחזירים את היונדאי קספר למתחם של Lotte (סמוך לשדה). נציג בודק את הרכב בתוך דקות, ואתם עולים על השאטל המהיר שלוקח אתכם ישירות לטרמינל (~5 דק׳).',
+        addr:'Lotte Rent-a-Car Jeju Airport' },
+      { t:'14:05', e:'✈️', n:'המראה Jeju (CJU) → Busan (PUS)', tags:['tt'],
+        d:'טיסה פנימית. ~45 דקות.',
+        h:'מומלץ להגיע לדלפקי הבידוק ~90 דקות לפני הטיסה.' },
+    ]
+  },
+];
+
+const DEFAULT_CHECKS = [
+  {text:'להזמין כרטיסי AREX מראש', done:false},
+  {text:'להוריד Kakao T', done:false},
+  {text:'להוריד Naver Map + מפות אופליין', done:false},
+  {text:'לרכוש T-money Card בשדה', done:false},
+  {text:'לוודא רישיון נהיגה בינלאומי', done:false},
+  {text:'להכין ₩50,000 מזומן', done:false},
+  {text:'לוודא ביטוח נסיעות', done:false},
+];
+
+const tagMap = {
+  tf:{cls:'tf', lbl:'🍽️ אוכל'},
+  ta:{cls:'ta', lbl:'📍 אטרקציה'},
+  tani:{cls:'tani', lbl:'🎌 אנימה'},
+  ts:{cls:'ts', lbl:'🛍️ קניות'},
+  tn:{cls:'tn', lbl:'🌙 לילה'},
+  tt:{cls:'tt', lbl:'🚇 נסיעה'},
+  th:{cls:'th', lbl:'🏨 מלון'}
+};
+
+// ════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════
+let appState = {
+  days: DEFAULT_DAYS,
+  checks: DEFAULT_CHECKS
+};
+let curDay = 0;
+let editingItem = null;
+let isLoading = true;
+
+// ════════════════════════════════════════════════════════
+// FIREBASE SYNC
+// ════════════════════════════════════════════════════════
+function initFirebase() {
+  if (!window._fb) { setTimeout(initFirebase, 100); return; }
+  const { db, ref, set, onValue } = window._fb;
+  
+  const stateRef = ref(db, 'tripState');
+  
+  onValue(stateRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data && data.days && data.checks) {
+      appState = data;
+      curDay = Math.min(curDay, appState.days.length - 1);
+      hideLoader();
+      renderAll();
+      setSyncStatus(true);
+    } else {
+      // First time — push defaults
+      saveState();
+      hideLoader();
+      renderAll();
+    }
+  }, (error) => {
+    console.error('Firebase error:', error);
+    setSyncStatus(false);
+    hideLoader();
+    renderAll();
+    showToast('⚠️ עובד במצב לוקאלי');
+  });
+}
+
+function saveState() {
+  if (!window._fb) return;
+  const { db, ref, set } = window._fb;
+  set(ref(db, 'tripState'), appState).catch((err) => {
+    console.error('Save error:', err);
+    showToast('⚠️ לא הצליח לסנכרן');
+  });
+}
+
+function setSyncStatus(online) {
+  const dot = document.getElementById('syncDot');
+  const text = document.getElementById('syncText');
+  if (online) {
+    dot.classList.remove('offline');
+    text.textContent = 'מסונכרן';
+  } else {
+    dot.classList.add('offline');
+    text.textContent = 'לא מסונכרן';
+  }
+}
+
+function hideLoader() {
+  if (!isLoading) return;
+  isLoading = false;
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+    setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+  }, 300);
+}
+
+// ════════════════════════════════════════════════════════
+// THEME
+// ════════════════════════════════════════════════════════
+function toggleTheme() {
+  const root = document.documentElement;
+  const cur = root.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  document.getElementById('themeIcon').textContent = next === 'dark' ? '☀️' : '🌙';
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', next === 'dark' ? '#0a0e1a' : '#ffffff');
+}
+window.toggleTheme = toggleTheme;
+
+(function initTheme() {
+  const saved = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('themeIcon').textContent = saved === 'dark' ? '☀️' : '🌙';
+  });
+})();
+
+// ════════════════════════════════════════════════════════
+// COUNTDOWN
+// ════════════════════════════════════════════════════════
+function updateCountdown() {
+  const now = new Date();
+  const diff = TRIP_START - now;
+  const strip = document.getElementById('countdown');
+  
+  if (diff <= 0) {
+    const elapsed = now - TRIP_START;
+    const total = TRIP_END - TRIP_START;
+    const pct = Math.min(100, Math.round((elapsed/total)*100));
+    document.getElementById('progBar').style.width = pct+'%';
+    document.getElementById('progPct').textContent = pct+'%';
+    strip.innerHTML = '<div class="cd-item"><span class="cd-num">🇰🇷</span><span class="cd-lbl">בטיול!</span></div>';
+    return;
+  }
+  
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  
+  strip.innerHTML = `
+    <div class="cd-item"><span class="cd-num">${d}</span><span class="cd-lbl">ימים</span></div>
+    <div class="cd-item"><span class="cd-num">${h}</span><span class="cd-lbl">שעות</span></div>
+    <div class="cd-item"><span class="cd-num">${m}</span><span class="cd-lbl">דקות</span></div>
+    <div class="cd-item"><span class="cd-num">${s}</span><span class="cd-lbl">שניות</span></div>
+  `;
+}
+
+// ════════════════════════════════════════════════════════
+// TODAY CARD
+// ════════════════════════════════════════════════════════
+function updateTodayCard() {
+  const now = new Date();
+  const ts = `${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}`;
+  const day = appState.days.find(d => d.date === ts);
+  const wds = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  
+  document.getElementById('todayDate').textContent = `${wds[now.getDay()]}, ${ts}`;
+  
+  if (day) {
+    document.getElementById('todayTitle').textContent = day.title;
+    document.getElementById('todayLoc').textContent = day.ci + ' ' + day.city;
+  } else if (now < TRIP_START) {
+    document.getElementById('todayTitle').textContent = 'הטיול מתחיל ב-27 אפריל! 🛫';
+    document.getElementById('todayLoc').textContent = '✈️ טרום טיול';
+  } else {
+    document.getElementById('todayTitle').textContent = 'הטיול הסתיים — זכרונות לתמיד 🌸';
+    document.getElementById('todayLoc').textContent = '🏠 בית';
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// STATS
+// ════════════════════════════════════════════════════════
+function updateStats() {
+  let attractions = 0, food = 0;
+  appState.days.forEach(d => {
+    d.items.forEach(it => {
+      if (it.tags.includes('ta') || it.tags.includes('tani') || it.tags.includes('ts') || it.tags.includes('tn')) attractions++;
+      if (it.tags.includes('tf')) food++;
+    });
+  });
+  document.getElementById('statAttract').textContent = attractions;
+  document.getElementById('statFood').textContent = food;
+}
+
+// ════════════════════════════════════════════════════════
+// DAY SELECTOR
+// ════════════════════════════════════════════════════════
+function buildDaySel() {
+  const now = new Date();
+  const ts = `${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}`;
+  document.getElementById('daySel').innerHTML = appState.days.map((d,i) => `
+    <button class="db ${i===curDay?'active':''} ${d.date===ts?'today':''}" onclick="selDay(${i})">
+      <span class="dd">${d.date}</span>
+      <span class="dy">${d.day}</span>
+      <span class="dc">${d.label}</span>
+    </button>
+  `).join('');
+}
+function selDay(i) {
+  curDay = i;
+  buildDaySel();
+  renderSched();
+  document.querySelector(`.db.active`)?.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+}
+window.selDay = selDay;
+
+// ════════════════════════════════════════════════════════
+// SCHEDULE
+// ════════════════════════════════════════════════════════
+function renderSched() {
+  const d = appState.days[curDay];
+  if (!d) { document.getElementById('schedContent').innerHTML = '<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">אין יום</div></div>'; return; }
+  
+  const html = `
+    <span class="city-badge ${d.cc}">${d.ci} ${d.city}</span>
+    <div class="day-title">${d.title}</div>
+    <div class="timeline">
+      ${d.items.map((item,i) => `
+        <div class="ti" style="animation-delay:${i*0.05}s">
+          <div class="tdot"></div>
+          <div class="tc" onclick="toggleTC(this)">
+            <div class="tc-top">
+              <span class="tc-t">${item.t}</span>
+              <span class="tc-e">${item.e}</span>
+              <span class="tc-n">${item.n}</span>
+              <span class="tc-arr">›</span>
+            </div>
+            <div class="tc-tags">${item.tags.map(t => `<span class="tag ${tagMap[t]?.cls||''}">${tagMap[t]?.lbl||t}</span>`).join('')}</div>
+            <div class="tc-det">
+              ${item.d ? `<div class="tc-desc">${item.d}</div>` : ''}
+              ${item.h ? `<div class="tc-section tc-how"><div class="tc-section-lbl">🚇 איך מגיעים</div><div class="tc-how-body">${item.h}</div></div>` : ''}
+              ${item.w ? `<div class="tc-section tc-warn"><div class="tc-section-lbl">⚠️ אזהרה</div><div class="tc-warn-body">${item.w}</div></div>` : ''}
+              ${item.tip ? `<div class="tc-section tc-tip"><div class="tc-section-lbl">💡 טיפ</div><div class="tc-tip-body">${item.tip}</div></div>` : ''}
+              ${item.addr ? `<button class="maps-btn" onclick="event.stopPropagation();openNaverMap('${escapeAttr(item.addr)}')">📍 פתח ב-Naver Map</button>` : ''}
+              <div class="item-actions">
+                <button class="action-btn edit" onclick="event.stopPropagation();editItem(${curDay},${i})">✏️ ערוך</button>
+                <button class="action-btn del" onclick="event.stopPropagation();delItem(${curDay},${i})">🗑️ מחק</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <button class="add-item-btn" onclick="addItem(${curDay})">+ הוסף פעילות ליום</button>
+  `;
+  document.getElementById('schedContent').innerHTML = html;
+}
+
+function toggleTC(el) {
+  el.classList.toggle('ex');
+  el.querySelector('.tc-det').classList.toggle('show');
+}
+window.toggleTC = toggleTC;
+
+function escapeAttr(str) {
+  return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+// ════════════════════════════════════════════════════════
+// NAVER MAPS
+// ════════════════════════════════════════════════════════
+function openNaverMap(query) {
+  const encoded = encodeURIComponent(query);
+  // Try Naver Map app first, fallback to web
+  const appUrl = `nmap://search?query=${encoded}&appname=koreatrip2026`;
+  const webUrl = `https://map.naver.com/v5/search/${encoded}`;
+  const googleUrl = `https://www.google.com/maps/search/${encoded}`;
+  
+  // On mobile, attempt deep link
+  const isMobile = /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isMobile) {
+    // Try Naver, then Google as fallback
+    window.location.href = appUrl;
+    setTimeout(() => {
+      // If still here, app not installed → open Google Maps (works everywhere)
+      window.open(googleUrl, '_blank');
+    }, 1500);
+  } else {
+    window.open(webUrl, '_blank');
+  }
+}
+window.openNaverMap = openNaverMap;
+
+// ════════════════════════════════════════════════════════
+// ITEM EDITING
+// ════════════════════════════════════════════════════════
+function addItem(dayIdx) {
+  editingItem = { dayIdx, itemIdx: null };
+  document.getElementById('itemModalTitle').textContent = 'הוסף פעילות';
+  document.getElementById('itemDelBtn').style.display = 'none';
+  ['iTime','iEmoji','iName','iDesc','iAddr','iHow','iWarn','iTip'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('iTag').value = 'ta';
+  document.getElementById('moItem').classList.add('show');
+}
+window.addItem = addItem;
+
+function editItem(dayIdx, itemIdx) {
+  editingItem = { dayIdx, itemIdx };
+  const item = appState.days[dayIdx].items[itemIdx];
+  document.getElementById('itemModalTitle').textContent = 'ערוך פעילות';
+  document.getElementById('itemDelBtn').style.display = '';
+  document.getElementById('iTime').value = item.t || '';
+  document.getElementById('iEmoji').value = item.e || '';
+  document.getElementById('iName').value = item.n || '';
+  document.getElementById('iDesc').value = item.d || '';
+  document.getElementById('iAddr').value = item.addr || '';
+  document.getElementById('iHow').value = item.h || '';
+  document.getElementById('iWarn').value = item.w || '';
+  document.getElementById('iTip').value = item.tip || '';
+  document.getElementById('iTag').value = item.tags?.[0] || 'ta';
+  document.getElementById('moItem').classList.add('show');
+}
+window.editItem = editItem;
+
+function saveItem() {
+  if (!editingItem) return;
+  const newItem = {
+    t: document.getElementById('iTime').value || '00:00',
+    e: document.getElementById('iEmoji').value || '📍',
+    n: document.getElementById('iName').value || 'פעילות חדשה',
+    d: document.getElementById('iDesc').value,
+    addr: document.getElementById('iAddr').value,
+    h: document.getElementById('iHow').value,
+    w: document.getElementById('iWarn').value,
+    tip: document.getElementById('iTip').value,
+    tags: [document.getElementById('iTag').value]
+  };
+  
+  if (editingItem.itemIdx === null) {
+    appState.days[editingItem.dayIdx].items.push(newItem);
+    // Sort by time
+    appState.days[editingItem.dayIdx].items.sort((a,b) => (a.t||'').localeCompare(b.t||''));
+  } else {
+    appState.days[editingItem.dayIdx].items[editingItem.itemIdx] = newItem;
+    appState.days[editingItem.dayIdx].items.sort((a,b) => (a.t||'').localeCompare(b.t||''));
+  }
+  
+  saveState();
+  renderSched();
+  closeMOD('moItem');
+  showToast('✓ נשמר');
+}
+window.saveItem = saveItem;
+
+function delItem(dayIdx, itemIdx) {
+  if (!confirm('בטוח למחוק את הפעילות?')) return;
+  appState.days[dayIdx].items.splice(itemIdx, 1);
+  saveState();
+  renderSched();
+  showToast('✓ נמחק');
+}
+window.delItem = delItem;
+
+function deleteCurrentItem() {
+  if (!editingItem || editingItem.itemIdx === null) return;
+  delItem(editingItem.dayIdx, editingItem.itemIdx);
+  closeMOD('moItem');
+}
+window.deleteCurrentItem = deleteCurrentItem;
+
+// ════════════════════════════════════════════════════════
+// CHECKLIST
+// ════════════════════════════════════════════════════════
+function renderChecks() {
+  const el = document.getElementById('checkList');
+  if (!appState.checks || appState.checks.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">אין פריטים — הוסיפו את הראשון</div></div>';
+    return;
+  }
+  el.innerHTML = appState.checks.map((c,i) => `
+    <div class="check-item ${c.done?'done':''}" onclick="toggleCheck(${i})">
+      <div class="cb-box">${c.done?'✓':''}</div>
+      <span class="ct">${c.text}</span>
+      <button class="del-btn" onclick="event.stopPropagation();delCheck(${i})">🗑️</button>
+    </div>
+  `).join('');
+}
+
+function toggleCheck(i) {
+  appState.checks[i].done = !appState.checks[i].done;
+  saveState();
+  renderChecks();
+}
+window.toggleCheck = toggleCheck;
+
+function delCheck(i) {
+  appState.checks.splice(i, 1);
+  saveState();
+  renderChecks();
+}
+window.delCheck = delCheck;
+
+function openAddCheck() {
+  document.getElementById('checkInput').value = '';
+  document.getElementById('moCheck').classList.add('show');
+  setTimeout(() => document.getElementById('checkInput').focus(), 100);
+}
+window.openAddCheck = openAddCheck;
+
+function saveCheck() {
+  const v = document.getElementById('checkInput').value.trim();
+  if (!v) return;
+  appState.checks.push({text: v, done: false});
+  saveState();
+  renderChecks();
+  closeMOD('moCheck');
+  showToast('✓ נוסף');
+}
+window.saveCheck = saveCheck;
+
+// ════════════════════════════════════════════════════════
+// PAGES
+// ════════════════════════════════════════════════════════
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  
+  if (name === 'sched') {
+    const now = new Date();
+    const ts = `${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}`;
+    const idx = appState.days.findIndex(d => d.date === ts);
+    if (idx >= 0 && idx !== curDay) curDay = idx;
+    buildDaySel();
+    renderSched();
+  }
+  if (name === 'checks') renderChecks();
+  
+  setTimeout(initReveal, 100);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+window.showPage = showPage;
+
+function openContextualAdd() {
+  const active = document.querySelector('.page.active');
+  if (active.id === 'page-checks') openAddCheck();
+  else if (active.id === 'page-sched') addItem(curDay);
+  else openAddCheck();
+}
+window.openContextualAdd = openContextualAdd;
+
+// ════════════════════════════════════════════════════════
+// MODAL
+// ════════════════════════════════════════════════════════
+function closeMO(e, id) { if (e.target.id === id) closeMOD(id); }
+window.closeMO = closeMO;
+
+function closeMOD(id) { document.getElementById(id).classList.remove('show'); }
+window.closeMOD = closeMOD;
+
+// ════════════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ════════════════════════════════════════════════════════
+// SCROLL REVEAL
+// ════════════════════════════════════════════════════════
+function initReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e,i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i*70);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+}
+
+// ════════════════════════════════════════════════════════
+// RENDER ALL
+// ════════════════════════════════════════════════════════
+function renderAll() {
+  updateTodayCard();
+  updateStats();
+  buildDaySel();
+  renderSched();
+  renderChecks();
+  initReveal();
+}
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Set initial day
+  const now = new Date();
+  const ts = `${String(now.getDate()).padStart(2,'0')}.${String(now.getMonth()+1).padStart(2,'0')}`;
+  const idx = appState.days.findIndex(d => d.date === ts);
+  if (idx >= 0) curDay = idx;
+  
+  // Initial render with defaults (will be replaced when Firebase loads)
+  renderAll();
+  
+  // Hook up Firebase
+  if (window._fbReady) initFirebase();
+  else window.addEventListener('fbready', initFirebase);
+  
+  // Fallback: if Firebase doesn't connect in 4s, hide loader
+  setTimeout(hideLoader, 4000);
+});
+</script>
+</body>
+</html>
