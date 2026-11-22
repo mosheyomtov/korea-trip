@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
 <link rel="stylesheet" href="chat.css">
+<link rel="stylesheet" href="sched.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
@@ -439,6 +440,7 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 
 <!-- ═══ CHAT (דונה, rendered by chat.js) ═══ -->
 <section class="screen" id="s-chat"></section>
+<section class="screen" id="s-sched"></section>
 
 <div class="sheet-bg" id="sheetBg"></div>
 <div class="sheet" id="sheet"><div class="grab"></div><div id="sheetBody"></div></div>
@@ -630,44 +632,7 @@ const closeSheet = () => closeLayer('sheet');
   });
 }
 $('#sheetBg').onclick = closeSheet;
-let draft = null;
-function planHtml(p, approved) {
-  return `<h3>${approved ? 'הלו״ז שאישרתם' : 'הצעה ללו״ז'}</h3><div class="sub">${approved ? 'אושר ' + new Date(p.approved).toLocaleDateString('he-IL') : 'עוד לא נשמר. עוברים, ואם מתאים מאשרים'}</div>
-    <div class="info-block ib-ai" style="margin-top:14px"><div class="info-lbl"><span class="ms fill">auto_awesome</span>ההיגיון של הסידור</div>${esc(p.overview_he)}</div>
-    ${p.days.filter(d => d.items?.length).map(d => `<div class="plan-day"><b>יום ${WDF[D(d.date).getDay()]} · ${esc(d.title)}</b><small>${esc(d.why_he || '')}</small>
-      <ol>${d.items.map(it => `<li><b style="color:var(--brand)">${esc(it.t)}</b> ${it.icon || ''} ${esc(it.name)}</li>`).join('')}</ol></div>`).join('')}
-    ${p.left_out_he ? `<div class="info-block ib-tip" style="margin-top:12px"><div class="info-lbl"><span class="ms">playlist_remove</span>מה נשאר בחוץ</div>${esc(p.left_out_he)}</div>` : ''}
-    ${approved ? `<button class="big-btn" data-a="again"><span class="ms">refresh</span>לסדר מחדש</button><button class="big-btn ghost" data-a="undo">לבטל את הסידור</button>`
-      : `<button class="big-btn" data-a="ok"><span class="ms">check</span>מאשרים את הסידור</button><button class="big-btn ghost" data-a="close">לא עכשיו</button>`}`;
-}
-async function makePlan() {
-  const keys = [...favs];
-  const base = new Set((window.PLACES || []).flatMap(c => c.items.map(it => it.en || it.name)));
-  const extra = PL.flatMap(c => c.items).filter(it => favs.has(it.key) && !base.has(it.key)).map(it => ({ place: it.key, name: it.name, desc: it.desc, lat: it.lat, lng: it.lng }));
-  if (!keys.length) return sheet(`<h3>קודם מסמנים ♥</h3><p>בעמוד המפה (רשימה) או בגילוי לוחצים על הלב בכל מקום שבא לכם. ה-AI יסדר רק אותם.</p><button class="big-btn" data-a="places">למקומות</button>`);
-  sheet(`<div class="spin"></div><h3 style="text-align:center">מסדר ${keys.length} מקומות…</h3><p style="text-align:center">בודק מרחקים, שעות פתיחה ושבת. זה לוקח בערך חצי דקה.</p>`);
-  try {
-    const f = T.flights || [];
-    const o = await aiApi({ plan: true, favs: keys.filter(k => base.has(k)), extra,
-      days: T.days.map(d => ({ date: d.date, weekday: WDF[D(d.date).getDay()], title: d.title, fixed: d.items })),
-      hotel: T.hotels[0], facts: `Hotel ${T.hotels[0]?.name}, ${T.hotels[0]?.addr}. Flights: ${f.map(x => `${x.dir} ${x.date} ${x.from}->${x.to} dep ${x.dep} arr ${x.arr}`).join('; ')}. Arrival day: they reach the hotel ~23:00, so nothing that evening. Last day: leave the hotel by 11:30.` });
-    if (o.error || !o.plan) throw new Error(o.error || 'no plan');
-    draft = o.plan; sheet(planHtml(draft, false));
-  } catch (e) { sheet(`<h3>לא הצלחתי לסדר</h3><p>משהו השתבש בשרת (${esc(e.message)}). נסו שוב עוד רגע.</p><button class="big-btn" data-a="again">לנסות שוב</button>`) }
-}
-$('#aiPlanBtn').onclick = () => STATE.plan?.approved ? sheet(planHtml(STATE.plan, true)) : makePlan();
-$('#sheet').addEventListener('click', async e => {
-  const a = e.target.closest('[data-a]')?.dataset.a; if (!a) return;
-  if (a === 'close') closeSheet();
-  if (a === 'places') { go('map'); setView('list') }
-  if (a === 'again') makePlan();
-  if (a === 'ok' && draft) {
-    const p = { ...draft, approved: new Date().toISOString() };
-    STATE.plan = p; store.set('state', STATE); closeSheet(); renderDay(); say('הלו״ז נשמר. פס תראה אותו גם');
-    api({ approve: p }).catch(() => say('לא הצלחתי לשמור בשרת, נסו שוב'));
-  }
-  if (a === 'undo') { STATE.plan = null; store.set('state', STATE); closeSheet(); renderDay(); api({ unapprove: true }) }
-});
+// the smart schedule lives in its own page: sched.js
 
 /* ── places list ── */
 let plCat = 'all', plRec = false, plFav = false, plVid = false, plQ = '';
@@ -1216,6 +1181,7 @@ setTimeout(watchIG, 8000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadServer(); setTimeout(watchIG, 5000) } else feedStop() });
 </script>
 <script src="chat.js"></script>
+<script src="sched.js"></script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(()=>{})</script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 // The trip app's AI (Budapest). Called by the app, no secret:
-//   {plan: true, favs, extra, days, hotel, facts}   an AI schedule from the places they liked (not saved)
-//   {chat: [{role, content}], ctx}                  "דונה", the trip assistant: answers and acts with tools
+//   {plan: true, favs, extra, days, hotel, facts}   an AI schedule from the places they liked, with weather and suggestions (not saved)
+//   {chat: [{role, content}], ctx, stream?, draft?, focus?}   "דונה", the trip assistant: answers and acts with tools
 // Shared state lives in trip_state (plan, favs, adds), the same rows the `trip` function and the app use.
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 import Anthropic from "npm:@anthropic-ai/sdk@0.68.0";
@@ -36,47 +36,82 @@ function textOf(res: any) {
 }
 
 // ── Smart schedule ──
+const PLAN_MODELS = ["claude-haiku-5-5", "claude-sonnet-5-5"];   // Moshe's choice: Haiku, Sonnet when Haiku fails
+const ITEM = { type: "object", additionalProperties: false, required: ["t", "icon", "name", "place", "desc", "why_he"],
+  properties: { t: { type: "string" }, icon: { type: "string" }, name: { type: "string" }, place: { type: "string" }, desc: { type: "string" }, why_he: { type: "string" } } };
 const PLAN_SCHEMA = {
-  type: "object", additionalProperties: false, required: ["overview_he", "days", "left_out_he"],
+  type: "object", additionalProperties: false, required: ["overview_he", "days", "left_out_he", "suggestions"],
   properties: {
     overview_he: { type: "string" }, left_out_he: { type: "string" },
-    days: { type: "array", items: { type: "object", additionalProperties: false, required: ["date", "title", "why_he", "items"],
-      properties: { date: { type: "string" }, title: { type: "string" }, why_he: { type: "string" },
-        items: { type: "array", items: { type: "object", additionalProperties: false, required: ["t", "icon", "name", "place", "desc"],
-          properties: { t: { type: "string" }, icon: { type: "string" }, name: { type: "string" }, place: { type: "string" }, desc: { type: "string" } } } } } } },
+    days: { type: "array", items: { type: "object", additionalProperties: false, required: ["date", "title", "why_he", "weather_he", "items"],
+      properties: { date: { type: "string" }, title: { type: "string" }, why_he: { type: "string" }, weather_he: { type: "string" }, items: { type: "array", items: ITEM } } } },
+    suggestions: { type: "array", items: { type: "object", additionalProperties: false, required: ["kind", "place", "name_he", "date", "t", "icon", "reason_he"],
+      properties: { kind: { type: "string", enum: ["add", "remove"] }, place: { type: "string" }, name_he: { type: "string" }, date: { type: "string" }, t: { type: "string" }, icon: { type: "string" }, reason_he: { type: "string" } } } },
   },
 };
 const RULES = `- They keep Shabbat: from Friday candle lighting (Budapest, late November: about 15:45) until Saturday night (about 17:00): no transport, no shopping, no paid entry; only walking distance from the hotel, synagogues, parks, outside views. Friday: be back at the hotel before candle lighting. Saturday night after Shabbat is fine for markets.
 - Food: kosher meat restaurants only for meat; dairy/vegetarian places are fine.
 - Group places that are close to each other on the same day; keep a realistic pace (walking, transport, opening hours, short winter daylight ~7:15-16:00). Christmas markets and light shows in the evening.`;
+const WMO: Record<number, string> = { 0: "clear", 1: "mostly clear", 2: "partly cloudy", 3: "overcast", 45: "fog", 48: "fog", 51: "drizzle", 53: "drizzle", 55: "drizzle", 61: "light rain", 63: "rain", 65: "heavy rain", 66: "freezing rain", 67: "freezing rain", 71: "light snow", 73: "snow", 75: "heavy snow", 77: "snow grains", 80: "rain showers", 81: "rain showers", 82: "heavy showers", 85: "snow showers", 86: "snow showers", 95: "thunderstorm" };
+async function weather(from: string, to: string) {
+  try {
+    const u = `https://api.open-meteo.com/v1/forecast?latitude=${CENTER.lat}&longitude=${CENTER.lng}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,weather_code,wind_speed_10m_max&timezone=Europe%2FBudapest&start_date=${from}&end_date=${to}`;
+    const d = (await (await fetch(u, { signal: AbortSignal.timeout(8000) })).json()).daily;
+    if (!d?.time) return {};
+    return Object.fromEntries(d.time.map((t: string, i: number) => [t, { tmin: Math.round(d.temperature_2m_min[i]), tmax: Math.round(d.temperature_2m_max[i]), rain: d.precipitation_probability_max[i] ?? 0, mm: d.precipitation_sum[i] ?? 0, wind: Math.round(d.wind_speed_10m_max[i] ?? 0), code: d.weather_code[i], sky: WMO[d.weather_code[i]] ?? "" }]));
+  } catch { return {}; }
+}
 async function plan(b: any) {
   const all = await placesList();
   const favs = new Set((b.favs ?? []).map(String));
-  const liked = all.filter((p: any) => favs.has(p.en || p.name)).map((p: any) => ({ place: p.en || p.name, he: p.name, cat: p.catTitle, desc: String(p.desc ?? "").slice(0, 200), type: p.type }));
+  const id = (p: any) => p.en || p.name;
+  const liked = all.filter((p: any) => favs.has(id(p))).map((p: any) => ({ place: id(p), he: p.name, cat: p.catTitle, desc: String(p.desc ?? "").slice(0, 200), type: p.type }));
   const extra = (b.extra ?? []).slice(0, 30).map((x: any) => ({ place: String(x.place ?? ""), he: String(x.name ?? ""), desc: String(x.desc ?? "").slice(0, 200) }));
   if (!liked.length && !extra.length) return { error: "no_favs" };
+  const others = all.filter((p: any) => !favs.has(id(p))).map((p: any) => ({ place: id(p), he: p.name, cat: p.catTitle, rec: !!p.rec, desc: String(p.desc ?? "").slice(0, 110) }));
+  const dates = (b.days ?? []).map((d: any) => d.date).filter(Boolean).sort();
+  const wx = dates.length ? await weather(dates[0], dates[dates.length - 1]) : {};
   const sys = `You plan a city trip for an Israeli couple (Moshe and Pas). Write everything in natural, concise Hebrew.
 Facts: ${b.facts ?? ""}
 Rules:
-- Use ONLY the places they liked (listed below; "place" is the id you must copy into each item's place field). Do NOT add any other attraction, restaurant, market, synagogue or sight, even a famous one: if it is not in the list, it is not in the plan. Fixed items (flights, hotel) are given: keep them as they are, with an empty place. Besides liked places and fixed items, only plain rest items are allowed (e.g. back to the hotel, Shabbat meal at the hotel), with an empty place.
+- The schedule uses ONLY the places they liked ("liked" and "extra" below; "place" is the id you must copy into each item's place field). Do NOT put any other attraction, restaurant, market, synagogue or sight into the days, even a famous one. Fixed items (flights, hotel) are given: keep them as they are, with an empty place. Besides liked places and fixed items, only plain rest items are allowed (e.g. back to the hotel, Shabbat meal at the hotel), with an empty place.
 ${RULES}
+- Weather (forecast per day below, °C, rain = chance %): put outdoor places (markets, walks, viewpoints, river) on the drier, milder days or hours and indoor ones (baths, halls, museums, cafes, malls) on rainy, snowy, windy or very cold days. Say it in why_he when weather drove the choice. weather_he: one short line per day (e.g. "‎2-6 מעלות, גשם אחה״צ, כדאי מטרייה"); empty if there is no forecast.
 - If there are too many places, leave some out and say which in left_out_he.
-- overview_he: 3-5 sentences on the logic of the whole plan. why_he per day: one sentence. Each item: t "HH:MM", one emoji icon, name in Hebrew, desc: one short practical tip.`;
-  const res: any = await (await ai()).messages.stream({
-    model: MODEL, max_tokens: 64000, system: sys,
-    output_config: { effort: "medium", format: { type: "json_schema", schema: PLAN_SCHEMA } },
-    messages: [{ role: "user", content: JSON.stringify({ days: b.days, hotel: b.hotel, liked, extra }) }],
-  } as any).finalMessage();
-  console.log("plan", res.stop_reason, JSON.stringify(res.usage));
-  const out = JSON.parse(textOf(res) || "{}");
-  const byId = new Map(all.map((p: any) => [p.en || p.name, p]));
-  for (const x of b.extra ?? []) byId.set(String(x.place), x);
-  // only places they hearted: drop anything else that names a place
-  const ok = new Set([...liked.map((p: any) => p.place), ...extra.map((x: any) => x.place)]);
-  for (const d of out.days ?? []) {
-    d.items = (d.items ?? []).filter((it: any) => !String(it.place ?? "").trim() || ok.has(it.place));
-    for (const it of d.items) { const p: any = byId.get(it.place); if (p?.lat) { it.lat = p.lat; it.lng = p.lng; } }
+- suggestions (0-6, only when really worth it; the user decides): kind "add" = a place from "others" that would clearly improve a day (fills an empty slot, fits the weather, is right next to where they are, a must for first-timers); give the best date and time for it. kind "remove" = a liked place you put in the plan that is a weak fit (too far, closed then, too packed a day, bad in that weather); date and t = where it is now. reason_he: one honest sentence. place = the id exactly.
+- overview_he: 3-5 sentences on the logic of the whole plan. why_he per day: one sentence. Each item: t "HH:MM", one emoji icon, name in Hebrew, desc: one short practical tip, why_he: one sentence on why it is at this time/day.`;
+  const input = JSON.stringify({ days: (b.days ?? []).map((d: any) => ({ ...d, forecast: wx[d.date] ?? null })), hotel: b.hotel, liked, extra, others });
+  let res: any = null, lastErr: unknown = null;
+  for (const model of PLAN_MODELS) {
+    try {
+      res = await (await ai()).messages.stream({
+        model, max_tokens: 64000, system: sys,
+        output_config: { effort: "medium", format: { type: "json_schema", schema: PLAN_SCHEMA } },
+        messages: [{ role: "user", content: input }],
+      } as any).finalMessage();
+      console.log("plan", model, res.stop_reason, JSON.stringify(res.usage));
+      JSON.parse(textOf(res) || "{}");
+      break;
+    } catch (e) { console.error("plan", model, (e as Error).message); lastErr = e; res = null; }
   }
+  if (!res) throw lastErr ?? new Error("plan failed");
+  const out = JSON.parse(textOf(res) || "{}");
+  const byId = new Map(all.map((p: any) => [id(p), p]));
+  for (const x of b.extra ?? []) byId.set(String(x.place), x);
+  const ok = new Set([...liked.map((p: any) => p.place), ...extra.map((x: any) => x.place)]);
+  const inPlan = new Set<string>();
+  const hhmm = (s: string) => { const m = String(s ?? "").match(/(\d{1,2})[:.](\d{2})/); return m ? `${m[1].padStart(2, "0")}:${m[2]}` : ""; };
+  const geo = (it: any) => { const p: any = byId.get(it.place); if (p?.lat) { it.lat = p.lat; it.lng = p.lng; } return it; };
+  for (const d of out.days ?? []) {
+    // only places they hearted: drop anything else that names a place
+    d.items = (d.items ?? []).filter((it: any) => !String(it.place ?? "").trim() || ok.has(it.place))
+      .map((it: any) => { it.t = hhmm(it.t); if (it.place) inPlan.add(it.place); return geo(it); })
+      .sort((x: any, y: any) => x.t.localeCompare(y.t));
+    if (wx[d.date]) d.weather = wx[d.date];
+  }
+  const dayOk = new Set((out.days ?? []).map((d: any) => d.date));
+  out.suggestions = (out.suggestions ?? []).filter((s: any) => dayOk.has(s.date) && (s.kind === "add" ? byId.has(s.place) && !ok.has(s.place) : inPlan.has(s.place)))
+    .slice(0, 6).map((s: any) => { s.t = hhmm(s.t); const p: any = byId.get(s.place); if (s.kind === "add") s.desc = String(p?.desc ?? "").slice(0, 200); return geo(s); });
   return { plan: { ...out, made: new Date().toISOString(), favs: [...favs] } };
 }
 
@@ -132,7 +167,7 @@ async function geocode(q: string) {
 }
 const mapsUrl = (lat?: number, lng?: number, q?: string) => lat ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q ?? "")}`;
 
-type Run = { t: string; ctx: any; cards: any[]; changed: Set<string> };
+type Run = { t: string; ctx: any; cards: any[]; changed: Set<string>; draft?: any };
 async function runTool(name: string, x: any, run: Run): Promise<unknown> {
   const { t, ctx } = run;
   const places: any[] = ctx.places ?? [];
@@ -180,7 +215,7 @@ async function runTool(name: string, x: any, run: Run): Promise<unknown> {
       return r.daily ?? { error: r.reason ?? "no forecast for those dates (forecasts reach ~16 days ahead)" };
     }
     case "update_day": {
-      const st = await getState(t);
+      const st = run.draft ? { plan: run.draft } : await getState(t);
       const base = st.plan?.days ? st.plan : { overview_he: "", left_out_he: "", days: (ctx.days ?? []).map((d: any) => ({ date: d.date, title: d.title, why_he: "", items: d.items ?? [] })) };
       if (!base.days.some((d: any) => d.date === x.date)) {
         const d0 = (ctx.days ?? []).find((d: any) => d.date === x.date);
@@ -193,12 +228,15 @@ async function runTool(name: string, x: any, run: Run): Promise<unknown> {
       const items = (x.items ?? []).filter((it: any) => it && String(it.name ?? "").trim() && !notLiked.includes(it.name)).slice(0, 20).map((it: any) => {
         const m = String(it.t ?? "").match(/(\d{1,2})[:.](\d{2})/); it.t = m ? `${m[1].padStart(2, "0")}:${m[2]}` : "";
         const p = places.find((q) => q.key === it.place);
-        return { t: it.t, icon: it.icon, name: it.name, desc: it.desc, place: p ? p.key : "", ...(it.lat ? { lat: it.lat, lng: it.lng } : p?.lat ? { lat: p.lat, lng: p.lng } : {}) };
+        return { t: it.t, icon: it.icon, name: it.name, desc: it.desc, ...(it.why_he ? { why_he: it.why_he } : {}), place: p ? p.key : "", ...(it.lat ? { lat: it.lat, lng: it.lng } : p?.lat ? { lat: p.lat, lng: p.lng } : {}) };
       }).sort((a: any, b: any) => String(a.t).localeCompare(String(b.t)));
       const day = { date: x.date, title: x.title, why_he: x.why_he, items };
+      const old = base.days.find((d: any) => d.date === x.date);
+      if (old?.weather) (day as any).weather = old.weather;
+      if (old?.weather_he) (day as any).weather_he = old.weather_he;
       base.days = base.days.map((d: any) => d.date === x.date ? day : d);
-      await setState(t, "plan", { ...base, approved: new Date().toISOString(), edited_by_ai: true });
-      run.changed.add("plan");
+      if (run.draft) { run.draft = base; run.changed.add("draft"); }   // a proposal they have not approved yet: change it, don't save
+      else { await setState(t, "plan", { ...base, approved: new Date().toISOString(), edited_by_ai: true }); run.changed.add("plan"); }
       run.cards.push({ type: "day", date: x.date, title: x.title, items: items.map((i: any) => ({ t: i.t, icon: i.icon, name: i.name })) });
       return { ok: true, saved_items: items.length, ...(notLiked.length ? { dropped_not_liked: notLiked, note: "these are not hearted, so they were left out; tell the user and offer to heart them" } : {}) };
     }
@@ -226,15 +264,15 @@ async function runTool(name: string, x: any, run: Run): Promise<unknown> {
   return { error: "unknown tool" };
 }
 
-function chatSystem(ctx: any, st: any) {
+function chatSystem(ctx: any, st: any, focus?: string) {
   const places = (ctx.places ?? []).map((p: any) => `${p.key} | ${p.name}${p.en && p.en !== p.name ? " / " + p.en : ""} | ${p.cat}${p.where ? " | " + p.where : ""}${p.fav ? " | ♥" : ""}${p.reels?.length ? ` | ${p.reels.length} videos` : ""}`).join("\n");
-  const sched = (st.plan?.days ?? ctx.days ?? []).map((d: any) => `${d.date} ${d.title}:\n${(d.items ?? []).map((i: any) => `  ${i.t} ${i.icon ?? ""} ${i.name}${i.place ? ` [${i.place}]` : ""}`).join("\n") || "  (empty)"}`).join("\n");
+  const sched = (st.plan?.days ?? ctx.days ?? []).map((d: any) => `${d.date} ${d.title}${d.weather_he ? ` (${d.weather_he})` : ""}:\n${(d.items ?? []).map((i: any) => `  ${i.t} ${i.icon ?? ""} ${i.name}${i.place ? ` [${i.place}]` : ""}`).join("\n") || "  (empty)"}`).join("\n");
   return `את "דונה" (Duna, the Danube in Hungarian), העוזרת האישית של משה ופס לטיול שלהם לבודפשט. You are female: speak about yourself in feminine Hebrew forms (בדקתי, סידרתי, אני שמחה). ALWAYS answer in Hebrew (never English), warm, natural and SHORT (a few sentences or a short list; use **bold** sparingly; no headings, no tables). Friendly, a bit playful, never overdo emojis (0-2 per reply).
 You can act, not only talk: use the tools to check videos, find locations, check the weather and change the schedule. When the user asks you to change something, do it with the tools and then say briefly what you changed. If the request is unclear or would wipe a lot of their plan, ask one short question first. The schedule is built ONLY from places marked ♥ (plus fixed items and plain rest items such as back to the hotel): never add an attraction, restaurant or sight they did not heart, even a famous one. If they want an unliked place in the schedule, heart it first with set_favorite (only when they asked for that place), otherwise suggest it in words. To build several days, call update_day once per day (all in the same turn), keep each item's desc to one short sentence, and keep fixed items (flights, check-in, check-out) exactly as they are. Never invent videos, prices or opening hours; say when you are not sure. The app shows the cards your tools produce (videos, places, the changed day) under your message, so don't paste links or long lists of the same things in the text.
 Trip facts: ${CITY}. Travelers: Moshe and Pas (Israeli). Hotel: ${ctx.hotel?.name ?? ""}, ${ctx.hotel?.addr ?? ""}. Flights: ${(ctx.flights ?? []).map((f: any) => `${f.dir} ${f.date} ${f.from}->${f.to} ${f.code} dep ${f.dep} arr ${f.arr}`).join("; ")}. Today is ${ctx.today ?? ""}.
 ${RULES}
 
-Current schedule${st.plan?.approved ? " (approved, shared by both)" : ""}:
+${st.draft ? "They are looking at a DRAFT schedule proposal (not approved yet). update_day changes this draft only; they approve it in the app.\n" : ""}${focus ? `They opened you from the schedule of ${focus}: questions like "this day" mean that date.\n` : ""}Current schedule${st.draft ? " (draft)" : st.plan?.approved ? " (approved, shared by both)" : ""}:
 ${sched}
 
 Their places ("key | name | category | area | ♥ if liked | videos"). Use the key when a tool asks for a place key:
@@ -250,14 +288,15 @@ const WD = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "�
 async function chat(t: string, b: any, emit: (e: any) => void = () => {}) {
   const started = Date.now();
   const ctx = b.ctx ?? {};
-  const st = await getState(t);
+  const st: any = await getState(t);
+  if (b.draft?.days) { st.plan = b.draft; st.draft = true; }
   if (Array.isArray(st.favs)) { const f = new Set(st.favs); for (const p of ctx.places ?? []) p.fav = f.has(p.key); }
-  const run: Run = { t, ctx, cards: [], changed: new Set() };
+  const run: Run = { t, ctx, cards: [], changed: new Set(), ...(b.draft?.days ? { draft: b.draft } : {}) };
   const msgs: any[] = (b.chat ?? []).slice(-20).filter((m: any) => (m.role === "user" || m.role === "assistant") && String(m.content ?? "").trim())
     .map((m: any) => ({ role: m.role, content: String(m.content).slice(0, 4000) }));
   while (msgs.length && msgs[0].role !== "user") msgs.shift();
   if (!msgs.length || msgs[msgs.length - 1].role !== "user") return { error: "no_message" };
-  const system = [{ type: "text", text: chatSystem(ctx, st), cache_control: { type: "ephemeral" } }];
+  const system = [{ type: "text", text: chatSystem(ctx, st, typeof b.focus === "string" ? b.focus : undefined), cache_control: { type: "ephemeral" } }];
   const c = await ai();
   let reply = "";
   for (let step = 0; step < 8; step++) {
@@ -284,7 +323,7 @@ async function chat(t: string, b: any, emit: (e: any) => void = () => {}) {
   }
   const seen = new Set<string>();
   const cards = run.cards.filter((k) => { const id = `${k.type}:${k.id ?? k.key ?? k.date ?? k.name}`; if (seen.has(id)) return false; seen.add(id); return true; }).slice(0, 12);
-  return { reply: reply || "סיימתי 👍", cards, changed: [...run.changed] };
+  return { reply: reply || "סיימתי 👍", cards, changed: [...run.changed], ...(run.changed.has("draft") ? { draft: run.draft } : {}) };
 }
 
 Deno.serve(async (req) => {
