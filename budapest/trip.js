@@ -12,6 +12,10 @@ window.TRIP = {
   end:   '2026-11-30',
   center: [47.4979, 19.0402],   // מרכז המפה
 
+  // מפתח Google Maps (Maps JavaScript API + Geocoding API), מוגבל ל-mosheyomtov.github.io/*
+  // כשהוא ריק, המפה מציגה מקום אחד בכל פעם בלי מפתח
+  googleMapsKey: '',
+
   // קישור ל-ReelGlobe. כשהחיבור יהיה מוכן, הגלובוס יוצג בלשונית "ריילים"
   reelglobe: {
     url: 'https://reelglobe.mosheyt2.workers.dev/',
