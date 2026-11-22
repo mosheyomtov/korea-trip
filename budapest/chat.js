@@ -154,8 +154,25 @@
       if (!rg.api) throw new Error('השרת לא מחובר');
       const headers = get('H', null) || { apikey: rg.anonKey, Authorization: 'Bearer ' + rg.anonKey, 'Content-Type': 'application/json' };
       const chat = msgs().filter(m => m.content).slice(-20).map(m => ({ role: m.role, content: m.content }));
-      const res = await fetch(rg.api + '/functions/v1/ai', { method: 'POST', headers, body: JSON.stringify({ trip: 'budapest', chat, ctx: ctx() }) });
-      let o; try { o = await res.json() } catch { throw new Error('תשובה לא תקינה') }
+      const res = await fetch(rg.api + '/functions/v1/ai', { method: 'POST', headers, body: JSON.stringify({ trip: 'budapest', chat, ctx: ctx(), stream: true }) });
+      let o = null;
+      if (res.body && /event-stream/.test(res.headers.get('content-type') || '')) {
+        // live progress: {type:'status'} lines while she works, then {type:'done'} with the answer
+        const rd = res.body.getReader(), dec = new TextDecoder(); let buf = '';
+        try {
+          for (;;) {
+            const { value, done } = await rd.read(); if (done) break;
+            buf += dec.decode(value, { stream: true });
+            let i; while ((i = buf.indexOf('\n\n')) >= 0) {
+              const line = buf.slice(0, i).replace(/^data:\s?/, ''); buf = buf.slice(i + 2);
+              let e; try { e = JSON.parse(line) } catch { continue }
+              if (e.type === 'status') { clearInterval(thinkT); const el = document.getElementById('dnThink'); if (el) el.textContent = e.text }
+              else if (e.type === 'done') o = e;
+            }
+          }
+        } catch {}
+        if (!o) { changed(['plan', 'favs', 'adds'], true); throw new Error('החיבור נקטע באמצע. ייתכן שחלק מהשינויים כבר נשמרו') }
+      } else { try { o = await res.json() } catch { throw new Error('תשובה לא תקינה') } }
       if ((!res.ok || o.error) && !o.reply) throw new Error(o.error || 'שגיאה ' + res.status);
       cur.msgs.push({ role: 'assistant', content: String(o.reply || ''), cards: Array.isArray(o.cards) ? o.cards : [] }); cur.at = Date.now(); save();
       busy = false; render(); toBottom();
@@ -164,9 +181,10 @@
       busy = false; err = e?.message && !/fetch|network/i.test(e.message) ? e.message : true; render(); toBottom();
     } finally { clearInterval(thinkT); grow() }
   }
-  async function changed(list) {
+  async function changed(list, quiet) {
     try { if (typeof loadServer === 'function') await loadServer() } catch {}
     try { if (typeof renderPills === 'function') renderPills(); if (typeof renderDay === 'function') renderDay() } catch {}
+    if (quiet) return;
     const what = { plan: 'את הלו״ז', favs: 'את האהובים', adds: 'את המקומות' };
     const w = list.map(c => what[c]).filter(Boolean);
     toast(`דונה עדכנה ${w.length ? w.join(' ו') : 'את הטיול'}`);

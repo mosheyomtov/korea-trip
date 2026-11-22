@@ -183,7 +183,8 @@ async function runTool(name: string, x: any, run: Run): Promise<unknown> {
         base.days.push({ date: x.date, title: d0.title, why_he: "", items: [] });
         base.days.sort((a: any, b: any) => a.date.localeCompare(b.date));
       }
-      const items = (x.items ?? []).slice(0, 20).map((it: any) => {
+      const items = (x.items ?? []).filter((it: any) => it && String(it.name ?? "").trim()).slice(0, 20).map((it: any) => {
+        const m = String(it.t ?? "").match(/(\d{1,2})[:.](\d{2})/); it.t = m ? `${m[1].padStart(2, "0")}:${m[2]}` : "";
         const p = places.find((q) => q.key === it.place);
         return { t: it.t, icon: it.icon, name: it.name, desc: it.desc, place: p ? p.key : "", ...(it.lat ? { lat: it.lat, lng: it.lng } : p?.lat ? { lat: p.lat, lng: p.lng } : {}) };
       }).sort((a: any, b: any) => String(a.t).localeCompare(String(b.t)));
@@ -221,7 +222,7 @@ function chatSystem(ctx: any, st: any) {
   const places = (ctx.places ?? []).map((p: any) => `${p.key} | ${p.name}${p.en && p.en !== p.name ? " / " + p.en : ""} | ${p.cat}${p.where ? " | " + p.where : ""}${p.fav ? " | ♥" : ""}${p.reels?.length ? ` | ${p.reels.length} videos` : ""}`).join("\n");
   const sched = (st.plan?.days ?? ctx.days ?? []).map((d: any) => `${d.date} ${d.title}:\n${(d.items ?? []).map((i: any) => `  ${i.t} ${i.icon ?? ""} ${i.name}${i.place ? ` [${i.place}]` : ""}`).join("\n") || "  (empty)"}`).join("\n");
   return `את "דונה" (Duna, the Danube in Hungarian), העוזרת האישית של משה ופס לטיול שלהם לבודפשט. You are female: speak about yourself in feminine Hebrew forms (בדקתי, סידרתי, אני שמחה). ALWAYS answer in Hebrew (never English), warm, natural and SHORT (a few sentences or a short list; use **bold** sparingly; no headings, no tables). Friendly, a bit playful, never overdo emojis (0-2 per reply).
-You can act, not only talk: use the tools to check videos, find locations, check the weather and change the schedule. When the user asks you to change something, do it with the tools and then say briefly what you changed. If the request is unclear or would wipe a lot of their plan, ask one short question first. Never invent videos, prices or opening hours; say when you are not sure. The app shows the cards your tools produce (videos, places, the changed day) under your message, so don't paste links or long lists of the same things in the text.
+You can act, not only talk: use the tools to check videos, find locations, check the weather and change the schedule. When the user asks you to change something, do it with the tools and then say briefly what you changed. If the request is unclear or would wipe a lot of their plan, ask one short question first. To build several days, call update_day once per day (all in the same turn), keep each item's desc to one short sentence, and keep fixed items (flights, check-in, check-out) exactly as they are. Never invent videos, prices or opening hours; say when you are not sure. The app shows the cards your tools produce (videos, places, the changed day) under your message, so don't paste links or long lists of the same things in the text.
 Trip facts: ${CITY}. Travelers: Moshe and Pas (Israeli). Hotel: ${ctx.hotel?.name ?? ""}, ${ctx.hotel?.addr ?? ""}. Flights: ${(ctx.flights ?? []).map((f: any) => `${f.dir} ${f.date} ${f.from}->${f.to} ${f.code} dep ${f.dep} arr ${f.arr}`).join("; ")}. Today is ${ctx.today ?? ""}.
 ${RULES}
 
@@ -232,7 +233,14 @@ Their places ("key | name | category | area | ♥ if liked | videos"). Use the k
 ${places}`;
 }
 
-async function chat(t: string, b: any) {
+const STATUS: Record<string, (x: any) => string> = {
+  search_videos: () => "מחפשת ריילים…", watch_video: () => "צופה בסרטון…", find_place: () => "מחפשת את המקום במפה…",
+  show_places: () => "אוספת את המקומות…", get_weather: () => "בודקת את מזג האוויר…", update_day: () => "בונה את הלו״ז…",
+  set_favorite: () => "מעדכנת את האהובים…", add_place: () => "מוסיפה את המקום…",
+};
+const WD = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+async function chat(t: string, b: any, emit: (e: any) => void = () => {}) {
+  const started = Date.now();
   const ctx = b.ctx ?? {};
   const st = await getState(t);
   if (Array.isArray(st.favs)) { const f = new Set(st.favs); for (const p of ctx.places ?? []) p.fav = f.has(p.key); }
@@ -245,7 +253,9 @@ async function chat(t: string, b: any) {
   const c = await ai();
   let reply = "";
   for (let step = 0; step < 8; step++) {
-    const res: any = await c.messages.stream({ model: MODEL, max_tokens: 16000, system, tools: TOOLS, output_config: { effort: "low" }, messages: msgs } as any).finalMessage();
+    const stream: any = c.messages.stream({ model: MODEL, max_tokens: 16000, system, tools: TOOLS, output_config: { effort: "low" }, messages: msgs } as any);
+    stream.on("streamEvent", (ev: any) => { if (ev.type === "content_block_start" && ev.content_block?.type === "tool_use") emit({ type: "status", text: STATUS[ev.content_block.name]?.({}) ?? "עובדת על זה…" }); });
+    const res: any = await stream.finalMessage();
     console.log("chat", step, res.stop_reason, JSON.stringify(res.usage));
     if (res.stop_reason === "refusal") return { reply: "סליחה, את זה אני לא יכול לעשות 🙈", cards: run.cards, changed: [...run.changed] };
     const text = res.content.filter((x: any) => x.type === "text").map((x: any) => x.text).join("\n").trim();
@@ -253,11 +263,16 @@ async function chat(t: string, b: any) {
     msgs.push({ role: "assistant", content: res.content });
     const uses = res.content.filter((x: any) => x.type === "tool_use");
     if (res.stop_reason !== "tool_use" || !uses.length) break;
-    const results = await Promise.all(uses.map(async (u: any) => {
-      try { return { type: "tool_result", tool_use_id: u.id, content: JSON.stringify(await runTool(u.name, u.input ?? {}, run)).slice(0, 12000) }; }
-      catch (e) { return { type: "tool_result", tool_use_id: u.id, is_error: true, content: (e as Error).message }; }
-    }));
+    // one after another: several schedule changes in one turn must not overwrite each other
+    const results: any[] = [];
+    for (const u of uses) {
+      if (u.name === "update_day" && /^\d{4}-\d\d-\d\d$/.test(u.input?.date ?? "")) emit({ type: "status", text: `שומרת את יום ${WD[new Date(u.input.date + "T12:00").getDay()]}…` });
+      try { results.push({ type: "tool_result", tool_use_id: u.id, content: JSON.stringify(await runTool(u.name, u.input ?? {}, run)).slice(0, 12000) }); }
+      catch (e) { results.push({ type: "tool_result", tool_use_id: u.id, is_error: true, content: (e as Error).message }); }
+    }
     msgs.push({ role: "user", content: results });
+    if (Date.now() - started > 110_000) { if (!reply) reply = run.changed.size ? "עדכנתי את מה שהספקתי. רוצים שאמשיך?" : "זה לוקח לי יותר מדי זמן, ננסה בקשה קצרה יותר?"; break; }
+    emit({ type: "status", text: "מסכמת…" });
   }
   const seen = new Set<string>();
   const cards = run.cards.filter((k) => { const id = `${k.type}:${k.id ?? k.key ?? k.date ?? k.name}`; if (seen.has(id)) return false; seen.add(id); return true; }).slice(0, 12);
@@ -270,6 +285,19 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const trip = body.trip === "budapest" ? "budapest" : "budapest";
     if (body.plan) return json(await plan(body));
+    if (Array.isArray(body.chat) && body.stream) {          // progress as it works, then the answer (server-sent events)
+      const enc = new TextEncoder();
+      const rs = new ReadableStream({
+        async start(ctl) {
+          const send = (e: any) => { try { ctl.enqueue(enc.encode(`data: ${JSON.stringify(e)}\n\n`)); } catch { /* closed */ } };
+          const ping = setInterval(() => send({ type: "ping" }), 8000);
+          try { send({ type: "done", ...(await chat(trip, body, send)) }); }
+          catch (e) { console.error(e); send({ type: "done", error: (e as Error).message }); }
+          finally { clearInterval(ping); try { ctl.close(); } catch { /* closed */ } }
+        },
+      });
+      return new Response(rs, { headers: { ...cors, "Content-Type": "text/event-stream", "Cache-Control": "no-cache" } });
+    }
     if (Array.isArray(body.chat)) return json(await chat(trip, body));
     return json({ error: "bad_request" }, 400);
   } catch (e) {
