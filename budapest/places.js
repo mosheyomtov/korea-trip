@@ -162,3 +162,26 @@ window.PLACES = [
       desc: 'מתחם תרבות, הופעות ובר מתחת לאדמה, עם בריכת מים מעליו, ממש מתחת לפארק ארז׳בט. דקות הליכה מהמלון.' },
   ]},
 ];
+
+// What each place is, for its pin on the map (instead of one icon per category)
+window.PLACE_ICONS = {
+  "St. Stephen's Basilica": '⛪', 'Vörösmarty Square': '🎄', 'Fashion Street Budapest': '✨', 'Városháza Park': '🎪',
+  'Lumina Park Budapest Margaret Island': '💡', 'City Park Ice Rink Budapest': '⛸️',
+  'Hungarian Parliament Building': '🏛️', 'Shoes on the Danube Bank': '👞', "Fisherman's Bastion": '🏰', 'Matthias Church': '⛪',
+  'Buda Castle': '👑', 'Széchenyi Chain Bridge': '🌉', "Heroes' Square": '🗽', 'Vajdahunyad Castle': '🏰',
+  'Hungarian State Opera': '🎭', 'Andrássy Avenue': '🌳', 'Budapest Nyugati Railway Station': '🚉', 'Szabadság tér': '🌳', 'Tőzsdepalota': '🏛️',
+  'Széchenyi Thermal Bath': '♨️', 'Rudas Thermal Bath': '♨️', 'Lukács Bath': '♨️',
+  'Dohány Street Synagogue': '🕍', 'Rumbach Street Synagogue': '🕍', 'Kazinczy Street Synagogue': '🕍', 'Memorial for Victims of the German Occupation': '🕯️',
+  'Danube evening cruise Budapest': '🛳️', 'Central Market Hall Budapest': '🧺', 'Budapest Eye': '🎡', 'House of Terror Museum': '🖼️',
+  'Cinema Mystica Budapest': '🎬', 'Paprika Budapest walking tour in Hebrew': '🚶',
+  'Westend Budapest': '🛍️', 'Arena Mall Budapest': '🛍️', 'Premier Outlet Budapest': '🏷️', 'Allee Shopping Center': '🛍️', 'Etele Plaza Budapest': '🛍️',
+  'Váci Street Budapest': '👗', 'Andrássy Avenue shops': '👜',
+  'Nitavalo Kosher Chef Restaurant Budapest': '🥩', 'Carmel Restaurant Budapest kosher': '🍲', 'Marrakesh Budapest kosher': '🥙', 'Cafe Tamar Budapest': '🥐',
+  'Tel Aviv Cafe Budapest Kazinczy': '☕', 'Brooklyn Bagel Budapest': '🥯', 'ASHIS Budapest kosher': '🍣',
+  "Trattoria Pomo D'Oro Budapest": '🍝', 'Forni di Napoli Budapest': '🍕', 'Twentysix Budapest Király utca': '🌿', 'Popolare Budapest': '🍕',
+  'La Botte Paprika Budapest': '🍝', 'Mazel Tov Budapest': '🥗', 'Seno Sushi Budapest': '🍣',
+  'New York Café Budapest': '☕', 'Auguszt Cukrászda Belváros': '🍰', 'First Strudel House of Pest': '🥧', 'Gelarto Rosa Budapest': '🍦',
+  'Cinamood Budapest': '🥨', '2Sweet Budapest': '🧇', 'Café Brunch Budapest': '🍳',
+  'Szimpla Kert Budapest': '🍻', 'Gozsdu Udvar Budapest': '🍸', '360 Bar Budapest': '🌃', 'High Note SkyBar Budapest': '🌃',
+  'Instant-Fogas Complex Budapest': '🪩', 'Ötkert Budapest': '🪩', 'Doboz Budapest': '🪩', 'Akvárium Klub': '🎶',
+};

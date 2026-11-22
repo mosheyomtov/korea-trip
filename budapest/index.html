@@ -896,6 +896,7 @@ async function getMap(id, el) {
 }
 function setMarkers(m, list) { m.ov.forEach(o => o.setMap(null)); m.ov = list.map(([pt, div]) => new HtmlMarker(m.gm, pt, div)) }
 function fitTo(m, pts, pad) {
+  const core = pts.filter(p => p.lat > 47.43 && p.lat < 47.57 && p.lng > 18.97 && p.lng < 19.13); if (core.length) pts = core;   // far places (the outlet) don't zoom the whole map out
   if (!pts.length) return m.gm.setCenter({ lat: T.center[0], lng: T.center[1] });
   const b = new google.maps.LatLngBounds(); pts.forEach(p => b.extend({ lat: p.lat, lng: p.lng })); m.gm.fitBounds(b, pad);
 }
@@ -905,6 +906,18 @@ function redrawMaps() { if (MAPS.mine) drawMine(); if (MAPS.globe) drawGlobe() }
 /* ── our places on the map: reels we saved, or icons ── */
 let view = 'list', pinStyle = store.get('pinStyle', 'reels'), mapCat = 'all', selKey = null;
 const CAT_ICON = Object.fromEntries((window.PLACES || []).map(c => [c.id, c.icon]));
+// a pin shows what the place is: its own icon, else a guess from its name, else its category
+const AI_ICON = { food: '🍽️', cafe: '☕', cafes: '☕', sight: '📸', sights: '📸', nature: '🌳', night: '🍸', fun: '🎟️', shop: '🛍️', stay: '🏨', baths: '♨️', jewish: '🕍', kosher: '✡️', xmas: '🎄' };
+const NAME_ICON = [[/church|basilica|cathedral|כנסי|בזיליק/i, '⛪'], [/synagog|בית הכנסת/i, '🕍'], [/bridge|גשר/i, '🌉'], [/bath|fürdő|מרחצ/i, '♨️'], [/market|vásár|שוק/i, '🧺'],
+  [/museum|gallery|מוזיאון/i, '🖼️'], [/castle|palace|vár\b|טירה|ארמון/i, '🏰'], [/park|garden|kert|island|sziget|פארק|גן/i, '🌳'], [/bar|pub|club|בר\b/i, '🍸'],
+  [/caf[eé]|coffee|קפה/i, '☕'], [/pizza|פיצ/i, '🍕'], [/sushi|סושי/i, '🍣'], [/ice cream|gelat|גליד/i, '🍦'], [/cake|cukr|pastry|bakery|מאפ|עוג/i, '🍰'],
+  [/view|lookout|tower|hill|citadel|תצפית|גבע/i, '🔭'], [/mall|plaza|center|קניון/i, '🛍️'], [/restaurant|bistro|מסעד/i, '🍽️'], [/square|tér|כיכר/i, '📍']];
+function placeIcon(it) {
+  if (it.icon) return it.icon;
+  const own = window.PLACE_ICONS?.[it.key]; if (own) return own;
+  const n = `${it.en || ''} ${it.name || ''}`, g = NAME_ICON.find(([re]) => re.test(n)); if (g) return g[1];
+  return AI_ICON[it.cat] || CAT_ICON[it.cat] || '📍';
+}
 function setView(v, focus) {
   view = v;
   document.querySelectorAll('#viewSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
@@ -937,7 +950,7 @@ function drawMine() {
     if (pinStyle === 'reels' && r0) { div.className = `mk ${favs.has(it.key) ? 'fv' : ''}`; div.innerHTML = bub(r0, it.reels.length > 1 ? `<span class="n">${it.reels.length}</span>` : '') }
     else {
       div.className = `mk ${it.hotel ? 'hotel' : ''} ${favs.has(it.key) ? 'fv' : ''} ${it.reels.length ? 'rl' : ''}`;
-      div.innerHTML = `<div class="pin">${it.hotel ? '<span class="ms fill" style="font-size:18px">hotel</span>' : CAT_ICON[it.cat] || '📍'}</div>${it.reels.length ? `<span class="n" style="background:var(--brand)">${it.reels.length}</span>` : ''}`;
+      div.innerHTML = `<div class="pin">${it.hotel ? '<span class="ms fill" style="font-size:18px">hotel</span>' : placeIcon(it)}</div>${it.reels.length ? `<span class="n" style="background:var(--brand)">${it.reels.length}</span>` : ''}`;
     }
     if (it.key === selKey) div.classList.add('sel');
     div.onclick = ev => { ev.stopPropagation(); selKey = it.key; openPlace(it) };
