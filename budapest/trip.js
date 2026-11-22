@@ -21,8 +21,8 @@ window.TRIP = {
     url: 'https://reelglobe.mosheyt2.workers.dev/',
     focus: 'Budapest',
     // השרת של ReelGlobe (סופרבייס). כשממלאים את שני אלה, שיתוף ריילים מאינסטגרם מתחיל לעבוד
-    api: '',        // Project URL, למשל https://xxxx.supabase.co
-    anonKey: '',    // anon public key
+    api: 'https://gtlxkkkbnowcudhwisqe.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0bHhra2tibm93Y3VkaHdpc3FlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUxMTk3MjgsImV4cCI6MjExMDY5NTcyOH0.hGDdjvVtzBaFZstqf7R5apPvDmAnvh7SlBzJ1Qwj7kE',   // מפתח ציבורי (anon), בטוח להיות בקוד
   },
 
   // טיסות: יתעדכן כשיגיעו הפרטים
