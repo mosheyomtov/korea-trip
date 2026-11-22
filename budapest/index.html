@@ -159,6 +159,22 @@ a{color:inherit}
 .empty-day{text-align:center;padding:28px 20px;color:var(--t2);line-height:1.6}
 .empty-day button{margin-top:12px;padding:10px 18px;border-radius:99px;background:var(--gold);color:#1b1407;font-weight:600}
 
+/* reels */
+.reel-row{display:flex;gap:8px;overflow-x:auto;margin-top:10px;scrollbar-width:none}
+.reel-row::-webkit-scrollbar{display:none}
+.reel-th{flex:0 0 auto;width:64px;height:96px;border-radius:12px;background:var(--card2) center/cover;position:relative;border:1px solid var(--line)}
+.reel-th::after{content:'▶';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:18px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.badge.new{background:var(--paprika);color:#fff}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 14px);z-index:1200;max-width:600px;margin:0 auto;
+  background:var(--gold);color:#1b1407;border-radius:16px;padding:13px 16px;font-weight:600;box-shadow:var(--sh);transform:translateY(20px);opacity:0;pointer-events:none;transition:.3s var(--ease)}
+.toast.on{transform:none;opacity:1}
+.viewer{position:fixed;inset:0;z-index:1300;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top) + 50px) 16px calc(env(safe-area-inset-bottom) + 20px)}
+.viewer[hidden]{display:none}
+.viewer video{max-width:100%;max-height:78vh;border-radius:16px;background:#000}
+.viewer-x{position:absolute;top:calc(env(safe-area-inset-top) + 10px);left:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:18px}
+.viewer-cap{display:flex;gap:12px;align-items:center;margin-top:12px;color:#fff}
+.viewer-cap a{color:var(--gold);font-size:14px}
+
 /* nav */
 nav{position:fixed;bottom:0;left:0;right:0;z-index:1000;padding:8px 10px calc(8px + env(safe-area-inset-bottom));
   background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line2)}
@@ -201,6 +217,7 @@ nav button.on i{filter:none;opacity:1;transform:translateY(-2px)}
     <div class="pl-filters">
       <button id="plRec" class="pill">⭐ רק מומלצים</button>
       <button id="plFav" class="pill">♥ שמרנו</button>
+      <button id="plAddReel" class="pill">🎬 הוספת ריל</button>
     </div>
     <div id="plList"></div>
   </section>
@@ -232,6 +249,13 @@ nav button.on i{filter:none;opacity:1;transform:translateY(-2px)}
     <div class="card" id="phrases"></div>
   </section>
 </main>
+
+<div id="toast" class="toast"></div>
+<div id="viewer" class="viewer" hidden>
+  <button class="viewer-x" aria-label="סגירה">✕</button>
+  <video id="viewerVideo" playsinline controls></video>
+  <div class="viewer-cap"><b id="viewerTitle"></b><a id="viewerIg" target="_blank" rel="noopener">באינסטגרם ↗</a></div>
+</div>
 
 <nav><div class="in" id="nav">
   <button data-p="plan" class="on"><i>📅</i>לו״ז</button>
@@ -314,7 +338,7 @@ const mapQ = it => it.en || it.addr || it.name;
 const mapEntries = () => {
   const out = T.hotels.map(h => ({ cat: 'hotel', icon: '🏨', name: h.name, en: h.addr || h.name, sub: 'המלון', lat: h.lat, lng: h.lng }));
   T.days.forEach(d => d.items.forEach(it => out.push({ cat: 'd:' + d.date, icon: it.icon || '📍', name: it.name, en: it.en || (it.lat ? `${it.lat},${it.lng}` : it.name), sub: fmt(d.date), lat: it.lat, lng: it.lng })));
-  (window.PLACES || []).forEach(c => c.items.forEach(it => out.push({ cat: c.id, icon: c.icon, name: it.name, en: it.en || it.name, sub: c.title, rec: it.rec, lat: it.lat, lng: it.lng })));
+  (typeof placesWithReels === 'function' ? placesWithReels() : window.PLACES || []).forEach(c => c.items.forEach(it => out.push({ cat: c.id, icon: c.icon, name: it.name, en: it.en || it.name, sub: c.title, rec: it.rec, lat: it.lat, lng: it.lng })));
   return out;
 };
 let mapCat = 'all', mapSel = null, mapReady = false;
@@ -401,10 +425,11 @@ const GM = {
 };
 
 /* places */
+var REELS = [];   // reels from ReelGlobe, filled in below
 const placeUrl = it => it.lat ? gmaps(it.lat, it.lng) : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.en || it.name)}`;
 let favs = store.get('favs', {}), plCat = 'all', plRec = false, plFav = false, plQ = '';
 function renderPlaces() {
-  const P = window.PLACES || [];
+  const P = placesWithReels();
   const total = P.reduce((a, c) => a + c.items.length, 0);
   const nf = Object.values(favs).filter(Boolean).length;
   $('#plSub').textContent = `${total} מקומות · ${nf} שמורים`;
@@ -423,7 +448,9 @@ function renderPlaces() {
         <h4>${esc(it.name)}</h4>
         ${it.en && it.en !== it.name ? `<div class="en">${esc(it.en)}</div>` : ''}
         <p>${esc(it.desc)}</p>
+        ${it.reels?.length ? `<div class="reel-row">${it.reels.map(r => `<button class="reel-th" data-reel="${esc(r.id)}" style="background-image:url('${esc(r.thumb || '')}')" aria-label="ניגון"></button>`).join('')}</div>` : ''}
         <div class="row">
+          ${it.fromReel ? '<span class="badge new">🎬 מריל</span>' : ''}
           ${it.rec ? '<span class="badge rec">⭐ מומלץ</span>' : ''}
           ${it.type ? `<span class="badge t">${esc(it.type)}</span>` : ''}
           <a class="maplink" style="margin-top:0" target="_blank" rel="noopener" href="${placeUrl(it)}">📍 ניווט</a>
@@ -438,10 +465,114 @@ $('#plRec').onclick = () => { plRec = !plRec; renderPlaces() };
 $('#plFav').onclick = () => { plFav = !plFav; renderPlaces() };
 $('#plSearch').oninput = e => { plQ = e.target.value; renderPlaces() };
 $('#plList').onclick = e => {
+  const rv = e.target.closest('[data-reel]');
+  if (rv) { const r = REELS.find(x => x.id === rv.dataset.reel); if (r) openReel(r); return }
   const m = e.target.closest('[data-map]');
   if (m) { go('map'); const it = mapEntries().find(x => x.name === m.dataset.map); if (it) showOnMap(it); return }
   const b = e.target.closest('.fav'); if (!b) return; favs[b.dataset.k] = !favs[b.dataset.k]; store.set('favs', favs); renderPlaces() };
 renderPlaces();
+
+/* ── Reels shared from Instagram (server: ReelGlobe's Supabase) ── */
+const RG = T.reelglobe || {}, RG_ON = !!(RG.api && RG.anonKey);
+const BUD_BOX = { min_lat: 47.35, max_lat: 47.65, min_lng: 18.90, max_lng: 19.35 };
+const CAT_MAP = { food: 'food', cafe: 'cafes', sight: 'sights', night: 'night', nature: 'sights', stay: 'fun', other: 'fun' };
+REELS = store.get('reels', []);
+const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\u0590-\u05ff]+/g, ' ').trim();
+function sameSpot(it, r) {
+  if (it.lat && r.lat && Math.hypot(it.lat - r.lat, (it.lng - r.lng) * 0.67) < 0.0015) return true;   // about 150 m
+  const a = norm(String(r.place || '').split(',')[0]);
+  if (a.length < 4) return false;
+  return [it.en, it.name].some(n => { const b = norm(String(n).replace(/budapest/i, '')); return b.length >= 4 && (b.includes(a) || a.includes(b)) });
+}
+// The static list from places.js, plus every Budapest reel: attached to the place it shows, or added as a new place
+function placesWithReels() {
+  const P = (window.PLACES || []).map(c => ({ ...c, items: c.items.map(it => ({ ...it, reels: [] })) }));
+  for (const r of REELS) {
+    let hit = null;
+    for (const c of P) { hit = c.items.find(it => sameSpot(it, r)); if (hit) break }
+    if (hit) { hit.reels.push(r); if (!hit.lat && r.precise) { hit.lat = r.lat; hit.lng = r.lng } continue }
+    const cat = P.find(c => c.id === (CAT_MAP[r.cat] || 'fun')) || P[0];
+    cat.items.unshift({ name: r.title || r.place, en: String(r.place || '').split(',')[0], desc: r.place || '', lat: r.lat, lng: r.lng, reels: [r], fromReel: true });
+  }
+  return P;
+}
+async function loadReels() {
+  if (!RG_ON) return;
+  try {
+    const res = await fetch(RG.api + '/rest/v1/rpc/reels_in_view', { method: 'POST',
+      headers: { apikey: RG.anonKey, Authorization: 'Bearer ' + RG.anonKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...BUD_BOX, lim: 500 }) });
+    if (!res.ok) return;
+    REELS = await res.json(); store.set('reels', REELS); renderPlaces();
+  } catch {}
+}
+function openReel(r) {
+  const v = $('#viewerVideo');
+  $('#viewerTitle').textContent = r.title || r.place || '';
+  $('#viewerIg').href = r.url || `https://www.instagram.com/reel/${r.code}/`;
+  if (r.video) { v.hidden = false; v.poster = r.thumb || ''; v.src = r.video; v.play().catch(() => {}) }
+  else { v.hidden = true; window.open($('#viewerIg').href, '_blank'); return }
+  $('#viewer').hidden = false;
+}
+$('#viewer').onclick = e => { if (e.target.closest('video')) return; const v = $('#viewerVideo'); v.pause(); v.removeAttribute('src'); v.load(); $('#viewer').hidden = true };
+
+const say = (t, ms = 6000) => { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(say.t); say.t = setTimeout(() => el.classList.remove('on'), ms) };
+async function shareApi(body) {
+  const res = await fetch(RG.api + '/functions/v1/share', { method: 'POST',
+    headers: { 'Content-Type': 'application/json', apikey: RG.anonKey, Authorization: 'Bearer ' + RG.anonKey }, body: JSON.stringify(body) });
+  return res.json();
+}
+// a few still pictures from the stored video, for Claude to look at when the text does not say where it was filmed
+async function framesOf(src, n = 5) {
+  const v = document.createElement('video'); v.crossOrigin = 'anonymous'; v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = src;
+  await new Promise((ok, no) => { v.onloadeddata = ok; v.onerror = no; setTimeout(no, 25000) });
+  const k = Math.min(1, 640 / Math.max(v.videoWidth, v.videoHeight)), c = document.createElement('canvas');
+  c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    v.currentTime = v.duration * (i + .5) / n; await new Promise(ok => { v.onseeked = ok; setTimeout(ok, 6000) });
+    c.getContext('2d').drawImage(v, 0, 0, c.width, c.height); out.push(c.toDataURL('image/jpeg', .7).split(',')[1]);
+  }
+  v.removeAttribute('src'); v.load();
+  return out;
+}
+async function takeShared(link) {
+  if (!RG_ON) return say('שיתוף ריילים עוד לא מחובר לשרת');
+  go('places'); say('שומר את הריל ומזהה את המקום…', 90000);
+  try {
+    let o = await shareApi({ url: link }), looked = false;
+    while (o.needs) {
+      if (o.needs === 'username') return say('לא הצלחתי לקרוא את הריל. אולי החשבון פרטי?');
+      if (o.video && !looked) {
+        looked = true; say('מזהה את המקום מתוך הסרטון…', 90000);
+        try { o = await shareApi({ id: o.id, frames: await framesOf(o.video) }); continue } catch {}
+      }
+      const where = prompt(o.error ? 'לא מצאתי את המקום הזה. נסו שם אחר' : 'איפה צולם הריל? (שם המקום בבודפשט)');
+      if (!where) return say('הריל נשמר, אבל עוד בלי מקום');
+      say('ממקם…', 90000); o = await shareApi({ id: o.id, place: where.includes('Budapest') ? where : where + ', Budapest' });
+    }
+    if (!o.reel) return say(o.error === 'full' ? 'האחסון של הריילים מלא' : o.error === 'busy' ? 'אינסטגרם עמוסה כרגע. נסו שוב עוד כמה דקות' : 'לא הצלחתי לשמור את הריל');
+    const r = o.reel;
+    if (r.lat < BUD_BOX.min_lat || r.lat > BUD_BOX.max_lat || r.lng < BUD_BOX.min_lng || r.lng > BUD_BOX.max_lng) return say(`הריל נשמר ב-ReelGlobe, אבל הוא לא בבודפשט (${r.city || r.place})`);
+    REELS = [r, ...REELS.filter(x => x.id !== r.id)]; store.set('reels', REELS);
+    plCat = 'all'; plQ = ''; $('#plSearch').value = ''; renderPlaces();
+    const found = placesWithReels().flatMap(c => c.items).find(it => it.reels.some(x => x.id === r.id));
+    say(found && !found.fromReel ? `הסרטון נוסף ל"${found.name}"` : `נוסף מקום חדש: ${r.title || r.place}`);
+    setTimeout(() => document.querySelector(`[data-reel="${CSS.escape(r.id)}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
+  } catch { say('לא הצלחתי לשמור את הריל') }
+}
+$('#plAddReel').onclick = () => {
+  if (!RG_ON) return say('שיתוף ריילים עוד לא מחובר לשרת');
+  const txt = prompt('הדביקו קישור לריל מאינסטגרם'); if (!txt) return;
+  const link = txt.match(/https?:\/\/(?:www\.)?instagram\.com\/\S+/)?.[0];
+  link ? takeShared(link) : say('זה לא נראה כמו קישור של אינסטגרם');
+};
+{ // opened from Instagram's share menu (Android): the link arrives in the address
+  const sp = new URLSearchParams(location.search), link = [sp.get('url'), sp.get('text'), sp.get('title')].join(' ').match(/https?:\/\/(?:www\.)?instagram\.com\/\S+/)?.[0];
+  if (link) { history.replaceState(null, '', location.pathname); setTimeout(() => takeShared(link), 300) }
+}
+if (REELS.length) renderPlaces();
+loadReels();
 
 /* reels */
 function renderReels() {
