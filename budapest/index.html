@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1424">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>בודפשט</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{
+  --bg:#0b1424;--bg2:#111d33;--card:#15233d;--card2:#1b2c4b;
+  --line:rgba(232,200,130,.14);--line2:rgba(255,255,255,.08);
+  --t1:#f3ecdf;--t2:#b6b0a3;--t3:#7a7f8c;
+  --gold:#e8c882;--gold2:#c9a35a;--paprika:#d9573b;--danube:#4f8fc0;--green:#6fbf8e;
+  --sh:0 10px 30px rgba(0,0,0,.35);
+  --r:20px;--ease:cubic-bezier(.16,1,.3,1);
+  --nav-h:72px;
+}
+:root[data-theme=light]{
+  --bg:#f6f1e7;--bg2:#efe7d8;--card:#fffdf8;--card2:#f7f0e3;
+  --line:rgba(150,110,40,.18);--line2:rgba(0,0,0,.07);
+  --t1:#1b2333;--t2:#55596a;--t3:#8f8a80;
+  --gold:#a8782a;--gold2:#8a6020;--paprika:#c2452b;--danube:#2f6f9f;--green:#3f8f60;
+  --sh:0 8px 24px rgba(60,40,10,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--t1);font-family:'Heebo',system-ui,sans-serif;min-height:100vh;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px);transition:background .3s,color .3s}
+h1,h2,h3,.serif{font-family:'Frank Ruhl Libre',serif}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+
+/* ── Hero ── */
+.hero{position:relative;overflow:hidden;padding:calc(env(safe-area-inset-top) + 28px) 0 30px;
+  background:radial-gradient(120% 90% at 80% 0%,rgba(232,200,130,.22),transparent 60%),
+             linear-gradient(180deg,#0e1a30 0%,var(--bg) 100%)}
+:root[data-theme=light] .hero{background:radial-gradient(120% 90% at 80% 0%,rgba(232,170,80,.28),transparent 60%),linear-gradient(180deg,#efe2c8,var(--bg))}
+.skyline{position:absolute;inset:auto 0 0 0;width:100%;height:90px;pointer-events:none;-webkit-mask-image:linear-gradient(transparent,#000 70%);mask-image:linear-gradient(transparent,#000 70%)}
+.skyline path{fill:var(--gold);opacity:.07}
+.hero-top{display:flex;justify-content:space-between;align-items:center}
+.kicker{font-size:13px;letter-spacing:.18em;color:var(--gold);font-weight:600}
+.icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--line2);border:1px solid var(--line2);font-size:18px}
+.hero h1{font-size:56px;line-height:1;font-weight:900;margin-top:14px;letter-spacing:-.01em}
+.hero h1 span{color:var(--gold)}
+.hero .dates{color:var(--t2);margin-top:8px;font-size:15px}
+.count{display:flex;gap:10px;margin-top:22px;position:relative;z-index:1}
+.count div{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:16px;padding:12px 6px;text-align:center;backdrop-filter:blur(8px)}
+:root[data-theme=light] .count div{background:rgba(255,255,255,.6)}
+.count b{display:block;font-family:'Frank Ruhl Libre',serif;font-size:28px;color:var(--gold)}
+.count small{color:var(--t2);font-size:12px}
+.today-banner{margin-top:22px;background:var(--gold);color:#1b1407;border-radius:16px;padding:14px 16px;font-weight:600;position:relative;z-index:1}
+
+/* ── Sections ── */
+.page{display:none;animation:in .45s var(--ease)}
+.page.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.sec-title{font-size:26px;font-weight:700;margin:26px 0 14px}
+.sec-title small{display:block;font-family:'Heebo';font-size:14px;color:var(--t3);font-weight:400;margin-top:2px}
+
+/* day chips */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 8px;margin:0 -16px;scrollbar-width:none;scroll-snap-type:x mandatory;scroll-padding-inline:16px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;scroll-snap-align:start;min-width:68px;padding:10px 12px;border-radius:16px;background:var(--card);border:1px solid var(--line2);text-align:center;transition:.25s var(--ease)}
+.chip .wd{font-size:12px;color:var(--t3)}
+.chip .dn{font-family:'Frank Ruhl Libre',serif;font-size:22px;font-weight:700}
+.chip.on{background:var(--gold);color:#1b1407;border-color:transparent}
+.chip.on .wd{color:#5a4410}
+.chip.is-today:not(.on){border-color:var(--gold)}
+
+.day-head{margin:18px 0 6px;display:flex;align-items:baseline;gap:10px}
+.day-head h2{font-size:24px}
+.day-head span{color:var(--t3);font-size:14px}
+
+/* timeline */
+.tl{position:relative;margin-top:10px}
+.tl::before{content:'';position:absolute;top:8px;bottom:8px;right:27px;width:2px;background:linear-gradient(var(--gold),transparent)}
+.ev{position:relative;display:flex;gap:14px;margin-bottom:12px}
+.ev .dot{flex:0 0 56px;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1}
+.ev .dot i{font-style:normal;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:19px;background:var(--card2);border:1px solid var(--line)}
+.ev .dot b{font-size:12px;color:var(--gold);font-weight:600;background:var(--bg);padding:2px 4px;border-radius:6px}
+.ev .body{flex:1;background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh)}
+.ev h3{font-family:'Heebo';font-size:16px;font-weight:600}
+.ev p{color:var(--t2);font-size:14px;line-height:1.55;margin-top:4px}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:99px;margin-top:8px;margin-left:6px;border:1px solid currentColor;opacity:.9}
+.tag.food{color:var(--paprika)}.tag.sight{color:var(--gold)}.tag.bath{color:var(--danube)}
+.tag.night{color:#b48ad8}.tag.move{color:var(--t3)}.tag.shop{color:var(--green)}
+.maplink{display:inline-flex;align-items:center;gap:4px;font-size:12px;margin-top:8px;color:var(--danube);text-decoration:none;font-weight:500}
+
+/* cards */
+.card{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:12px}
+.flight{display:flex;align-items:center;gap:14px}
+.flight .ap{font-family:'Frank Ruhl Libre',serif;font-size:26px;font-weight:700}
+.flight .mid{flex:1;text-align:center;color:var(--t3);font-size:12px;position:relative}
+.flight .mid::before{content:'';position:absolute;top:50%;left:0;right:0;border-top:1px dashed var(--line)}
+.flight .mid span{position:relative;background:var(--card);padding:0 8px}
+.meta{display:flex;justify-content:space-between;color:var(--t2);font-size:13px;margin-top:10px}
+.lbl{font-size:12px;color:var(--gold);letter-spacing:.08em;font-weight:600;margin-bottom:6px}
+
+/* map */
+#map{height:calc(100vh - 260px);min-height:360px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line2)}
+.leaflet-container{background:var(--bg2);font-family:'Heebo'}
+.pin{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;background:var(--gold);border:2px solid #1b1407;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+.pin span{transform:rotate(45deg);font-size:14px}
+.leaflet-popup-content{direction:rtl;text-align:right;font-family:'Heebo';margin:10px 14px}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.legend button{padding:6px 12px;border-radius:99px;background:var(--card);border:1px solid var(--line2);font-size:13px}
+.legend button.on{background:var(--gold);color:#1b1407}
+
+/* reels */
+.reel-frame{width:100%;height:calc(100vh - 230px);min-height:420px;border:0;border-radius:var(--r);background:#000}
+.empty{text-align:center;padding:40px 20px;color:var(--t2)}
+
+/* checklist */
+.chk{display:flex;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line2);cursor:pointer}
+.chk .box{width:24px;height:24px;border-radius:8px;border:2px solid var(--gold2);display:grid;place-items:center;flex:0 0 auto;transition:.2s}
+.chk.done .box{background:var(--gold);border-color:var(--gold)}
+.chk.done .box::after{content:'✓';color:#1b1407;font-weight:700;font-size:14px}
+.chk.done span{color:var(--t3);text-decoration:line-through}
+.progress{height:6px;border-radius:9px;background:var(--line2);overflow:hidden;margin-bottom:8px}
+.progress div{height:100%;background:var(--gold);transition:width .4s var(--ease)}
+
+/* tips & phrases */
+.tip{display:flex;gap:14px}
+.tip .ico{font-size:26px}
+.tip h3{font-family:'Heebo';font-size:16px;font-weight:600}
+.tip p{color:var(--t2);font-size:14px;line-height:1.6;margin-top:2px}
+.ph{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 12px}
+.ph .hu{font-family:'Frank Ruhl Libre',serif;font-size:20px;direction:ltr;text-align:left;color:var(--gold)}
+.ph .say{color:var(--t3);font-size:13px}
+
+/* nav */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:1000;padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line2)}
+nav .in{max-width:640px;margin:0 auto;display:flex;justify-content:space-around}
+nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--t3);padding:6px 4px;min-width:52px;border-radius:14px;transition:.2s}
+nav button i{font-style:normal;font-size:20px;filter:grayscale(1);opacity:.7;transition:.2s}
+nav button.on{color:var(--gold)}
+nav button.on i{filter:none;opacity:1;transform:translateY(-2px)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <a href="../" class="icon-btn" aria-label="כל הטיולים" style="text-decoration:none">→</a>
+      <div class="kicker" id="kicker" style="flex:1;margin-right:12px">BUDAPEST</div>
+      <button class="icon-btn" id="themeBtn" aria-label="מצב תצוגה">🌙</button>
+    </div>
+    <h1 id="title"></h1>
+    <div class="dates" id="dates"></div>
+    <div class="count" id="count"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="page on" id="p-plan">
+    <div class="chips" id="chips"></div>
+    <div id="day"></div>
+  </section>
+
+  <section class="page" id="p-map">
+    <h2 class="sec-title">המפה שלנו<small>כל המקומות בטיול</small></h2>
+    <div class="legend" id="legend"></div>
+    <div id="map"></div>
+  </section>
+
+  <section class="page" id="p-reels">
+    <h2 class="sec-title">ריילים<small>הגלובוס עם הסרטונים מאינסטגרם</small></h2>
+    <div id="reels"></div>
+  </section>
+
+  <section class="page" id="p-info">
+    <h2 class="sec-title">טיסות</h2>
+    <div id="flights"></div>
+    <h2 class="sec-title">מלונות</h2>
+    <div id="hotels"></div>
+  </section>
+
+  <section class="page" id="p-more">
+    <h2 class="sec-title">לפני שיוצאים<small id="chkSub"></small></h2>
+    <div class="progress"><div id="chkBar"></div></div>
+    <div id="checks"></div>
+    <h2 class="sec-title">טיפים</h2>
+    <div id="tips"></div>
+    <h2 class="sec-title">הונגרית בסיסית</h2>
+    <div class="card" id="phrases"></div>
+  </section>
+</main>
+
+<nav><div class="in" id="nav">
+  <button data-p="plan" class="on"><i>📅</i>לו״ז</button>
+  <button data-p="map"><i>🗺️</i>מפה</button>
+  <button data-p="reels"><i>🌍</i>ריילים</button>
+  <button data-p="info"><i>🏨</i>טיסות ומלון</button>
+  <button data-p="more"><i>✅</i>עוד</button>
+</div></nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="trip.js"></script>
+<script>
+const T = window.TRIP;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch {} },
+};
+const WD = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+const MON = ['ינו׳','פבר׳','מרץ','אפר׳','מאי','יוני','יולי','אוג׳','ספט׳','אוק׳','נוב׳','דצמ׳'];
+const D = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d) };
+const fmt = s => { const d = D(s); return `${d.getDate()} ${MON[d.getMonth()]}` };
+const todayStr = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}` })();
+const gmaps = (lat, lng, q) => lat ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+const TAGS = { food:'אוכל', sight:'אטרקציה', bath:'מרחצאות', night:'לילה', move:'תנועה', shop:'קניות' };
+
+/* theme */
+const applyTheme = t => { document.documentElement.dataset.theme = t; $('#themeBtn').textContent = t === 'light' ? '🌙' : '☀️'; store.set('theme', t) };
+applyTheme(store.get('theme', 'dark'));
+$('#themeBtn').onclick = () => applyTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
+
+/* hero */
+$('#title').innerHTML = `${esc(T.title)} <span>${D(T.start).getFullYear()}</span>`;
+$('#dates').textContent = `${fmt(T.start)} עד ${fmt(T.end)} · ${T.travelers.join(' ו')}`;
+function renderCount() {
+  const now = new Date(), start = D(T.start), end = D(T.end); end.setHours(23,59);
+  if (now < start) {
+    const ms = start - now, d = Math.floor(ms/864e5), h = Math.floor(ms/36e5)%24, m = Math.floor(ms/6e4)%60;
+    $('#count').innerHTML = [[d,'ימים'],[h,'שעות'],[m,'דקות']].map(([n,l]) => `<div><b>${n}</b><small>${l}</small></div>`).join('');
+  } else if (now <= end) {
+    const n = T.days.findIndex(x => x.date === todayStr) + 1;
+    $('#count').innerHTML = `<div class="today-banner" style="flex:1">אנחנו בבודפשט! יום ${n || ''} מתוך ${T.days.length}</div>`;
+  } else {
+    $('#count').innerHTML = `<div style="flex:1"><small>היה מושלם 💛</small></div>`;
+  }
+}
+renderCount(); setInterval(renderCount, 30000);
+
+/* schedule */
+let curDay = Math.max(0, T.days.findIndex(d => d.date === todayStr));
+function renderChips() {
+  $('#chips').innerHTML = T.days.map((d, i) => `
+    <button class="chip ${i === curDay ? 'on' : ''} ${d.date === todayStr ? 'is-today' : ''}" data-i="${i}">
+      <div class="wd">יום ${WD[D(d.date).getDay()]}</div><div class="dn">${D(d.date).getDate()}</div>
+    </button>`).join('');
+}
+function renderDay() {
+  const d = T.days[curDay];
+  $('#day').innerHTML = `
+    <div class="day-head"><h2>${esc(d.title)}</h2><span>${fmt(d.date)}</span></div>
+    <div class="tl">${d.items.map(it => `
+      <div class="ev">
+        <div class="dot"><i>${it.icon || '📍'}</i><b>${esc(it.t || '')}</b></div>
+        <div class="body">
+          <h3>${esc(it.name)}</h3>
+          ${it.desc ? `<p>${esc(it.desc)}</p>` : ''}
+          ${it.tag ? `<span class="tag ${it.tag}">${TAGS[it.tag] || it.tag}</span>` : ''}
+          ${it.lat ? `<a class="maplink" target="_blank" rel="noopener" href="${gmaps(it.lat, it.lng)}">📍 ניווט</a>` : ''}
+        </div>
+      </div>`).join('')}</div>`;
+}
+$('#chips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; curDay = +b.dataset.i; renderChips(); renderDay() };
+renderChips(); renderDay();
+requestAnimationFrame(() => $('#chips .on')?.scrollIntoView({ inline: 'center', block: 'nearest' }));
+
+/* map */
+let map, layers = {};
+function initMap() {
+  if (map) { map.invalidateSize(); return }
+  map = L.map('map', { zoomControl: false }).setView(T.center, 13);
+  const dark = document.documentElement.dataset.theme !== 'light';
+  L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark ? 'dark_all' : 'light_all'}/{z}/{x}/{y}{r}.png`,
+    { attribution: '© OpenStreetMap © CARTO', maxZoom: 19 }).addTo(map);
+  const all = [];
+  T.days.forEach((d, di) => d.items.filter(i => i.lat).forEach(it => {
+    const m = L.marker([it.lat, it.lng], { icon: L.divIcon({ className: '', html: `<div class="pin"><span>${it.icon || '📍'}</span></div>`, iconSize: [30,30], iconAnchor: [15,30] }) })
+      .bindPopup(`<b>${esc(it.name)}</b><br>${fmt(d.date)} · ${esc(it.t || '')}<br><a target="_blank" href="${gmaps(it.lat, it.lng)}">ניווט</a>`);
+    (layers[di] ||= L.layerGroup().addTo(map)).addLayer(m); all.push([it.lat, it.lng]);
+  }));
+  T.hotels.filter(h => h.lat).forEach(h => L.marker([h.lat, h.lng], { icon: L.divIcon({ className: '', html: `<div class="pin" style="background:var(--danube)"><span>🏨</span></div>`, iconSize: [30,30], iconAnchor: [15,30] }) }).bindPopup(`<b>${esc(h.name)}</b>`).addTo(map));
+  if (all.length) map.fitBounds(all, { padding: [30, 30] });
+  $('#legend').innerHTML = `<button class="on" data-d="all">הכל</button>` + T.days.map((d, i) => `<button data-d="${i}">${fmt(d.date)}</button>`).join('');
+  $('#legend').onclick = e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $('#legend').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    Object.entries(layers).forEach(([i, g]) => (b.dataset.d === 'all' || b.dataset.d === i) ? g.addTo(map) : g.remove());
+  };
+}
+
+/* reels */
+function renderReels() {
+  const r = T.reelglobe;
+  $('#reels').innerHTML = r?.url
+    ? `<iframe class="reel-frame" src="${esc(r.url)}" allow="autoplay; fullscreen; clipboard-write" loading="lazy"></iframe>`
+    : `<div class="card empty">החיבור ל-ReelGlobe עוד לא הוגדר</div>`;
+}
+
+/* flights & hotels */
+$('#flights').innerHTML = T.flights.map(f => `
+  <div class="card">
+    <div class="lbl">${esc(f.dir)} · ${fmt(f.date)}</div>
+    <div class="flight"><div class="ap">${esc(f.from)}</div><div class="mid"><span>✈ ${esc(f.code)}</span></div><div class="ap">${esc(f.to)}</div></div>
+    <div class="meta"><span>המראה ${esc(f.dep)}</span><span>נחיתה ${esc(f.arr)}</span></div>
+  </div>`).join('');
+$('#hotels').innerHTML = T.hotels.map(h => {
+  const nights = Math.round((D(h.to) - D(h.from)) / 864e5);
+  return `<div class="card">
+    <div class="lbl">${fmt(h.from)} עד ${fmt(h.to)} · ${nights} לילות</div>
+    <h3 style="font-size:20px">${esc(h.name)}</h3>
+    <p style="color:var(--t2);font-size:14px;margin-top:4px">${esc(h.area)}${h.note ? ' · ' + esc(h.note) : ''}</p>
+    <a class="maplink" target="_blank" rel="noopener" href="${gmaps(h.lat, h.lng, h.addr)}">📍 פתח במפה</a>
+  </div>`}).join('');
+
+/* checklist (נשמר רק בטלפון של כל אחד) */
+let done = store.get('checks', {});
+function renderChecks() {
+  const n = T.checklist.filter(c => done[c]).length;
+  $('#chkSub').textContent = `${n} מתוך ${T.checklist.length} מוכנים`;
+  $('#chkBar').style.width = `${n / T.checklist.length * 100}%`;
+  $('#checks').innerHTML = T.checklist.map(c => `<div class="chk ${done[c] ? 'done' : ''}" data-c="${esc(c)}"><div class="box"></div><span>${esc(c)}</span></div>`).join('');
+}
+$('#checks').onclick = e => { const r = e.target.closest('.chk'); if (!r) return; const c = r.dataset.c; done[c] = !done[c]; store.set('checks', done); renderChecks() };
+renderChecks();
+
+$('#tips').innerHTML = T.tips.map(t => `<div class="card tip"><div class="ico">${t.icon}</div><div><h3>${esc(t.title)}</h3><p>${esc(t.body)}</p></div></div>`).join('');
+$('#phrases').innerHTML = T.phrases.map((p, i) => `
+  <div class="ph" style="${i ? 'border-top:1px solid var(--line2);padding-top:12px;margin-top:12px' : ''}">
+    <div><div style="font-weight:600">${esc(p.he)}</div><div class="say">${esc(p.say)}</div></div><div class="hu">${esc(p.hu)}</div>
+  </div>`).join('');
+
+/* nav */
+let reelsLoaded = false;
+$('#nav').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#nav button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.page').forEach(p => p.classList.toggle('on', p.id === 'p-' + b.dataset.p));
+  if (b.dataset.p === 'map') setTimeout(initMap, 30);
+  if (b.dataset.p === 'reels' && !reelsLoaded) { reelsLoaded = true; renderReels() }
+  scrollTo({ top: 0, behavior: 'smooth' });
+};
+</script>
+</body>
+</html>
