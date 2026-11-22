@@ -9,15 +9,14 @@
   const toast = t => typeof say === 'function' && say(t);
   const goTo = s => (typeof go === 'function' ? go : typeof show === 'function' ? show : () => {})(s);
 
-  // the mascot: a little Danube droplet ("Duna" is the Danube in Hungarian)
+  // Duna's mark: a soft gradient sparkle star
   let uid = 0;
   const DUNA = (cls = '') => { const i = ++uid; return `<svg class="duna ${cls}" viewBox="0 0 64 64" aria-hidden="true">
-    <defs><linearGradient id="dnB${i}" x1=".2" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="#7DB6FF"/><stop offset=".5" stop-color="#4F6BFF"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
-    <path d="M32 4.5C26.5 13 11 26.5 11 41a21 21 0 0 0 42 0C53 26.5 37.5 13 32 4.5Z" fill="url(#dnB${i})"/>
-    <ellipse cx="23" cy="27" rx="4.2" ry="7.5" transform="rotate(28 23 27)" fill="#fff" opacity=".38"/>
-    <circle cx="20" cy="47" r="3.6" fill="#FF8EC4" opacity=".45"/><circle cx="44" cy="47" r="3.6" fill="#FF8EC4" opacity=".45"/>
-    <g class="eyes"><ellipse cx="25.5" cy="40" rx="3.3" ry="4.6" fill="#fff"/><ellipse cx="38.5" cy="40" rx="3.3" ry="4.6" fill="#fff"/></g>
-    <path d="M28.5 48.2q3.5 2.6 7 0" stroke="#fff" stroke-width="2.3" fill="none" stroke-linecap="round"/></svg>` };
+    <defs><linearGradient id="dnB${i}" x1=".15" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="#7DB6FF"/><stop offset=".5" stop-color="#5B6BFF"/><stop offset="1" stop-color="#B05CF6"/></linearGradient>
+      <linearGradient id="dnS${i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFB3D9"/><stop offset="1" stop-color="#C084FC"/></linearGradient></defs>
+    <path d="M29 7C30.6 22.5 35.5 27.4 51 29C35.5 30.6 30.6 35.5 29 51C27.4 35.5 22.5 30.6 7 29C22.5 27.4 27.4 22.5 29 7Z" fill="url(#dnB${i})" stroke="url(#dnB${i})" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M29 15C29.9 24 32 26.6 40 28C33 28.6 30.2 31 29 38" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".35"/>
+    <path class="tw" d="M50 40C50.7 45.3 52.7 47.3 58 48C52.7 48.7 50.7 50.7 50 56C49.3 50.7 47.3 48.7 42 48C47.3 47.3 49.3 45.3 50 40Z" fill="url(#dnS${i})"/></svg>` };
 
   const SUGS = [
     ['calendar_today', 't-blue', 'מה יש לנו מחר?'],
@@ -65,7 +64,7 @@
 
   // the floating circle in the bottom bar
   const fab = document.getElementById('navAi');
-  if (fab) { fab.innerHTML = DUNA() + '<span class="spark"><span class="ms">auto_awesome</span></span>'; fab.onclick = () => goTo('chat') }
+  if (fab) { fab.innerHTML = DUNA(); fab.onclick = () => goTo('chat') }
 
   /* ── light, safe markdown ── */
   function md(src) {
