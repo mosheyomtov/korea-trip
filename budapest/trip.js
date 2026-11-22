@@ -14,7 +14,7 @@ window.TRIP = {
 
   // מפתח Google Maps (Maps JavaScript API + Geocoding API), מוגבל ל-mosheyomtov.github.io/*
   // כשהוא ריק, המפה מציגה מקום אחד בכל פעם בלי מפתח
-  googleMapsKey: '',
+  googleMapsKey: 'AIzaSyB63LfTOff_65UkNG1vMTZ3NKLaEqSNhc4',   // המפתח של ג׳ורני (משה אישר)
 
   // קישור ל-ReelGlobe. כשהחיבור יהיה מוכן, הגלובוס יוצג בלשונית "ריילים"
   reelglobe: {
