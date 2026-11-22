@@ -312,14 +312,15 @@ requestAnimationFrame(() => $('#chips .on')?.scrollIntoView({ inline: 'center', 
 /* map (Google Maps embed, no API key needed) */
 const mapQ = it => it.en || it.addr || it.name;
 const mapEntries = () => {
-  const out = T.hotels.map(h => ({ cat: 'hotel', icon: '🏨', name: h.name, en: h.addr || h.name, sub: 'המלון' }));
-  T.days.forEach(d => d.items.forEach(it => out.push({ cat: 'd:' + d.date, icon: it.icon || '📍', name: it.name, en: it.en || (it.lat ? `${it.lat},${it.lng}` : it.name), sub: fmt(d.date) })));
-  (window.PLACES || []).forEach(c => c.items.forEach(it => out.push({ cat: c.id, icon: c.icon, name: it.name, en: it.en || it.name, sub: c.title })));
+  const out = T.hotels.map(h => ({ cat: 'hotel', icon: '🏨', name: h.name, en: h.addr || h.name, sub: 'המלון', lat: h.lat, lng: h.lng }));
+  T.days.forEach(d => d.items.forEach(it => out.push({ cat: 'd:' + d.date, icon: it.icon || '📍', name: it.name, en: it.en || (it.lat ? `${it.lat},${it.lng}` : it.name), sub: fmt(d.date), lat: it.lat, lng: it.lng })));
+  (window.PLACES || []).forEach(c => c.items.forEach(it => out.push({ cat: c.id, icon: c.icon, name: it.name, en: it.en || it.name, sub: c.title, rec: it.rec, lat: it.lat, lng: it.lng })));
   return out;
 };
 let mapCat = 'all', mapSel = null, mapReady = false;
 function showOnMap(e) {
   mapSel = e;
+  if (GM.map) { GM.focus(e); renderMapList(); return }
   const q = encodeURIComponent(mapQ(e));
   $('#map').innerHTML = `<iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen src="https://maps.google.com/maps?q=${q}&hl=iw&z=15&output=embed"></iframe>`;
   $('#mapName').textContent = `${e.icon} ${e.name}`;
@@ -335,10 +336,69 @@ function renderMapList() {
 }
 function initMap() {
   if (mapReady) return; mapReady = true;
-  $('#legend').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; mapCat = b.dataset.d; renderMapList() };
+  $('#legend').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; mapCat = b.dataset.d; renderMapList(); GM.filter() };
   $('#mapList').onclick = e => { const b = e.target.closest('.mp'); if (!b) return; const it = mapEntries().find(x => x.name === b.dataset.n); if (it) { showOnMap(it); scrollTo({ top: $('#p-map').offsetTop - 8, behavior: 'smooth' }) } };
-  showOnMap(mapEntries()[0]);
+  if (T.googleMapsKey) GM.load(); else showOnMap(mapEntries()[0]);
 }
+
+/* Full Google map with every pin. Turned on by googleMapsKey in trip.js. */
+const GM = {
+  map: null, markers: [], info: null,
+  load() {
+    window.__gmReady = () => GM.init();
+    const sc = document.createElement('script');
+    sc.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(T.googleMapsKey)}&language=iw&region=HU&callback=__gmReady`;
+    sc.async = true; sc.onerror = () => showOnMap(mapEntries()[0]);
+    document.head.appendChild(sc);
+  },
+  init() {
+    const dark = document.documentElement.dataset.theme !== 'light';
+    $('#map').innerHTML = '';
+    GM.map = new google.maps.Map($('#map'), {
+      center: { lat: T.center[0], lng: T.center[1] }, zoom: 14, disableDefaultUI: true, zoomControl: true, gestureHandling: 'greedy',
+      colorScheme: dark ? 'DARK' : 'LIGHT', clickableIcons: false,
+    });
+    GM.info = new google.maps.InfoWindow();
+    const cache = store.get('geo', {}), geocoder = new google.maps.Geocoder(), todo = [];
+    mapEntries().forEach(e => {
+      const pos = e.lat ? { lat: e.lat, lng: e.lng } : cache[e.en];
+      if (pos) GM.add(e, pos); else todo.push(e);
+    });
+    // Places without coordinates are looked up once and remembered on this phone
+    const next = () => {
+      const e = todo.shift(); if (!e) return;
+      geocoder.geocode({ address: e.en, bounds: { north: 47.62, south: 47.40, east: 19.25, west: 18.92 } }, (r, st) => {
+        if (st === 'OK' && r[0]) { const l = r[0].geometry.location, pos = { lat: l.lat(), lng: l.lng() }; cache[e.en] = pos; store.set('geo', cache); GM.add(e, pos); GM.filter() }
+        setTimeout(next, 120);
+      });
+    };
+    next();
+    renderMapList(); GM.filter();
+    $('#mapName').textContent = 'כל המקומות'; $('#mapOpen').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(T.hotels[0]?.addr || 'Budapest')}`;
+  },
+  add(e, pos) {
+    const color = e.cat === 'hotel' ? '#4f8fc0' : e.rec ? '#e8c882' : '#f3ecdf';
+    const m = new google.maps.Marker({ map: GM.map, position: pos, title: e.name,
+      label: { text: e.icon, fontSize: '15px' },
+      icon: { path: google.maps.SymbolPath.CIRCLE, scale: 15, fillColor: color, fillOpacity: 1, strokeColor: '#0b1424', strokeWeight: 2 } });
+    m.entry = e; m.addListener('click', () => showOnMap(e));
+    GM.markers.push(m);
+  },
+  filter() {
+    if (!GM.map) return;
+    GM.markers.forEach(m => m.setVisible(mapCat === 'all' || m.entry.cat === mapCat || m.entry.cat === 'hotel'));
+  },
+  focus(e) {
+    const m = GM.markers.find(x => x.entry.name === e.name);
+    const q = encodeURIComponent(mapQ(e));
+    $('#mapName').textContent = `${e.icon} ${e.name}`;
+    $('#mapOpen').href = `https://www.google.com/maps/search/?api=1&query=${q}`;
+    if (!m) return;
+    GM.map.panTo(m.getPosition()); if (GM.map.getZoom() < 15) GM.map.setZoom(15);
+    GM.info.setContent(`<div dir="rtl" style="font-family:'Google Sans',sans-serif;color:#1b2333"><b>${esc(e.name)}</b><br><small>${esc(e.sub)}</small><br><a target="_blank" href="https://www.google.com/maps/search/?api=1&query=${q}">ניווט</a></div>`);
+    GM.info.open({ map: GM.map, anchor: m });
+  },
+};
 
 /* places */
 const placeUrl = it => it.lat ? gmaps(it.lat, it.lng) : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.en || it.name)}`;
