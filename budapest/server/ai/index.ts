@@ -58,7 +58,7 @@ async function plan(b: any) {
   const sys = `You plan a city trip for an Israeli couple (Moshe and Pas). Write everything in natural, concise Hebrew.
 Facts: ${b.facts ?? ""}
 Rules:
-- Use ONLY the places they liked (listed below; "place" is the id you must copy into each item's place field). Fixed items (flights, hotel) are given: keep them as they are.
+- Use ONLY the places they liked (listed below; "place" is the id you must copy into each item's place field). Do NOT add any other attraction, restaurant, market, synagogue or sight, even a famous one: if it is not in the list, it is not in the plan. Fixed items (flights, hotel) are given: keep them as they are, with an empty place. Besides liked places and fixed items, only plain rest items are allowed (e.g. back to the hotel, Shabbat meal at the hotel), with an empty place.
 ${RULES}
 - If there are too many places, leave some out and say which in left_out_he.
 - overview_he: 3-5 sentences on the logic of the whole plan. why_he per day: one sentence. Each item: t "HH:MM", one emoji icon, name in Hebrew, desc: one short practical tip.`;
@@ -71,7 +71,12 @@ ${RULES}
   const out = JSON.parse(textOf(res) || "{}");
   const byId = new Map(all.map((p: any) => [p.en || p.name, p]));
   for (const x of b.extra ?? []) byId.set(String(x.place), x);
-  for (const d of out.days ?? []) for (const it of d.items ?? []) { const p: any = byId.get(it.place); if (p?.lat) { it.lat = p.lat; it.lng = p.lng; } }
+  // only places they hearted: drop anything else that names a place
+  const ok = new Set([...liked.map((p: any) => p.place), ...extra.map((x: any) => x.place)]);
+  for (const d of out.days ?? []) {
+    d.items = (d.items ?? []).filter((it: any) => !String(it.place ?? "").trim() || ok.has(it.place));
+    for (const it of d.items) { const p: any = byId.get(it.place); if (p?.lat) { it.lat = p.lat; it.lng = p.lng; } }
+  }
   return { plan: { ...out, made: new Date().toISOString(), favs: [...favs] } };
 }
 
@@ -87,7 +92,7 @@ const TOOLS: any[] = [
     input_schema: { type: "object", additionalProperties: false, required: ["keys"], properties: { keys: { type: "array", items: { type: "string" } } } } },
   { name: "get_weather", description: "Weather forecast for Budapest for given dates (daily min/max, rain, sunrise/sunset).",
     input_schema: { type: "object", additionalProperties: false, required: ["from", "to"], properties: { from: { type: "string", description: "YYYY-MM-DD" }, to: { type: "string", description: "YYYY-MM-DD" } } } },
-  { name: "update_day", description: "Replace the whole schedule of ONE day (saved for both travelers right away). Send the full final list of items for that day, including fixed items (flights, check-in) that should stay. Ask before big rewrites the user did not request.",
+  { name: "update_day", description: "Replace the whole schedule of ONE day (saved for both travelers right away). Send the full final list of items for that day, including fixed items (flights, check-in) that should stay. Use only places marked ♥; other places are left out. Ask before big rewrites the user did not request.",
     input_schema: { type: "object", additionalProperties: false, required: ["date", "title", "why_he", "items"], properties: {
       date: { type: "string", description: "YYYY-MM-DD" }, title: { type: "string", description: "short Hebrew title for the day" }, why_he: { type: "string", description: "one Hebrew sentence on why the day is built this way" },
       items: { type: "array", items: { type: "object", additionalProperties: false, required: ["t", "icon", "name", "desc"], properties: {
@@ -183,7 +188,9 @@ async function runTool(name: string, x: any, run: Run): Promise<unknown> {
         base.days.push({ date: x.date, title: d0.title, why_he: "", items: [] });
         base.days.sort((a: any, b: any) => a.date.localeCompare(b.date));
       }
-      const items = (x.items ?? []).filter((it: any) => it && String(it.name ?? "").trim()).slice(0, 20).map((it: any) => {
+      // only places they hearted (fixed items and rest items have no place)
+      const notLiked = (x.items ?? []).filter((it: any) => it?.place && places.some((q) => q.key === it.place && !q.fav)).map((it: any) => it.name);
+      const items = (x.items ?? []).filter((it: any) => it && String(it.name ?? "").trim() && !notLiked.includes(it.name)).slice(0, 20).map((it: any) => {
         const m = String(it.t ?? "").match(/(\d{1,2})[:.](\d{2})/); it.t = m ? `${m[1].padStart(2, "0")}:${m[2]}` : "";
         const p = places.find((q) => q.key === it.place);
         return { t: it.t, icon: it.icon, name: it.name, desc: it.desc, place: p ? p.key : "", ...(it.lat ? { lat: it.lat, lng: it.lng } : p?.lat ? { lat: p.lat, lng: p.lng } : {}) };
@@ -193,12 +200,13 @@ async function runTool(name: string, x: any, run: Run): Promise<unknown> {
       await setState(t, "plan", { ...base, approved: new Date().toISOString(), edited_by_ai: true });
       run.changed.add("plan");
       run.cards.push({ type: "day", date: x.date, title: x.title, items: items.map((i: any) => ({ t: i.t, icon: i.icon, name: i.name })) });
-      return { ok: true, saved_items: items.length };
+      return { ok: true, saved_items: items.length, ...(notLiked.length ? { dropped_not_liked: notLiked, note: "these are not hearted, so they were left out; tell the user and offer to heart them" } : {}) };
     }
     case "set_favorite": {
       const st = await getState(t);
       const favs = new Set<string>(Array.isArray(st.favs) ? st.favs : (ctx.favs ?? []));
       x.on ? favs.add(x.key) : favs.delete(x.key);
+      const lp = (ctx.places ?? []).find((q: any) => q.key === x.key); if (lp) lp.fav = !!x.on;
       await setState(t, "favs", [...favs].slice(0, 300));
       run.changed.add("favs");
       return { ok: true, hearts: favs.size };
@@ -222,7 +230,7 @@ function chatSystem(ctx: any, st: any) {
   const places = (ctx.places ?? []).map((p: any) => `${p.key} | ${p.name}${p.en && p.en !== p.name ? " / " + p.en : ""} | ${p.cat}${p.where ? " | " + p.where : ""}${p.fav ? " | ♥" : ""}${p.reels?.length ? ` | ${p.reels.length} videos` : ""}`).join("\n");
   const sched = (st.plan?.days ?? ctx.days ?? []).map((d: any) => `${d.date} ${d.title}:\n${(d.items ?? []).map((i: any) => `  ${i.t} ${i.icon ?? ""} ${i.name}${i.place ? ` [${i.place}]` : ""}`).join("\n") || "  (empty)"}`).join("\n");
   return `את "דונה" (Duna, the Danube in Hungarian), העוזרת האישית של משה ופס לטיול שלהם לבודפשט. You are female: speak about yourself in feminine Hebrew forms (בדקתי, סידרתי, אני שמחה). ALWAYS answer in Hebrew (never English), warm, natural and SHORT (a few sentences or a short list; use **bold** sparingly; no headings, no tables). Friendly, a bit playful, never overdo emojis (0-2 per reply).
-You can act, not only talk: use the tools to check videos, find locations, check the weather and change the schedule. When the user asks you to change something, do it with the tools and then say briefly what you changed. If the request is unclear or would wipe a lot of their plan, ask one short question first. To build several days, call update_day once per day (all in the same turn), keep each item's desc to one short sentence, and keep fixed items (flights, check-in, check-out) exactly as they are. Never invent videos, prices or opening hours; say when you are not sure. The app shows the cards your tools produce (videos, places, the changed day) under your message, so don't paste links or long lists of the same things in the text.
+You can act, not only talk: use the tools to check videos, find locations, check the weather and change the schedule. When the user asks you to change something, do it with the tools and then say briefly what you changed. If the request is unclear or would wipe a lot of their plan, ask one short question first. The schedule is built ONLY from places marked ♥ (plus fixed items and plain rest items such as back to the hotel): never add an attraction, restaurant or sight they did not heart, even a famous one. If they want an unliked place in the schedule, heart it first with set_favorite (only when they asked for that place), otherwise suggest it in words. To build several days, call update_day once per day (all in the same turn), keep each item's desc to one short sentence, and keep fixed items (flights, check-in, check-out) exactly as they are. Never invent videos, prices or opening hours; say when you are not sure. The app shows the cards your tools produce (videos, places, the changed day) under your message, so don't paste links or long lists of the same things in the text.
 Trip facts: ${CITY}. Travelers: Moshe and Pas (Israeli). Hotel: ${ctx.hotel?.name ?? ""}, ${ctx.hotel?.addr ?? ""}. Flights: ${(ctx.flights ?? []).map((f: any) => `${f.dir} ${f.date} ${f.from}->${f.to} ${f.code} dep ${f.dep} arr ${f.arr}`).join("; ")}. Today is ${ctx.today ?? ""}.
 ${RULES}
 
