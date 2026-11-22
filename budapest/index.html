@@ -9,7 +9,6 @@
 <title>בודפשט</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{
   --bg:#0b1424;--bg2:#111d33;--card:#15233d;--card2:#1b2c4b;
@@ -102,14 +101,18 @@ a{color:inherit}
 .lbl{font-size:12px;color:var(--gold);letter-spacing:.08em;font-weight:600;margin-bottom:6px}
 
 /* map */
-#map{height:calc(100vh - 260px);min-height:360px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line2)}
-.leaflet-container{background:var(--bg2);font-family:'Google Sans',system-ui,sans-serif}
-.pin{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;background:var(--gold);border:2px solid #1b1407;box-shadow:0 4px 10px rgba(0,0,0,.4)}
-.pin span{transform:rotate(45deg);font-size:14px}
-.leaflet-popup-content{direction:rtl;text-align:right;font-family:'Google Sans',system-ui,sans-serif;margin:10px 14px}
-.legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
-.legend button{padding:6px 12px;border-radius:99px;background:var(--card);border:1px solid var(--line2);font-size:13px}
-.legend button.on{background:var(--gold);color:#1b1407}
+#map{position:sticky;top:8px;z-index:5;height:40vh;min-height:280px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line2);background:var(--bg2);box-shadow:var(--sh)}
+#map iframe{width:100%;height:100%;border:0;display:block}
+.map-bar{display:flex;align-items:center;gap:10px;margin:12px 0 4px}
+.map-bar b{flex:1;font-size:16px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.map-bar a{padding:8px 14px;border-radius:99px;background:var(--gold);color:#1b1407;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
+.legend{margin-top:6px}
+.mp{display:flex;align-items:center;gap:12px;width:100%;text-align:right;padding:12px 4px;border-bottom:1px solid var(--line2)}
+.mp i{font-style:normal;font-size:18px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--card);flex:0 0 auto}
+.mp span{flex:1;font-size:15px}
+.mp small{color:var(--t3);font-size:12px}
+.mp.on span{color:var(--gold);font-weight:600}
+.mp.on i{background:var(--gold)}
 
 /* reels */
 .reel-frame{width:100%;height:calc(100vh - 230px);min-height:420px;border:0;border-radius:var(--r);background:#000}
@@ -203,9 +206,11 @@ nav button.on i{filter:none;opacity:1;transform:translateY(-2px)}
   </section>
 
   <section class="page" id="p-map">
-    <h2 class="sec-title">המפה שלנו<small>כל המקומות בטיול</small></h2>
-    <div class="legend" id="legend"></div>
+    <h2 class="sec-title">המפה שלנו<small>בוחרים מקום מהרשימה והוא מופיע במפה</small></h2>
     <div id="map"></div>
+    <div class="map-bar"><b id="mapName"></b><a id="mapOpen" target="_blank" rel="noopener">פתח בגוגל מפות</a></div>
+    <div class="chips pl-chips legend" id="legend"></div>
+    <div id="mapList"></div>
   </section>
 
   <section class="page" id="p-reels">
@@ -236,7 +241,6 @@ nav button.on i{filter:none;opacity:1;transform:translateY(-2px)}
   <button data-p="info"><i>🧳</i>מידע</button>
 </div></nav>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="trip.js"></script>
 <script src="places.js"></script>
 <script>
@@ -305,35 +309,35 @@ $('#chips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return
 renderChips(); renderDay();
 requestAnimationFrame(() => $('#chips .on')?.scrollIntoView({ inline: 'center', block: 'nearest' }));
 
-/* map */
-let map, layers = {};
+/* map (Google Maps embed, no API key needed) */
+const mapQ = it => it.en || it.addr || it.name;
+const mapEntries = () => {
+  const out = T.hotels.map(h => ({ cat: 'hotel', icon: '🏨', name: h.name, en: h.addr || h.name, sub: 'המלון' }));
+  T.days.forEach(d => d.items.forEach(it => out.push({ cat: 'd:' + d.date, icon: it.icon || '📍', name: it.name, en: it.en || (it.lat ? `${it.lat},${it.lng}` : it.name), sub: fmt(d.date) })));
+  (window.PLACES || []).forEach(c => c.items.forEach(it => out.push({ cat: c.id, icon: c.icon, name: it.name, en: it.en || it.name, sub: c.title })));
+  return out;
+};
+let mapCat = 'all', mapSel = null, mapReady = false;
+function showOnMap(e) {
+  mapSel = e;
+  const q = encodeURIComponent(mapQ(e));
+  $('#map').innerHTML = `<iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen src="https://maps.google.com/maps?q=${q}&hl=iw&z=15&output=embed"></iframe>`;
+  $('#mapName').textContent = `${e.icon} ${e.name}`;
+  $('#mapOpen').href = `https://www.google.com/maps/search/?api=1&query=${q}`;
+  renderMapList();
+}
+function renderMapList() {
+  const E = mapEntries();
+  const cats = [['all', 'הכל'], ['hotel', '🏨 מלון'], ...(window.PLACES || []).map(c => [c.id, `${c.icon} ${c.title}`])];
+  $('#legend').innerHTML = cats.map(([id, t]) => `<button class="chip ${mapCat === id ? 'on' : ''}" data-d="${id}">${esc(t)}</button>`).join('');
+  $('#mapList').innerHTML = E.filter(e => mapCat === 'all' || e.cat === mapCat).map(e =>
+    `<button class="mp ${mapSel && mapSel.name === e.name ? 'on' : ''}" data-n="${esc(e.name)}"><i>${e.icon}</i><span>${esc(e.name)}</span><small>${esc(e.sub)}</small></button>`).join('');
+}
 function initMap() {
-  if (map) { map.invalidateSize(); return }
-  map = L.map('map', { zoomControl: false }).setView(T.center, 13);
-  const dark = document.documentElement.dataset.theme !== 'light';
-  L.tileLayer(`https://{s}.basemaps.cartocdn.com/${dark ? 'dark_all' : 'light_all'}/{z}/{x}/{y}{r}.png`,
-    { attribution: '© OpenStreetMap © CARTO', maxZoom: 19 }).addTo(map);
-  const all = [];
-  T.days.forEach((d, di) => d.items.filter(i => i.lat).forEach(it => {
-    const m = L.marker([it.lat, it.lng], { icon: L.divIcon({ className: '', html: `<div class="pin"><span>${it.icon || '📍'}</span></div>`, iconSize: [30,30], iconAnchor: [15,30] }) })
-      .bindPopup(`<b>${esc(it.name)}</b><br>${fmt(d.date)} · ${esc(it.t || '')}<br><a target="_blank" href="${gmaps(it.lat, it.lng)}">ניווט</a>`);
-    (layers[di] ||= L.layerGroup().addTo(map)).addLayer(m); all.push([it.lat, it.lng]);
-  }));
-  T.hotels.filter(h => h.lat).forEach(h => L.marker([h.lat, h.lng], { icon: L.divIcon({ className: '', html: `<div class="pin" style="background:var(--danube)"><span>🏨</span></div>`, iconSize: [30,30], iconAnchor: [15,30] }) }).bindPopup(`<b>${esc(h.name)}</b>`).addTo(map));
-  const P = window.PLACES || [];
-  P.forEach(c => c.items.filter(i => i.lat).forEach(it => {
-    const m = L.marker([it.lat, it.lng], { icon: L.divIcon({ className: '', html: `<div class="pin" style="background:${it.rec ? 'var(--gold)' : 'var(--card2)'}"><span>${c.icon}</span></div>`, iconSize: [30,30], iconAnchor: [15,30] }) })
-      .bindPopup(`<b>${esc(it.name)}</b><br>${esc(c.title)}<br><a target="_blank" href="${placeUrl(it)}">ניווט</a>`);
-    (layers.pl ||= L.layerGroup().addTo(map)).addLayer(m); all.push([it.lat, it.lng]);
-  }));
-  if (all.length) map.fitBounds(all, { padding: [30, 30] });
-  const dayBtns = T.days.map((d, i) => d.items.some(x => x.lat) ? `<button data-d="${i}">${fmt(d.date)}</button>` : '').join('');
-  $('#legend').innerHTML = `<button class="on" data-d="all">הכל</button>` + (layers.pl ? `<button data-d="pl">📍 מקומות</button>` : '') + dayBtns;
-  $('#legend').onclick = e => {
-    const b = e.target.closest('button'); if (!b) return;
-    $('#legend').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
-    Object.entries(layers).forEach(([i, g]) => (b.dataset.d === 'all' || b.dataset.d === i) ? g.addTo(map) : g.remove());
-  };
+  if (mapReady) return; mapReady = true;
+  $('#legend').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; mapCat = b.dataset.d; renderMapList() };
+  $('#mapList').onclick = e => { const b = e.target.closest('.mp'); if (!b) return; const it = mapEntries().find(x => x.name === b.dataset.n); if (it) { showOnMap(it); scrollTo({ top: $('#p-map').offsetTop - 8, behavior: 'smooth' }) } };
+  showOnMap(mapEntries()[0]);
 }
 
 /* places */
@@ -363,6 +367,7 @@ function renderPlaces() {
           ${it.rec ? '<span class="badge rec">⭐ מומלץ</span>' : ''}
           ${it.type ? `<span class="badge t">${esc(it.type)}</span>` : ''}
           <a class="maplink" style="margin-top:0" target="_blank" rel="noopener" href="${placeUrl(it)}">📍 ניווט</a>
+          <button class="maplink" style="margin-top:0" data-map="${esc(it.name)}">🗺️ במפה</button>
         </div>
       </div>` }).join('');
   }).join('');
@@ -372,7 +377,10 @@ $('#plCats').onclick = e => { const b = e.target.closest('.chip'); if (!b) retur
 $('#plRec').onclick = () => { plRec = !plRec; renderPlaces() };
 $('#plFav').onclick = () => { plFav = !plFav; renderPlaces() };
 $('#plSearch').oninput = e => { plQ = e.target.value; renderPlaces() };
-$('#plList').onclick = e => { const b = e.target.closest('.fav'); if (!b) return; favs[b.dataset.k] = !favs[b.dataset.k]; store.set('favs', favs); renderPlaces() };
+$('#plList').onclick = e => {
+  const m = e.target.closest('[data-map]');
+  if (m) { go('map'); const it = mapEntries().find(x => x.name === m.dataset.map); if (it) showOnMap(it); return }
+  const b = e.target.closest('.fav'); if (!b) return; favs[b.dataset.k] = !favs[b.dataset.k]; store.set('favs', favs); renderPlaces() };
 renderPlaces();
 
 /* reels */
@@ -424,7 +432,7 @@ $('#nav').onclick = e => {
   const b = e.target.closest('button'); if (!b) return;
   document.querySelectorAll('#nav button').forEach(x => x.classList.toggle('on', x === b));
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('on', p.id === 'p-' + b.dataset.p));
-  if (b.dataset.p === 'map') setTimeout(initMap, 30);
+  if (b.dataset.p === 'map') initMap();
   if (b.dataset.p === 'reels' && !reelsLoaded) { reelsLoaded = true; renderReels() }
   scrollTo({ top: 0, behavior: 'smooth' });
 };
