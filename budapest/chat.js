@@ -199,7 +199,7 @@
 
   /* ── drawer ── */
   const openDrawer = () => { q = ''; $$('#dnQ').value = ''; renderHist(); root.classList.add('dn-open') };
-  const closeDrawer = () => root.classList.remove('dn-open');
+  const closeDrawer = () => { if (root.classList.contains('dn-open')) root.classList.remove('dn-open') }  // no-op when closed: the class observer below must not retrigger itself
 
   /* ── voice: speak instead of typing (where the browser supports it) ── */
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
