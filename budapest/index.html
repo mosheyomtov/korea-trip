@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>בודפשט</title>
+<script>try{const t=JSON.parse(localStorage.getItem('theme'));document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0..1,0&display=block" rel="stylesheet">
@@ -27,10 +28,22 @@
   --r-sm:10px;--r:16px;--r-lg:22px;--r-xl:28px;
   --ease:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.56,.64,1);
   --top:env(safe-area-inset-top,0px);--bot:env(safe-area-inset-bottom,0px);
+  --glass:rgba(255,255,255,.94);--on-ink:#fff;color-scheme:light;
 }
+:root[data-theme=dark]{
+  --bg:#0E0F14;--surface:#181A22;--surface-2:#22252F;--surface-3:#2B2E3A;--border:#2A2D38;--border-2:#3A3E4C;
+  --ink:#F2F3F7;--ink-2:#C9CBD8;--ink-3:#8E91A8;--ink-4:#5A5D70;
+  --brand:#5B8CFF;--brand-light:rgba(91,140,255,.16);--brand-dark:#3B6EF5;
+  --green-light:rgba(34,197,94,.13);--amber-light:rgba(245,158,11,.13);--rose-light:rgba(244,63,94,.16);--violet-light:rgba(139,92,246,.16);
+  --sh-sm:0 1px 3px rgba(0,0,0,.35);--sh-md:0 4px 16px rgba(0,0,0,.4);--sh-lg:0 16px 48px rgba(0,0,0,.5);
+  --glass:rgba(24,26,34,.92);--on-ink:#0E0F14;color-scheme:dark;
+}
+:root[data-theme=dark] .ai-btn{background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(59,110,245,.14))}
+:root[data-theme=dark] .p-green,:root[data-theme=dark] .ib-tip .info-lbl{color:#4ade80}
+:root[data-theme=dark] .p-amber{color:#fbbf24}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%}
-body{background:var(--bg);color:var(--ink);font-family:'Google Sans',system-ui,sans-serif;min-height:100%;-webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-user-select:none;user-select:none}
+html{height:100%;overscroll-behavior:none}
+body{background:var(--bg);color:var(--ink);font-family:'Google Sans',system-ui,sans-serif;min-height:100%;-webkit-font-smoothing:antialiased;overflow-x:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
 input,textarea{font:inherit;-webkit-user-select:text;user-select:text}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 a{color:inherit;text-decoration:none}
@@ -44,11 +57,11 @@ a{color:inherit;text-decoration:none}
 .wrap{max-width:640px;margin:0 auto;padding:0 20px}
 
 /* app bar (Journi) */
-.app-bar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:.5px solid rgba(60,60,67,.1);padding:calc(var(--top) + 10px) 0 10px}
+.app-bar{position:sticky;top:0;z-index:50;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:.5px solid var(--border);padding:calc(var(--top) + 10px) 0 10px}
 .app-bar .wrap{display:flex;align-items:center;gap:10px}
 .app-bar h1{font-size:20px;font-weight:700;letter-spacing:-.4px;flex:1}
 .app-bar h1 small{display:block;font-size:13px;font-weight:400;color:var(--ink-3);letter-spacing:0;margin-top:1px}
-.circle{width:40px;height:40px;border-radius:50%;background:var(--surface);box-shadow:0 2px 10px rgba(0,0,0,.12);display:grid;place-items:center;color:#1D1D1F;flex:0 0 auto;transition:transform .12s}
+.circle{width:40px;height:40px;border-radius:50%;background:var(--surface);box-shadow:0 2px 10px rgba(0,0,0,.12);display:grid;place-items:center;color:var(--ink);flex:0 0 auto;transition:transform .12s}
 .circle:active{transform:scale(.88)}
 .app-bar .circle{box-shadow:none;background:var(--surface-2)}
 
@@ -71,7 +84,7 @@ a{color:inherit;text-decoration:none}
 /* day pills (Journi) */
 .day-pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:6px 20px 8px;margin:0 -20px}
 .day-pills::-webkit-scrollbar{display:none}
-.day-pill{flex:0 0 auto;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;text-align:center;min-width:64px;transition:all .2s var(--spring)}
+.day-pill{flex:0 0 auto;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;text-align:center;min-width:64px;transition:all .2s var(--spring)}
 .day-pill:active{transform:scale(.94)}
 .day-pill .n{font-size:11px;color:var(--ink-4);display:block;font-weight:600}
 .day-pill .d{font-size:16px;font-weight:700;color:var(--ink);display:block;margin:2px 0}
@@ -104,8 +117,8 @@ a{color:inherit;text-decoration:none}
 .timeline::before{content:'';position:absolute;top:0;bottom:0;right:5px;width:2px;background:linear-gradient(180deg,var(--brand) 0%,rgba(59,110,245,.1) 100%);border-radius:2px}
 .tl-item{position:relative;margin-bottom:6px;animation:slideIn .35s var(--ease) backwards}
 @keyframes slideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
-.tl-dot{position:absolute;right:-26px;top:18px;width:12px;height:12px;border-radius:50%;background:#fff;border:2.5px solid var(--brand);box-shadow:0 0 0 3px rgba(59,110,245,.12);z-index:2}
-.tl-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;box-shadow:var(--sh-sm);transition:all .2s var(--ease)}
+.tl-dot{position:absolute;right:-26px;top:18px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2.5px solid var(--brand);box-shadow:0 0 0 3px rgba(59,110,245,.12);z-index:2}
+.tl-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;box-shadow:var(--sh-sm);transition:all .2s var(--ease)}
 .tl-card.open{border-color:rgba(59,110,245,.35);box-shadow:0 0 0 4px rgba(59,110,245,.06),var(--sh-sm)}
 .tl-top{display:flex;align-items:center;gap:10px}
 .tl-time{font-size:12px;font-weight:700;color:var(--brand);min-width:40px;font-variant-numeric:tabular-nums}
@@ -121,11 +134,11 @@ a{color:inherit;text-decoration:none}
 .act{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:99px;font-size:13px;font-weight:600;background:var(--brand-light);color:var(--brand)}
 .act .ms{font-size:17px}
 .act.ghost{background:var(--surface-2);color:var(--ink-2)}
-.act.dark{background:var(--ink);color:#fff}
+.act.dark{background:var(--ink);color:var(--on-ink)}
 .act.rose{background:var(--rose-light);color:var(--rose)}
 
 /* empty */
-.empty{text-align:center;padding:34px 20px;border:1.5px dashed var(--border-2);border-radius:var(--r-lg);color:var(--ink-3);font-size:13.5px;line-height:1.6;background:#fff}
+.empty{text-align:center;padding:34px 20px;border:1.5px dashed var(--border-2);border-radius:var(--r-lg);color:var(--ink-3);font-size:13.5px;line-height:1.6;background:var(--surface)}
 .empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:6px}
 .empty .ms{font-size:38px;color:var(--ink-4);margin-bottom:8px}
 
@@ -136,18 +149,18 @@ a{color:inherit;text-decoration:none}
 .p-violet{background:var(--violet-light);color:var(--violet)}.p-gray{background:var(--surface-2);color:var(--ink-3)}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 20px 6px;margin:0 -20px}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;padding:8px 14px;border-radius:99px;background:#fff;border:1.5px solid var(--border);font-size:13.5px;font-weight:500;white-space:nowrap}
-.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip{flex:0 0 auto;padding:8px 14px;border-radius:99px;background:var(--surface);border:1.5px solid var(--border);font-size:13.5px;font-weight:500;white-space:nowrap}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
 
 /* places */
-.search{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:0 14px;margin:16px 0 12px}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:0 14px;margin:16px 0 12px}
 .search input{flex:1;border:0;outline:0;background:none;padding:12px 0;font-size:15px;color:var(--ink)}
 .search .ms{color:var(--ink-3)}
 .filters{display:flex;gap:8px;margin:10px 0 4px;flex-wrap:wrap}
 .cat-h{display:flex;align-items:baseline;gap:8px;margin:24px 0 10px}
 .cat-h h3{font-size:17px;font-weight:700;letter-spacing:-.3px}
 .cat-h span{color:var(--ink-3);font-size:12.5px}
-.pl{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;box-shadow:var(--sh-sm);position:relative}
+.pl{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;box-shadow:var(--sh-sm);position:relative}
 .pl h4{font-size:15.5px;font-weight:600;padding-left:44px;line-height:1.35}
 .pl .en{direction:ltr;text-align:right;color:var(--ink-3);font-size:12px;margin-top:1px;padding-left:44px}
 .pl p{color:var(--ink-2);font-size:13.5px;line-height:1.6;margin-top:7px}
@@ -163,29 +176,69 @@ a{color:inherit;text-decoration:none}
 .th .src{position:absolute;bottom:4px;right:4px;z-index:1;font-size:9px;font-weight:700;background:rgba(0,0,0,.55);color:#fff;border-radius:6px;padding:1px 5px}
 .pending{background:var(--amber-light);border:1px solid rgba(245,158,11,.25);border-radius:var(--r);padding:12px 14px;margin-top:12px;font-size:13.5px}
 .pending .r{display:flex;gap:8px;margin-top:8px}
-.pending input{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;background:#fff;outline:0}
+.pending input{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;background:var(--surface);outline:0}
 
-/* MAP screen: full bleed, no frame */
-#s-map{padding:0;min-height:0}
-#mapWrap{position:fixed;inset:0;background:#e8eaf0}
-#gmap{width:100%;height:100%}
-#gmap iframe{width:100%;height:100%;border:0}
-.map-top{position:fixed;top:calc(var(--top) + 12px);left:12px;right:12px;z-index:40;display:flex;align-items:center;gap:8px;pointer-events:none}
-.map-top > *{pointer-events:auto}
-.seg{flex:1;display:flex;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:99px;padding:5px;box-shadow:0 4px 24px rgba(0,0,0,.14)}
+/* PLACES + MAP: one page; in map view the bar floats over a full-screen map */
+#s-map .app-bar .wrap:last-child{display:block}
+.tabs{display:flex;background:var(--surface-2);border-radius:99px;padding:4px;margin-top:10px}
+.tabs button{flex:1;padding:8px 6px;border-radius:99px;font-size:14px;font-weight:600;color:var(--ink-3);display:flex;align-items:center;justify-content:center;gap:5px;transition:.2s}
+.tabs button .ms{font-size:18px}
+.tabs button.on{background:var(--surface);color:var(--ink);box-shadow:var(--sh-sm)}
+body.mapmode #s-map{padding-bottom:0}
+body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
+.mapwrap{position:fixed;inset:0;background:var(--surface-3)}
+.gm{width:100%;height:100%}
+.gm iframe{width:100%;height:100%;border:0}
+.ctl{position:fixed;top:calc(var(--barH,124px) + 10px);left:0;right:0;z-index:39;padding:0 12px;pointer-events:none}
+.ctl > *{pointer-events:auto}
+.ctl .chips{margin:0;padding:2px 0 6px}
+.ctl .chip{box-shadow:0 2px 10px rgba(0,0,0,.12);border-color:transparent}
+.mini{display:inline-flex;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:99px;padding:4px;box-shadow:var(--sh-md);margin-bottom:8px}
+.mini button{display:flex;align-items:center;gap:4px;padding:7px 12px;border-radius:99px;font-size:12.5px;font-weight:600;color:var(--ink-3)}
+.mini button .ms{font-size:16px}
+.mini button.on{background:var(--brand);color:#fff}
+.fabs{position:fixed;left:14px;bottom:calc(96px + var(--bot));z-index:39;display:flex;flex-direction:column;gap:10px}
+.fabs .circle{width:46px;height:46px;background:var(--surface);box-shadow:var(--sh-md)}
+.fabs .circle.on{color:#1a73e8}
+.me{position:absolute;width:18px;height:18px;border-radius:50%;background:#1a73e8;border:3px solid #fff;box-shadow:0 0 0 7px rgba(26,115,232,.22);transform:translate(-50%,-50%);pointer-events:none;z-index:9}
+/* DISCOVER */
+#s-disc{padding:0;min-height:0}
+.disc-top{position:fixed;top:calc(var(--top) + 12px);left:12px;right:12px;z-index:60;display:flex;align-items:center;gap:8px}
+.disc-top .circle{background:var(--glass);box-shadow:0 4px 24px rgba(0,0,0,.14)}
+.globe-note{position:fixed;top:calc(var(--top) + 70px);left:50%;transform:translateX(-50%);z-index:39;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--ink-2);box-shadow:var(--sh-md);white-space:nowrap}
+.mk.seen{opacity:.55}
+.mk.seen .bub{border-color:var(--ink-4)}
+.feed{position:fixed;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;background:#000;overscroll-behavior:contain;scrollbar-width:none}
+.feed::-webkit-scrollbar{display:none}
+.slide{height:100vh;height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;overflow:hidden;background:#000}
+.slide .poster{position:absolute;inset:0;background:#000 center/cover no-repeat}
+.slide video,.slide iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0;background:transparent;pointer-events:none}
+.slide iframe.yt{height:calc(100% + 120px);top:-60px}
+.slide .ov{position:absolute;left:0;right:0;bottom:0;padding:90px 16px calc(100px + var(--bot)) 78px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff;pointer-events:none}
+.slide .ov h3{font-size:18px;font-weight:700;line-height:1.35;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.slide .ov p{font-size:13.5px;line-height:1.6;margin-top:6px;opacity:.92;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;pointer-events:auto}
+.slide .ov p.open{-webkit-line-clamp:unset}
+.slide .ov .where{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.slide .ov .where span{font-size:12px;font-weight:600;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border-radius:99px;padding:4px 10px}
+.slide .side{position:absolute;left:12px;bottom:calc(108px + var(--bot));z-index:3;display:flex;flex-direction:column;gap:14px;align-items:center}
+.slide .side > *{width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.38);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;display:grid;place-items:center}
+.slide .side .ms{font-size:26px}
+.slide .side .on{color:var(--rose);background:#fff}
+.slide .side .on .ms{font-variation-settings:'FILL' 1}
+.slide.end{display:grid;place-items:center;text-align:center;color:#fff;padding:30px}
+.slide.end .ms{font-size:52px;opacity:.7}
+.slide.end b{display:block;font-size:20px;margin:10px 0 6px}
+.slide.end p{opacity:.8;font-size:14px;line-height:1.6}
+.vacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.viewer .cap li .pa{margin-right:auto;flex:0 0 auto;align-self:center}
+.seg{flex:1;display:flex;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:99px;padding:5px;box-shadow:0 4px 24px rgba(0,0,0,.14)}
 .seg button{flex:1;padding:9px 6px;border-radius:99px;font-size:14px;font-weight:600;color:var(--ink-3);display:flex;align-items:center;justify-content:center;gap:5px;transition:.2s}
 .seg button .ms{font-size:18px}
 .seg button.on{background:var(--brand);color:#fff;box-shadow:0 4px 14px rgba(59,110,245,.35)}
-.map-chips{position:fixed;top:calc(var(--top) + 70px);left:0;right:0;z-index:39;padding:0 12px}
-.map-chips .chips{margin:0;padding:2px 0 6px}
-.map-chips .chip{box-shadow:0 2px 10px rgba(0,0,0,.1);border-color:transparent}
-.strip{position:fixed;left:0;right:0;bottom:calc(92px + var(--bot));z-index:38;display:flex;gap:10px;overflow-x:auto;padding:4px 12px;scrollbar-width:none}
-.strip::-webkit-scrollbar{display:none}
-.strip .th{width:84px;height:126px;border:2px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.2)}
 /* markers */
 .mk{position:absolute;transform:translate(-50%,-100%);cursor:pointer;transition:transform .2s var(--spring)}
 .mk:hover,.mk.sel{transform:translate(-50%,-100%) scale(1.15);z-index:5}
-.mk .pin{width:34px;height:34px;border-radius:50%;background:#fff;border:2px solid #1a1a2e;display:grid;place-items:center;font-size:16px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+.mk .pin{width:34px;height:34px;border-radius:50%;background:var(--surface);border:2px solid var(--ink);display:grid;place-items:center;font-size:16px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
 .mk.fv .pin{border-color:var(--rose);box-shadow:0 0 0 3px rgba(244,63,94,.25),0 3px 10px rgba(0,0,0,.25)}
 .mk.rl .pin{border-color:var(--brand)}
 .mk.hotel .pin{background:var(--brand);color:#fff;border-color:#fff}
@@ -196,7 +249,7 @@ a{color:inherit;text-decoration:none}
 /* bottom sheet */
 .sheet-bg{position:fixed;inset:0;z-index:300;background:rgba(13,14,20,.35);opacity:0;pointer-events:none;transition:opacity .25s}
 .sheet-bg.on{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:301;background:#fff;border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--sh-lg);max-height:86vh;overflow-y:auto;transform:translateY(105%);transition:transform .35s var(--ease);padding:8px 20px calc(24px + var(--bot))}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:301;background:var(--surface);border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--sh-lg);max-height:86vh;overflow-y:auto;transform:translateY(105%);transition:transform .35s var(--ease);padding:8px 20px calc(24px + var(--bot))}
 .sheet.on{transform:none}
 .sheet .grab{width:40px;height:5px;border-radius:3px;background:var(--border-2);margin:4px auto 14px}
 .sheet h3{font-size:20px;font-weight:700;letter-spacing:-.4px;line-height:1.3}
@@ -218,7 +271,7 @@ a{color:inherit;text-decoration:none}
 .viewer .stage{flex:1;position:relative;min-height:0}
 .viewer video,.viewer iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:contain;background:#000}
 .viewer .x{position:absolute;top:calc(var(--top) + 12px);left:12px;z-index:3;background:rgba(255,255,255,.92);color:#111}
-.viewer .cap{background:#fff;border-radius:var(--r-xl) var(--r-xl) 0 0;padding:16px 20px calc(16px + var(--bot));max-height:46vh;overflow-y:auto}
+.viewer .cap{background:var(--surface);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:16px 20px calc(16px + var(--bot));max-height:46vh;overflow-y:auto}
 .viewer .cap h3{font-size:18px;font-weight:700}
 .viewer .cap p{font-size:13.5px;color:var(--ink-2);line-height:1.7;margin-top:8px}
 .viewer .cap ul{list-style:none;margin-top:10px}
@@ -227,13 +280,13 @@ a{color:inherit;text-decoration:none}
 .viewer .cap li .ms{color:var(--brand);font-size:18px;margin-top:1px}
 
 /* info screen */
-.card{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh-sm);margin-bottom:10px}
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh-sm);margin-bottom:10px}
 .flight{display:flex;align-items:center;gap:12px;margin-top:8px}
 .flight .ap{font-size:24px;font-weight:700;letter-spacing:-.5px}
 .flight .ap small{display:block;font-size:12px;font-weight:500;color:var(--ink-3);letter-spacing:0}
 .flight .mid{flex:1;text-align:center;color:var(--ink-3);font-size:12px;position:relative}
 .flight .mid::before{content:'';position:absolute;top:50%;left:0;right:0;border-top:1.5px dashed var(--border-2)}
-.flight .mid span{position:relative;background:#fff;padding:0 8px}
+.flight .mid span{position:relative;background:var(--surface);padding:0 8px}
 .lbl{font-size:12px;color:var(--brand);font-weight:700}
 .chk{display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid var(--border);cursor:pointer;font-size:14.5px}
 .chk:last-child{border:0}
@@ -254,13 +307,13 @@ a{color:inherit;text-decoration:none}
 
 /* bottom nav pill (Journi) */
 .nav{position:fixed;left:0;right:0;bottom:calc(16px + var(--bot));z-index:200;display:flex;justify-content:center;pointer-events:none}
-.nav .in{pointer-events:auto;display:flex;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:999px;padding:6px;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,.14),0 1px 4px rgba(0,0,0,.08);border:1px solid rgba(255,255,255,.7)}
+.nav .in{pointer-events:auto;display:flex;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:999px;padding:6px;gap:2px;box-shadow:0 4px 24px rgba(0,0,0,.14),0 1px 4px rgba(0,0,0,.08);border:1px solid var(--border)}
 .nav button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 15px;border-radius:999px;font-size:11px;font-weight:600;color:var(--ink-3);transition:.2s var(--ease)}
 .nav button .ms{font-size:22px}
 .nav button.on{background:var(--brand);color:#fff;box-shadow:0 4px 14px rgba(59,110,245,.35)}
 .nav button.on .ms{font-variation-settings:'FILL' 1}
 
-.toast{position:fixed;left:16px;right:16px;bottom:calc(96px + var(--bot));z-index:500;max-width:520px;margin:0 auto;background:var(--ink);color:#fff;border-radius:14px;padding:13px 16px;font-size:14px;font-weight:500;box-shadow:var(--sh-lg);transform:translateY(20px);opacity:0;pointer-events:none;transition:.3s var(--ease)}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(96px + var(--bot));z-index:500;max-width:520px;margin:0 auto;background:var(--ink);color:var(--on-ink);border-radius:14px;padding:13px 16px;font-size:14px;font-weight:500;box-shadow:var(--sh-lg);transform:translateY(20px);opacity:0;pointer-events:none;transition:.3s var(--ease)}
 .toast.on{transform:none;opacity:1}
 </style>
 </head>
@@ -271,6 +324,7 @@ a{color:inherit;text-decoration:none}
   <div class="app-bar"><div class="wrap">
     <a href="../" class="circle" aria-label="כל הטיולים"><span class="ms">arrow_forward</span></a>
     <h1 id="tTitle"><small id="tDates"></small></h1>
+    <button class="circle theme" aria-label="מצב כהה"><span class="ms">dark_mode</span></button>
   </div></div>
   <div class="wrap">
     <div class="hero" id="hero"></div>
@@ -285,13 +339,18 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
-<!-- ═══ PLACES ═══ -->
-<section class="screen" id="s-places">
+<!-- ═══ PLACES + MAP (one page, list or map) ═══ -->
+<section class="screen" id="s-map">
   <div class="app-bar"><div class="wrap">
     <h1>המקומות שלנו<small id="plSub"></small></h1>
     <button class="circle" id="plAddReel" aria-label="הוספת ריל"><span class="ms">add_link</span></button>
-  </div></div>
-  <div class="wrap">
+    <button class="circle theme" aria-label="מצב כהה"><span class="ms">dark_mode</span></button>
+  </div>
+  <div class="wrap"><div class="tabs" id="viewSeg">
+    <button data-v="list" class="on"><span class="ms">view_list</span>רשימה</button>
+    <button data-v="map"><span class="ms">map</span>מפה</button>
+  </div></div></div>
+  <div class="wrap" id="listView">
     <div id="pendingBox"></div>
     <label class="search"><span class="ms">search</span><input id="plSearch" type="search" placeholder="חיפוש מקום, מסעדה, בר..."></label>
     <div class="chips" id="plCats"></div>
@@ -302,25 +361,39 @@ a{color:inherit;text-decoration:none}
     </div>
     <div id="plList"></div>
   </div>
+  <div id="mapView" hidden>
+    <div class="mapwrap"><div class="gm" id="gmap"></div></div>
+    <div class="ctl">
+      <div class="mini" id="pinSeg"><button data-p="reels"><span class="ms">smart_display</span>רילסים ששמרנו</button><button data-p="icons"><span class="ms">location_on</span>אייקונים</button></div>
+      <div class="chips" id="mapChips"></div>
+    </div>
+    <div class="fabs">
+      <button class="circle" id="mapLocate" aria-label="המיקום שלי"><span class="ms">my_location</span></button>
+      <button class="circle" id="mapFit" aria-label="כל המקומות"><span class="ms">zoom_out_map</span></button>
+    </div>
+  </div>
 </section>
 
-<!-- ═══ MAP (full screen) ═══ -->
-<section class="screen" id="s-map">
-  <div id="mapWrap"><div id="gmap"></div></div>
-  <div class="map-top">
-    <div class="seg" id="mapSeg">
-      <button data-m="mine" class="on"><span class="ms">favorite</span>המקומות שלי</button>
-      <button data-m="disc"><span class="ms">explore</span>גילוי</button>
+<!-- ═══ DISCOVER: globe of reels + reels feed ═══ -->
+<section class="screen" id="s-disc">
+  <div class="disc-top">
+    <div class="seg" id="discSeg">
+      <button data-d="globe" class="on"><span class="ms">public</span>גלובוס</button>
+      <button data-d="feed"><span class="ms">smart_display</span>רילסים</button>
     </div>
-    <button class="circle" id="mapFit" aria-label="כל בודפשט"><span class="ms">my_location</span></button>
+    <button class="circle theme" aria-label="מצב כהה"><span class="ms">dark_mode</span></button>
   </div>
-  <div class="map-chips"><div class="chips" id="mapChips"></div></div>
-  <div class="strip" id="strip"></div>
+  <div id="globeView">
+    <div class="mapwrap"><div class="gm" id="gglobe"></div></div>
+    <div class="globe-note" id="globeNote"></div>
+    <div class="fabs"><button class="circle" id="globeLocate" aria-label="המיקום שלי"><span class="ms">my_location</span></button></div>
+  </div>
+  <div id="feedView" hidden><div class="feed" id="feed"></div></div>
 </section>
 
 <!-- ═══ INFO ═══ -->
 <section class="screen" id="s-info">
-  <div class="app-bar"><div class="wrap"><h1>מידע<small>טיסות, מלון ורשימות</small></h1></div></div>
+  <div class="app-bar"><div class="wrap"><h1>מידע<small>טיסות, מלון ורשימות</small></h1><button class="circle theme" aria-label="מצב כהה"><span class="ms">dark_mode</span></button></div></div>
   <div class="wrap">
     <div class="sec"><h2>טיסות</h2></div><div id="flights"></div>
     <div class="sec"><h2>מלון</h2></div><div id="hotels"></div>
@@ -343,8 +416,8 @@ a{color:inherit;text-decoration:none}
 
 <nav class="nav"><div class="in" id="nav">
   <button data-s="info"><span class="ms">luggage</span>מידע</button>
-  <button data-s="map"><span class="ms">travel_explore</span>מפה</button>
-  <button data-s="places"><span class="ms">location_on</span>מקומות</button>
+  <button data-s="disc"><span class="ms">explore</span>גילוי</button>
+  <button data-s="map"><span class="ms">map</span>מפה</button>
   <button data-s="plan" class="on"><span class="ms">calendar_month</span>לו״ז</button>
 </div></nav>
 
@@ -388,42 +461,48 @@ async function loadServer() {
 
 /* ── places: the list in places.js + what the reels add ── */
 const CAT_MAP = { food: 'food', cafe: 'cafes', sight: 'sights', nature: 'sights', night: 'night', fun: 'fun', shop: 'shop', stay: 'fun', other: 'fun' };
+const catOf = c => (window.PLACES || []).some(x => x.id === c) ? c : (CAT_MAP[c] || 'fun');
 let favs = new Set(store.get('favs2', Object.entries(store.get('favs', {})).filter(([, v]) => v).map(([k]) => k)));
-let PL = [], DISC = [], GENERAL = [];
+let PL = [], GENERAL = [];
 const keyOf = it => it.key || it.en || it.name;
+const spotKey = s => 'reel:' + norm(s.name_local || s.name_he);
+const relevant = r => !(r.ai && r.ai.relevant === false);
 function near(a, b, m = 150) { return a.lat && b.lat && Math.hypot(a.lat - b.lat, (a.lng - b.lng) * 0.67) * 111000 < m }
-function sameName(it, s) {
+function sameName(it, s) {   // only the very same name counts (a place on the same street is not the same place)
   const a = norm(s.name_local || s.name_he); if (a.length < 4) return false;
-  return [it.en, it.name].some(n => { const b = norm(n); return b.length >= 4 && (b.includes(a) || a.includes(b)) });
+  return [it.en, it.name].some(n => norm(n) === a);
 }
 function rebuild() {
   PL = (window.PLACES || []).map(c => ({ ...c, items: c.items.map(it => ({ ...it, key: it.en || it.name, cat: c.id, reels: [] })) }));
   const all = () => PL.flatMap(c => c.items);
-  const mineExtra = Array.isArray(STATE.adds) ? STATE.adds : [];
-  // places they added from "discover"
-  for (const a of mineExtra) {
-    const c = PL.find(x => x.id === (CAT_MAP[a.category] || 'fun')) || PL[0];
+  const geo = store.get('geo', {});
+  all().forEach(it => { if (!it.lat && geo[it.key]) Object.assign(it, geo[it.key]) });
+  // places they added (from a reel)
+  for (const a of Array.isArray(STATE.adds) ? STATE.adds : []) {
+    const c = PL.find(x => x.id === catOf(a.category)) || PL[0];
     if (!all().some(it => it.key === a.key)) c.items.unshift({ key: a.key, name: a.name_he, en: a.name_local, desc: a.what_he || '', where: a.where_he, lat: a.lat, lng: a.lng, cat: c.id, reels: [], added: true });
   }
-  DISC = []; GENERAL = [];
+  GENERAL = [];
   for (const r of REELS) {
-    const spots = r.ai ? (r.ai.places || []) : (r.place ? [{ name_he: r.title, name_local: String(r.place).split(',')[0], lat: r.lat, lng: r.lng, category: r.cat }] : []);
+    if (!relevant(r)) continue;
+    const spots = r.ai ? (r.ai.places || []) : [];
     if (!spots.length) { GENERAL.push(r); continue }
+    const mine = r.trip === 'budapest', v2 = (r.ai?.v || 1) >= 2;
     for (const s of spots) {
-      const hit = (s.match && all().find(it => it.key === s.match)) || all().find(it => sameName(it, s) || (s.precise && near(it, s, 60)));
-      if (hit) { if (!hit.reels.some(x => x.r.id === r.id)) hit.reels.push({ r, note: s.what_he }); if (!hit.lat && s.lat && s.precise) { hit.lat = s.lat; hit.lng = s.lng } continue }
-      const key = 'reel:' + norm(s.name_local || s.name_he);
-      if (r.trip === 'budapest') {   // a reel they shared themselves: its places become theirs
-        const c = PL.find(x => x.id === (CAT_MAP[s.category] || 'fun')) || PL[0];
-        c.items.unshift({ key, name: s.name_he, en: s.name_local, desc: s.what_he || '', where: s.where_he, lat: s.lat, lng: s.lng, cat: c.id, reels: [{ r, note: s.what_he }], fromReel: true });
-        continue;
+      const hit = (s.match && all().find(it => it.key === s.match)) || all().find(it => sameName(it, s));
+      // a place's card only gets videos that are really about it, not every list video that names it
+      const about = mine || s.main || (v2 ? s.seen && spots.length <= 3 : spots.length <= 2);
+      if (hit) { if (about && !hit.reels.some(x => x.r.id === r.id)) hit.reels.push({ r, note: s.what_he, main: s.main || mine }); if (!hit.lat && s.lat && s.precise) { hit.lat = s.lat; hit.lng = s.lng } continue }
+      if (mine) {   // a reel they saved: its places become theirs
+        const key = spotKey(s), c = PL.find(x => x.id === catOf(s.category)) || PL[0];
+        const have = all().find(it => it.key === key);
+        if (have) { if (!have.reels.some(x => x.r.id === r.id)) have.reels.push({ r, note: s.what_he }) }
+        else c.items.unshift({ key, name: s.name_he, en: s.name_local, desc: s.what_he || '', where: s.where_he, lat: s.lat, lng: s.lng, cat: c.id, reels: [{ r, note: s.what_he, main: true }], fromReel: true });
       }
-      let d = DISC.find(x => x.key === key || near(x, s, 50));
-      if (!d) DISC.push(d = { key, name_he: s.name_he, name_local: s.name_local, what_he: s.what_he, where_he: s.where_he, lat: s.lat, lng: s.lng, category: s.category, reels: [] });
-      if (!d.reels.some(x => x.r.id === r.id)) d.reels.push({ r, note: s.what_he });
     }
   }
-  renderPlaces(); if (mapOn) drawMap();
+  all().forEach(it => it.reels.sort((a, b) => (b.r.trip === 'budapest') - (a.r.trip === 'budapest') || (b.main ? 1 : 0) - (a.main ? 1 : 0)));
+  renderPlaces(); redrawMaps(); feedMore();
 }
 
 /* ── hero + schedule ── */
@@ -485,8 +564,12 @@ renderPills(); renderDay();
 requestAnimationFrame(() => $('#dayPills .on')?.scrollIntoView({ inline: 'center', block: 'nearest' }));
 
 /* ── AI schedule ── */
-function sheet(html) { $('#sheetBody').innerHTML = html; $('#sheet').classList.add('on'); $('#sheetBg').classList.add('on'); $('#sheet').scrollTop = 0 }
-function closeSheet() { $('#sheet').classList.remove('on'); $('#sheetBg').classList.remove('on') }
+function sheet(html) {
+  const was = $('#sheet').classList.contains('on');
+  $('#sheetBody').innerHTML = html; $('#sheet').classList.add('on'); $('#sheetBg').classList.add('on'); if (!was) { $('#sheet').scrollTop = 0; pushLayer('sheet') }
+}
+function hideSheet() { $('#sheet').classList.remove('on'); $('#sheetBg').classList.remove('on'); sheetPlace = null }
+const closeSheet = () => closeLayer('sheet');
 $('#sheetBg').onclick = closeSheet;
 let draft = null;
 function planHtml(p, approved) {
@@ -502,7 +585,7 @@ async function makePlan() {
   const keys = [...favs];
   const base = new Set((window.PLACES || []).flatMap(c => c.items.map(it => it.en || it.name)));
   const extra = PL.flatMap(c => c.items).filter(it => favs.has(it.key) && !base.has(it.key)).map(it => ({ place: it.key, name: it.name, desc: it.desc, lat: it.lat, lng: it.lng }));
-  if (!keys.length) return sheet(`<h3>קודם מסמנים ♥</h3><p>בעמוד המקומות לוחצים על הלב בכל מקום שבא לכם. ה-AI יסדר רק אותם.</p><button class="big-btn" data-a="places">למקומות</button>`);
+  if (!keys.length) return sheet(`<h3>קודם מסמנים ♥</h3><p>בעמוד המפה (רשימה) או בגילוי לוחצים על הלב בכל מקום שבא לכם. ה-AI יסדר רק אותם.</p><button class="big-btn" data-a="places">למקומות</button>`);
   sheet(`<div class="spin"></div><h3 style="text-align:center">מסדר ${keys.length} מקומות…</h3><p style="text-align:center">בודק מרחקים, שעות פתיחה ושבת. זה לוקח בערך חצי דקה.</p>`);
   try {
     const f = T.flights || [];
@@ -517,7 +600,7 @@ $('#aiPlanBtn').onclick = () => STATE.plan?.approved ? sheet(planHtml(STATE.plan
 $('#sheet').addEventListener('click', async e => {
   const a = e.target.closest('[data-a]')?.dataset.a; if (!a) return;
   if (a === 'close') closeSheet();
-  if (a === 'places') { closeSheet(); go('places') }
+  if (a === 'places') { go('map'); setView('list') }
   if (a === 'again') makePlan();
   if (a === 'ok' && draft) {
     const p = { ...draft, approved: new Date().toISOString() };
@@ -572,53 +655,106 @@ document.addEventListener('click', e => {
   const rv = e.target.closest('[data-reel]');
   if (rv) { const r = REELS.find(x => x.id === rv.dataset.reel); if (r) openReel(r); return }
   const f = e.target.closest('[data-fav]');
-  if (f) { toggleFav(f.dataset.fav); renderPlaces(); if (mapOn) drawMap(); if ($('#sheet').classList.contains('on') && sheetPlace) openPlace(sheetPlace); return }
+  if (f) { toggleFav(f.dataset.fav); afterChange(); return }
   const m = e.target.closest('[data-onmap]');
-  if (m) { const p = placeByKey(m.dataset.onmap); closeSheet(); go('map'); mapMode = 'mine'; setSeg(); setTimeout(() => p && focusPlace(p), 400) }
+  if (m) { const p = placeByKey(m.dataset.onmap); go('map'); setView('map', p); return }
+  const sv = e.target.closest('[data-save]');
+  if (sv) { const r = REELS.find(x => x.id === sv.dataset.save); if (r) saveReel(r); return }
+  const ad = e.target.closest('[data-addspot]');
+  if (ad) { const [id, i] = ad.dataset.addspot.split('|'); const r = REELS.find(x => x.id === id); if (r) addSpot(r.ai.places[+i]); return }
+  if (e.target.closest('.theme')) { store.set('theme', isDark() ? 'light' : 'dark'); applyTheme() }
 });
+// after a heart or a save: everything that shows hearts
+function afterChange() {
+  renderPlaces(); redrawMaps(); feedHearts();
+  if ($('#sheet').classList.contains('on') && sheetPlace) openPlace(placeByKey(sheetPlace.key) || sheetPlace);
+  const vr = !$('#viewer').hidden && REELS.find(x => x.id === $('#viewer').dataset.id); if (vr) reelCaption(vr);
+}
+
+/* ── seen reels (on this phone): not shown again in the reels feed ── */
+let seen = new Set(store.get('seen', []));
+function markSeen(r) { if (seen.has(r.id)) return; seen.add(r.id); store.set('seen', [...seen].slice(-3000)); if (MAPS.globe) drawGlobe() }
+
+/* ── a reel joins the trip: its places go on the map and get a heart ── */
+const reelKeys = r => PL.flatMap(c => c.items).filter(it => it.reels.some(x => x.r.id === r.id)).map(it => it.key);
+function saveReel(r) {
+  const on = r.trip !== 'budapest';
+  if (!on) reelKeys(r).forEach(k => favs.delete(k));
+  r.trip = on ? 'budapest' : null; store.set('reels2', REELS); rebuild();
+  const keys = on ? reelKeys(r) : [];
+  keys.forEach(k => favs.add(k)); store.set('favs2', [...favs]);
+  say(on ? (keys.length ? `נשמר ♥ ${keys.length === 1 ? 'המקום נוסף' : keys.length + ' מקומות נוספו'} למקומות שלכם` : 'נשמר ♥') : 'הוסר מהמקומות שלכם');
+  if (RG_ON) { STATE.favs = [...favs]; api({ favs: [...favs] }).catch(() => {}); api({ id: r.id, save: on }).catch(() => say('לא הצלחתי לשמור בשרת, נסו שוב')) }
+  afterChange();
+}
+function addSpot(s) {
+  if (!s) return;
+  const key = spotKey(s);
+  const adds = (Array.isArray(STATE.adds) ? STATE.adds : []).filter(x => x.key !== key);
+  adds.push({ key, name_he: s.name_he, name_local: s.name_local, what_he: s.what_he, where_he: s.where_he, lat: s.lat, lng: s.lng, category: s.category });
+  STATE.adds = adds; store.set('state', STATE); favs.add(key); store.set('favs2', [...favs]);
+  if (RG_ON) { api({ adds }).catch(() => {}); STATE.favs = [...favs]; api({ favs: [...favs] }).catch(() => {}) }
+  rebuild(); afterChange(); say(`"${s.name_he}" נוסף למקומות שלכם ♥`);
+}
+// the place a reel is about: its main place, else the first one we can put on the map
+function reelPoint(r) {
+  const sp = [...(r.ai?.places || [])].sort((a, b) => (b.main ? 1 : 0) - (a.main ? 1 : 0));
+  for (const s of sp) {
+    const p = s.match && placeByKey(s.match); if (p?.lat) return { lat: p.lat, lng: p.lng };
+    if (s.lat && s.lat > 47.35 && s.lat < 47.65 && s.lng > 18.9 && s.lng < 19.35) return { lat: s.lat, lng: s.lng };
+  }
+  return r.precise ? { lat: r.lat, lng: r.lng } : null;
+}
+// Instagram file links from the hashtag search expire after about a day (oe= is the expiry, in hex seconds)
+function playable(r) {
+  if (r.source === 'youtube') return true;
+  if (!r.video) return false;
+  const oe = r.video.match(/[?&]oe=([0-9A-Fa-f]+)/); return !oe || parseInt(oe[1], 16) * 1000 > Date.now() + 6e5;
+}
 
 /* ── a reel: video + what the AI understood ── */
 function openReel(r) {
   const st = $('#vStage'); st.querySelectorAll('video,iframe').forEach(x => x.remove());
   let el;
   if (r.source === 'youtube') { el = document.createElement('iframe'); el.src = `https://www.youtube.com/embed/${r.code}?autoplay=1&playsinline=1&rel=0`; el.allow = 'autoplay; encrypted-media; fullscreen' }
-  else if (r.video) { el = document.createElement('video'); el.src = r.video; el.controls = true; el.playsInline = true; el.autoplay = true; if (r.thumb) el.poster = r.thumb }
+  else if (playable(r)) { el = document.createElement('video'); el.src = r.video; el.controls = true; el.playsInline = true; el.autoplay = true; if (r.thumb) el.poster = r.thumb }
   else { el = document.createElement('iframe'); el.src = `https://www.instagram.com/reel/${r.code}/embed/`; el.allow = 'autoplay; encrypted-media' }
   st.prepend(el);
-  const a = r.ai || {};
+  $('#viewer').dataset.id = r.id; reelCaption(r);
+  if ($('#viewer').hidden) { $('#viewer').hidden = false; pushLayer('viewer') }
+  markSeen(r);
+  if (RG_ON && !r.ai) api({ id: r.id }).then(o => { if (o.reel) { Object.assign(r, o.reel); if ($('#viewer').dataset.id === r.id) reelCaption(r); rebuild() } }).catch(() => {});
+}
+function reelCaption(r) {
+  const a = r.ai || {}, all = PL.flatMap(c => c.items), saved = r.trip === 'budapest';
   $('#vCap').innerHTML = `<h3>${esc(a.title_he || r.title || '')}</h3>
     ${a.summary_he ? `<p>${esc(a.summary_he)}</p>` : '<p style="color:var(--ink-3)">הניתוח של הסרטון עוד לא מוכן.</p>'}
-    ${(a.places || []).length ? `<ul>${a.places.map(p => `<li><span class="ms">location_on</span><div><b>${esc(p.name_he)}</b>${p.where_he ? ` · ${esc(p.where_he)}` : ''}<br>${esc(p.what_he || '')}</div></li>`).join('')}</ul>` : ''}
-    <div class="acts" style="margin-top:12px"><a class="act ghost" target="_blank" rel="noopener" href="${esc(r.url || '')}"><span class="ms">open_in_new</span>${r.source === 'youtube' ? 'ביוטיוב' : 'באינסטגרם'}</a></div>`;
-  $('#viewer').hidden = false;
-  if (RG_ON && !r.ai) api({ id: r.id }).then(o => { if (o.reel) { Object.assign(r, o.reel); if (!$('#viewer').hidden) openReel(r); rebuild() } }).catch(() => {});
+    ${(a.places || []).length ? `<ul>${a.places.map((s, i) => {
+      const p = (s.match && all.find(it => it.key === s.match)) || all.find(it => it.key === spotKey(s));
+      const btn = p ? `<button class="act ${favs.has(p.key) ? 'rose' : 'ghost'} pa" data-fav="${esc(p.key)}" style="padding:6px 10px"><span class="ms ${favs.has(p.key) ? 'fill' : ''}">favorite</span></button>`
+        : `<button class="act ghost pa" data-addspot="${esc(r.id)}|${i}" style="padding:6px 10px"><span class="ms">add</span></button>`;
+      return `<li><span class="ms">location_on</span><div style="flex:1"><b>${esc(s.name_he)}</b>${s.where_he ? ` · ${esc(s.where_he)}` : ''}<br>${esc(s.what_he || '')}</div>${btn}</li>`;
+    }).join('')}</ul>` : ''}
+    <div class="vacts"><button class="act ${saved ? 'rose' : ''}" data-save="${esc(r.id)}"><span class="ms ${saved ? 'fill' : ''}">favorite</span>${saved ? 'שמור במקומות שלנו' : 'לשמור את הריל'}</button>
+      <a class="act ghost" target="_blank" rel="noopener" href="${esc(r.url || '')}"><span class="ms">open_in_new</span>${r.source === 'youtube' ? 'ביוטיוב' : 'באינסטגרם'}</a></div>`;
 }
-$('#vX').onclick = () => { $('#vStage').querySelectorAll('video,iframe').forEach(x => x.remove()); $('#viewer').hidden = true };
+function hideViewer() { $('#vStage').querySelectorAll('video,iframe').forEach(x => x.remove()); $('#viewer').hidden = true; delete $('#viewer').dataset.id }
+$('#vX').onclick = () => closeLayer('viewer');
 
 /* ── a place card (sheet) ── */
 let sheetPlace = null;
 function openPlace(p) {
   sheetPlace = p;
-  const disc = !p.cat && !p.items, k = p.key, notes = [...new Set((p.reels || []).map(x => x.note).filter(n => n && n !== (p.desc || p.what_he)))].map(note => ({ note }));
-  sheet(`<h3>${esc(p.name || p.name_he)}</h3><div class="sub">${esc(p.en || p.name_local || '')}${p.where || p.where_he ? ' · ' + esc(p.where || p.where_he) : ''}</div>
-    ${p.desc || p.what_he ? `<p>${esc(p.desc || p.what_he)}</p>` : ''}
-    ${notes.length ? `<div class="info-block ib-ai" style="margin-top:12px"><div class="info-lbl"><span class="ms fill">auto_awesome</span>מה אומרים בסרטונים</div>${notes.slice(0, 3).map(x => esc(x.note)).join('<br>')}</div>` : ''}
+  const k = p.key, notes = [...new Set((p.reels || []).map(x => x.note).filter(n => n && n !== p.desc))];
+  sheet(`<h3>${esc(p.name)}</h3><div class="sub">${esc(p.en || '')}${p.where ? ' · ' + esc(p.where) : ''}</div>
+    ${p.desc ? `<p>${esc(p.desc)}</p>` : ''}
+    ${notes.length ? `<div class="info-block ib-ai" style="margin-top:12px"><div class="info-lbl"><span class="ms fill">auto_awesome</span>מה אומרים בסרטונים</div>${notes.slice(0, 3).map(esc).join('<br>')}</div>` : ''}
     ${(p.reels || []).length ? `<div class="reel-row">${p.reels.map(x => thHtml(x.r)).join('')}</div>` : ''}
     <div class="acts">
-      <a class="act" target="_blank" rel="noopener" href="${gmapsUrl(p.lat, p.lng, p.en || p.name_local || p.name)}"><span class="ms">near_me</span>ניווט בגוגל מפות</a>
-      ${disc ? `<button class="act dark" data-add="${esc(k)}"><span class="ms">add</span>להוסיף למקומות שלי</button>`
-        : `<button class="act ${favs.has(k) ? 'rose' : 'ghost'}" data-fav="${esc(k)}"><span class="ms ${favs.has(k) ? 'fill' : ''}">favorite</span>${favs.has(k) ? 'שמרנו' : 'לשמור'}</button>`}
+      <a class="act" target="_blank" rel="noopener" href="${gmapsUrl(p.lat, p.lng, p.en || p.name)}"><span class="ms">near_me</span>ניווט בגוגל מפות</a>
+      ${p.hotel ? '' : `<button class="act ${favs.has(k) ? 'rose' : 'ghost'}" data-fav="${esc(k)}"><span class="ms ${favs.has(k) ? 'fill' : ''}">favorite</span>${favs.has(k) ? 'שמרנו' : 'לשמור'}</button>`}
     </div>`);
 }
-$('#sheet').addEventListener('click', e => {
-  const b = e.target.closest('[data-add]'); if (!b) return;
-  const d = DISC.find(x => x.key === b.dataset.add); if (!d) return;
-  const adds = (Array.isArray(STATE.adds) ? STATE.adds : []).filter(x => x.key !== d.key);
-  adds.push({ key: d.key, name_he: d.name_he, name_local: d.name_local, what_he: d.what_he, where_he: d.where_he, lat: d.lat, lng: d.lng, category: d.category });
-  STATE.adds = adds; store.set('state', STATE); favs.add(d.key); store.set('favs2', [...favs]);
-  if (RG_ON) { api({ adds }).catch(() => {}); api({ favs: [...favs] }).catch(() => {}) }
-  closeSheet(); rebuild(); say(`"${d.name_he}" נוסף למקומות שלכם ♥`);
-});
 
 /* ── shared reels: saved in the background ── */
 async function shareLink(link) {
@@ -648,101 +784,291 @@ $('#pendingBox').onclick = async e => {
 };
 { // opened from the share menu on an old install: hand the link over and stay out of the way
   const sp = new URLSearchParams(location.search), link = [sp.get('url'), sp.get('text'), sp.get('title')].join(' ').match(/https?:\/\/(?:www\.)?instagram\.com\/\S+/)?.[0];
-  if (link) { history.replaceState(null, '', location.pathname); shareLink(link) }
+  if (link) { history.replaceState({ s: 'plan', l: [], d: 0 }, '', location.pathname); shareLink(link) }
 }
 
-/* ── MAP: full screen, only Budapest ── */
-let mapOn = false, mapMode = 'mine', mapCat = 'all', GM = null, overlays = [], selKey = null;
+/* ── theme ── */
+const sysDark = matchMedia('(prefers-color-scheme: dark)');
+const isDark = () => (store.get('theme', null) || (sysDark.matches ? 'dark' : 'light')) === 'dark';
+const MAP_LIGHT = [{ featureType: 'poi', stylers: [{ visibility: 'off' }] }, { featureType: 'transit', elementType: 'labels.icon', stylers: [{ visibility: 'simplified' }] },
+  { elementType: 'geometry', stylers: [{ saturation: -35 }, { lightness: 8 }] }, { featureType: 'water', stylers: [{ color: '#c9dcf7' }] }];
+const MAP_DARK = [{ elementType: 'geometry', stylers: [{ color: '#1d2028' }] }, { elementType: 'labels.text.fill', stylers: [{ color: '#8e91a8' }] }, { elementType: 'labels.text.stroke', stylers: [{ color: '#14161c' }] },
+  { featureType: 'poi', stylers: [{ visibility: 'off' }] }, { featureType: 'transit', elementType: 'labels.icon', stylers: [{ visibility: 'simplified' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2c303b' }] }, { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#1d2028' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3a3f4d' }] }, { featureType: 'landscape.man_made', elementType: 'geometry', stylers: [{ color: '#23262f' }] },
+  { featureType: 'water', stylers: [{ color: '#0e2236' }] }, { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#3a3e4c' }] }];
+const mapStyle = () => isDark() ? MAP_DARK : MAP_LIGHT;
+function applyTheme() {
+  const d = isDark(); document.documentElement.dataset.theme = d ? 'dark' : 'light';
+  document.querySelector('meta[name=theme-color]').content = d ? '#0E0F14' : '#F7F8FA';
+  document.querySelectorAll('.theme .ms').forEach(x => x.textContent = d ? 'light_mode' : 'dark_mode');
+  Object.values(MAPS).forEach(m => m.gm.setOptions({ styles: mapStyle() }));
+}
+sysDark.addEventListener?.('change', applyTheme);
+
+/* ── Google Maps (two maps: our places, and the discover globe) ── */
+let HtmlMarker, gmP = null;
+const MAPS = {};
+function loadGM() {
+  return gmP ||= new Promise((ok, no) => {
+    if (!T.googleMapsKey) return no(new Error('no key'));
+    window.__gm = () => {
+      HtmlMarker = class extends google.maps.OverlayView {
+        constructor(gm, pt, div) { super(); this.pt = pt; this.div = div; this.setMap(gm) }
+        onAdd() { this.getPanes().overlayMouseTarget.appendChild(this.div) }
+        draw() { const p = this.getProjection()?.fromLatLngToDivPixel(new google.maps.LatLng(this.pt.lat, this.pt.lng)); if (p) { this.div.style.left = p.x + 'px'; this.div.style.top = p.y + 'px' } }
+        onRemove() { this.div.remove() }
+      };
+      ok();
+    };
+    const sc = document.createElement('script');
+    sc.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(T.googleMapsKey)}&language=iw&region=HU&callback=__gm`;
+    sc.async = true; sc.onerror = no; document.head.appendChild(sc);
+  });
+}
+async function getMap(id, el) {
+  if (MAPS[id]) return MAPS[id];
+  await loadGM();
+  if (MAPS[id]) return MAPS[id];
+  const gm = new google.maps.Map(el, {
+    center: { lat: T.center[0], lng: T.center[1] }, zoom: 13, disableDefaultUI: true, gestureHandling: 'greedy', clickableIcons: false,
+    restriction: { latLngBounds: { north: 47.75, south: 47.25, east: 19.45, west: 18.75 }, strictBounds: false }, minZoom: 11, styles: mapStyle(),
+  });
+  gm.addListener('click', () => { selKey = null; if ($('#sheet').classList.contains('on')) closeSheet() });
+  MAPS[id] = { gm, ov: [], me: null };
+  drawMe(MAPS[id]);
+  return MAPS[id];
+}
+function setMarkers(m, list) { m.ov.forEach(o => o.setMap(null)); m.ov = list.map(([pt, div]) => new HtmlMarker(m.gm, pt, div)) }
+function fitTo(m, pts, pad) {
+  if (!pts.length) return m.gm.setCenter({ lat: T.center[0], lng: T.center[1] });
+  const b = new google.maps.LatLngBounds(); pts.forEach(p => b.extend({ lat: p.lat, lng: p.lng })); m.gm.fitBounds(b, pad);
+}
+const bub = (r, extra = '') => { const t = thumb(r); return `<div class="bub" style="${t ? `background-image:url('${esc(t)}')` : ''}">${t ? '' : r.video && playable(r) ? `<video muted playsinline preload="metadata" src="${esc(r.video)}#t=0.5"></video>` : '🎬'}</div>${extra}` };
+function redrawMaps() { if (MAPS.mine) drawMine(); if (MAPS.globe) drawGlobe() }
+
+/* ── our places on the map: reels we saved, or icons ── */
+let view = 'list', pinStyle = store.get('pinStyle', 'reels'), mapCat = 'all', selKey = null;
 const CAT_ICON = Object.fromEntries((window.PLACES || []).map(c => [c.id, c.icon]));
-const DCAT = { food: '🍽️', cafe: '☕', sight: '🏛️', nature: '🌳', night: '🍸', fun: '🎡', shop: '🛍️', stay: '🏨', other: '📍' };
-function setSeg() { document.querySelectorAll('#mapSeg button').forEach(b => b.classList.toggle('on', b.dataset.m === mapMode)) }
-$('#mapSeg').onclick = e => { const b = e.target.closest('button'); if (!b) return; mapMode = b.dataset.m; mapCat = 'all'; setSeg(); drawMap(); fitAll() };
-$('#mapChips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; mapCat = b.dataset.c; drawMap() };
-$('#mapFit').onclick = () => fitAll();
-function mapItems() {
-  if (mapMode === 'mine') {
-    const hotel = T.hotels.map(h => ({ key: 'hotel', name: h.name, en: h.addr, lat: h.lat, lng: h.lng, hotel: true, reels: [] }));
-    return [...hotel, ...PL.flatMap(c => c.items).filter(it => it.lat && (mapCat === 'all' ? true : mapCat === 'fav' ? favs.has(it.key) : it.cat === mapCat))];
-  }
-  return DISC.filter(d => d.lat && (mapCat === 'all' || d.category === mapCat));
+function setView(v, focus) {
+  view = v;
+  document.querySelectorAll('#viewSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  $('#listView').hidden = v !== 'list'; $('#mapView').hidden = v !== 'map';
+  document.body.classList.toggle('mapmode', v === 'map');
+  if (v === 'map') { document.documentElement.style.setProperty('--barH', $('#s-map .app-bar').offsetHeight + 'px'); openMine(focus) } else scrollTo({ top: 0 });
 }
-function drawChips() {
-  $('#mapChips').innerHTML = mapMode === 'mine'
-    ? [['all', 'הכל'], ['fav', '♥ שמרנו'], ...PL.map(c => [c.id, `${c.icon} ${c.title}`])].map(([id, t]) => `<button class="chip ${mapCat === id ? 'on' : ''}" data-c="${id}">${esc(t)}</button>`).join('')
-    : [['all', `הכל · ${DISC.length}`], ...[...new Set(DISC.map(d => d.category))].map(c => [c, `${DCAT[c] || '📍'} ${({ food: 'אוכל', cafe: 'קפה', sight: 'אתרים', nature: 'טבע', night: 'לילה', fun: 'חוויות', shop: 'קניות', stay: 'לינה', other: 'עוד' })[c] || c}`])].map(([id, t]) => `<button class="chip ${mapCat === id ? 'on' : ''}" data-c="${id}">${esc(t)}</button>`).join('');
-  const reels = mapMode === 'disc' ? [...new Set([...DISC.flatMap(d => d.reels.map(x => x.r)), ...GENERAL])] : [];
-  $('#strip').innerHTML = reels.slice(0, 80).map(r => thHtml(r)).join('');
+$('#viewSeg').onclick = e => { const b = e.target.closest('button'); if (b) setView(b.dataset.v) };
+$('#pinSeg').onclick = e => { const b = e.target.closest('button'); if (!b) return; pinStyle = b.dataset.p; store.set('pinStyle', pinStyle); drawMine() };
+$('#mapChips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; mapCat = b.dataset.c; drawMine() };
+$('#mapFit').onclick = () => MAPS.mine && fitTo(MAPS.mine, mineItems(), { top: 200, bottom: 110, left: 30, right: 30 });
+async function openMine(focus) {
+  try {
+    const first = !MAPS.mine, m = await getMap('mine', $('#gmap'));
+    drawMine();
+    if (first) { geocodeMissing(); fitTo(m, mineItems(), { top: 200, bottom: 110, left: 30, right: 30 }) }
+    if (focus?.lat) { selKey = focus.key; m.gm.panTo({ lat: focus.lat, lng: focus.lng }); m.gm.setZoom(16); drawMine(); openPlace(focus) }
+  } catch { drawFallback(focus) }
 }
-function drawMap() {
-  drawChips();
-  if (!GM) return drawFallback();
-  overlays.forEach(o => o.setMap(null)); overlays = [];
-  for (const it of mapItems()) {
-    const div = document.createElement('div');
-    const r0 = it.reels?.[0]?.r, t = r0 && thumb(r0);
-    if (mapMode === 'disc') {
-      div.className = 'mk';
-      div.innerHTML = `<div class="bub" style="${t ? `background-image:url('${esc(t)}')` : ''}">${t ? '' : r0?.video ? `<video muted playsinline preload="metadata" src="${esc(r0.video)}#t=0.5"></video>` : DCAT[it.category] || '📍'}</div>${it.reels.length > 1 ? `<span class="n">${it.reels.length}</span>` : ''}`;
-    } else {
+function mineItems() {
+  const hotel = T.hotels.map(h => ({ key: 'hotel', name: h.name, en: h.addr, lat: h.lat, lng: h.lng, hotel: true, reels: [] }));
+  return [...hotel, ...PL.flatMap(c => c.items).filter(it => it.lat && (mapCat === 'all' ? true : mapCat === 'fav' ? favs.has(it.key) : mapCat === 'vid' ? it.reels.length : it.cat === mapCat))];
+}
+function drawMine() {
+  document.querySelectorAll('#pinSeg button').forEach(b => b.classList.toggle('on', b.dataset.p === pinStyle));
+  $('#mapChips').innerHTML = [['all', 'הכל'], ['fav', '♥ שמרנו'], ['vid', '🎬 עם סרטון'], ...PL.map(c => [c.id, `${c.icon} ${c.title}`])].map(([id, t]) => `<button class="chip ${mapCat === id ? 'on' : ''}" data-c="${id}">${esc(t)}</button>`).join('');
+  const m = MAPS.mine; if (!m) return;
+  setMarkers(m, mineItems().map(it => {
+    const div = document.createElement('div'), r0 = it.reels[0]?.r;
+    if (pinStyle === 'reels' && r0) { div.className = `mk ${favs.has(it.key) ? 'fv' : ''}`; div.innerHTML = bub(r0, it.reels.length > 1 ? `<span class="n">${it.reels.length}</span>` : '') }
+    else {
       div.className = `mk ${it.hotel ? 'hotel' : ''} ${favs.has(it.key) ? 'fv' : ''} ${it.reels.length ? 'rl' : ''}`;
       div.innerHTML = `<div class="pin">${it.hotel ? '<span class="ms fill" style="font-size:18px">hotel</span>' : CAT_ICON[it.cat] || '📍'}</div>${it.reels.length ? `<span class="n" style="background:var(--brand)">${it.reels.length}</span>` : ''}`;
     }
     if (it.key === selKey) div.classList.add('sel');
-    div.onclick = ev => { ev.stopPropagation(); selKey = it.key; if (!it.hotel) openPlace(it) };
-    overlays.push(new HtmlMarker(it, div));
-  }
-}
-function fitAll() {
-  if (!GM) return;
-  const pts = mapItems(); if (!pts.length) return GM.setCenter({ lat: T.center[0], lng: T.center[1] });
-  const b = new google.maps.LatLngBounds(); pts.forEach(p => b.extend({ lat: p.lat, lng: p.lng }));
-  GM.fitBounds(b, { top: 130, bottom: mapMode === 'disc' ? 240 : 110, left: 30, right: 30 });
-}
-function focusPlace(p) { if (!p) return; selKey = p.key; if (GM && p.lat) { GM.panTo({ lat: p.lat, lng: p.lng }); GM.setZoom(16); drawMap() } else if (!GM) drawFallback(p); openPlace(p) }
-let HtmlMarker;
-function initMap() {
-  if (mapOn) return; mapOn = true;
-  if (!T.googleMapsKey) { drawMap(); return }
-  window.__gm = () => {
-    HtmlMarker = class extends google.maps.OverlayView {
-      constructor(it, div) { super(); this.it = it; this.div = div; this.setMap(GM) }
-      onAdd() { this.getPanes().overlayMouseTarget.appendChild(this.div) }
-      draw() { const p = this.getProjection().fromLatLngToDivPixel(new google.maps.LatLng(this.it.lat, this.it.lng)); if (p) { this.div.style.left = p.x + 'px'; this.div.style.top = p.y + 'px' } }
-      onRemove() { this.div.remove() }
-    };
-    GM = new google.maps.Map($('#gmap'), {
-      center: { lat: T.center[0], lng: T.center[1] }, zoom: 13, disableDefaultUI: true, gestureHandling: 'greedy', clickableIcons: false,
-      restriction: { latLngBounds: { north: 47.75, south: 47.25, east: 19.45, west: 18.75 }, strictBounds: false }, minZoom: 11,
-      styles: [{ featureType: 'poi', stylers: [{ visibility: 'off' }] }, { featureType: 'transit', elementType: 'labels.icon', stylers: [{ visibility: 'simplified' }] },
-        { elementType: 'geometry', stylers: [{ saturation: -35 }, { lightness: 8 }] }, { featureType: 'water', stylers: [{ color: '#c9dcf7' }] }],
-    });
-    GM.addListener('click', () => { selKey = null; closeSheet() });
-    geocodeMissing(); drawMap(); fitAll();
-  };
-  const sc = document.createElement('script');
-  sc.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(T.googleMapsKey)}&language=iw&region=HU&callback=__gm`;
-  sc.async = true; sc.onerror = () => drawMap(); document.head.appendChild(sc);
+    div.onclick = ev => { ev.stopPropagation(); selKey = it.key; openPlace(it) };
+    return [it, div];
+  }));
 }
 // places in places.js without coordinates: looked up once, remembered on this phone
 function geocodeMissing() {
   const cache = store.get('geo', {}), g = new google.maps.Geocoder();
-  const todo = PL.flatMap(c => c.items).filter(it => !it.lat);
-  todo.forEach(it => { if (cache[it.key]) Object.assign(it, cache[it.key]) });
-  const left = todo.filter(it => !it.lat);
+  const left = PL.flatMap(c => c.items).filter(it => !it.lat && !cache[it.key] && !it.fromReel && !it.added);
   const next = () => {
-    const it = left.shift(); if (!it) return drawMap();
+    const it = left.shift(); if (!it) return rebuild();
     g.geocode({ address: it.en || it.name, bounds: { north: 47.62, south: 47.40, east: 19.25, west: 18.92 } }, (r, st) => {
-      if (st === 'OK' && r[0]) { const l = r[0].geometry.location; cache[it.key] = { lat: l.lat(), lng: l.lng() }; store.set('geo', cache); Object.assign(it, cache[it.key]) }
+      if (st === 'OK' && r[0]) { const l = r[0].geometry.location; cache[it.key] = { lat: l.lat(), lng: l.lng() }; store.set('geo', cache) }
       setTimeout(next, 150);
     });
   };
   next();
-  const orig = rebuild; rebuild = () => { orig(); PL.flatMap(c => c.items).forEach(it => { if (!it.lat && cache[it.key]) Object.assign(it, cache[it.key]) }); if (mapOn) drawMap() };
 }
-// without a Maps key: a plain Google map of one place at a time
 function drawFallback(p) {
-  const it = p || mapItems()[0];
+  const it = p || mineItems()[0];
   $('#gmap').innerHTML = `<iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=${encodeURIComponent(it ? (it.lat ? `${it.lat},${it.lng}` : it.en || it.name) : 'Budapest')}&hl=iw&z=15&output=embed"></iframe>`;
+}
+
+/* ── where we are now (blue dot) ── */
+let ME = null, watchId = null, onFix = null;
+function drawMe(m) {
+  if (!ME || !m) return;
+  if (!m.me) { const d = document.createElement('div'); d.className = 'me'; m.me = new HtmlMarker(m.gm, ME, d) } else { m.me.pt = ME; m.me.draw() }
+}
+const inCity = p => p.lat > 47.25 && p.lat < 47.75 && p.lng > 18.75 && p.lng < 19.45;
+function watchMe() {
+  if (watchId !== null || !navigator.geolocation) return;
+  watchId = navigator.geolocation.watchPosition(p => {
+    ME = { lat: p.coords.latitude, lng: p.coords.longitude }; Object.values(MAPS).forEach(drawMe);
+    document.querySelectorAll('#mapLocate,#globeLocate').forEach(b => b.classList.add('on'));
+    if (onFix) { const f = onFix; onFix = null; f() }
+  }, () => { watchId = null; onFix = null; say('לא קיבלתי מיקום. צריך לאשר לאפליקציה גישה למיקום') }, { enableHighAccuracy: true, maximumAge: 15000, timeout: 20000 });
+}
+function locate(id) {
+  if (!navigator.geolocation) return say('אין גישה למיקום במכשיר הזה');
+  const pan = () => { const m = MAPS[id]; if (!m) return; if (!inCity(ME)) return say('אתם עוד לא בבודפשט. הנקודה הכחולה תופיע כשתגיעו'); m.gm.panTo(ME); m.gm.setZoom(16) };
+  if (ME) return pan();
+  onFix = pan; watchMe(); say('מחפש את המיקום שלכם…', 3000);
+}
+$('#mapLocate').onclick = () => locate('mine');
+$('#globeLocate').onclick = () => locate('globe');
+navigator.permissions?.query({ name: 'geolocation' }).then(s => { if (s.state === 'granted') watchMe() }).catch(() => {});
+
+/* ── DISCOVER: the globe (one pin per video, at the place it is about) ── */
+let discTab = 'globe';
+function setDisc(t) {
+  discTab = t;
+  document.querySelectorAll('#discSeg button').forEach(b => b.classList.toggle('on', b.dataset.d === t));
+  $('#globeView').hidden = t !== 'globe'; $('#feedView').hidden = t !== 'feed';
+  if (t === 'globe') { feedStop(); openGlobe() } else feedStart();
+}
+$('#discSeg').onclick = e => { const b = e.target.closest('button'); if (b) setDisc(b.dataset.d) };
+const globeReels = () => REELS.filter(r => relevant(r) && r.ai);
+async function openGlobe(focus) {
+  try {
+    const first = !MAPS.globe, m = await getMap('globe', $('#gglobe'));
+    drawGlobe();
+    if (first) m.gm.setZoom(13);
+    if (focus) { m.gm.panTo(focus); m.gm.setZoom(16) }
+  } catch {}
+}
+function drawGlobe() {
+  const list = globeReels(), fresh = list.filter(r => !seen.has(r.id)).length;
+  $('#globeNote').textContent = `${list.length} סרטונים מבודפשט · ${fresh} עוד לא ראיתם`;
+  const m = MAPS.globe; if (!m) return;
+  const at = {};
+  setMarkers(m, list.map(r => {
+    let pt = reelPoint(r); if (!pt) return null;
+    const k = pt.lat.toFixed(4) + ',' + pt.lng.toFixed(4), i = at[k] = (at[k] ?? -1) + 1;   // a few videos of one place: spread around it
+    if (i) pt = { lat: pt.lat + Math.sin(i * 2.4) * 0.00045 * Math.sqrt(i), lng: pt.lng + Math.cos(i * 2.4) * 0.00065 * Math.sqrt(i) };
+    const div = document.createElement('div'); div.className = `mk ${seen.has(r.id) ? 'seen' : ''} ${r.trip === 'budapest' ? 'fv' : ''}`;
+    div.innerHTML = bub(r);
+    div.onclick = ev => { ev.stopPropagation(); openReel(r) };
+    return [pt, div];
+  }).filter(Boolean));
+}
+
+/* ── DISCOVER: reels, one after the other, only ones not seen yet ── */
+let FEED = [], feedObs = null, feedCur = null, muted = true, seenT = null;
+const feedable = r => relevant(r) && !seen.has(r.id) && r.trip !== 'budapest' && playable(r);
+function feedSlide(r) {
+  const a = r.ai || {}, t = thumb(r), pt = reelPoint(r);
+  const names = (a.places || []).slice(0, 4).map(s => `<span>📍 ${esc(s.name_he)}</span>`).join('');
+  return `<div class="slide" data-id="${esc(r.id)}">
+    <div class="poster" style="${t ? `background-image:url('${esc(t)}')` : ''}"></div><div class="media"></div>
+    <div class="ov"><h3>${esc(a.title_he || r.title || '')}</h3>${a.summary_he ? `<p>${esc(a.summary_he)}</p>` : ''}${names ? `<div class="where">${names}</div>` : ''}</div>
+    <div class="side">
+      <button data-fl="save" class="${r.trip === 'budapest' ? 'on' : ''}" aria-label="שמירה"><span class="ms">favorite</span></button>
+      ${pt ? `<button data-fl="map" aria-label="על המפה"><span class="ms">location_on</span></button><a href="${gmapsUrl(pt.lat, pt.lng)}" target="_blank" rel="noopener" aria-label="ניווט"><span class="ms">near_me</span></a>` : ''}
+      <button data-fl="mute" aria-label="קול"><span class="ms">${muted ? 'volume_off' : 'volume_up'}</span></button>
+      <a href="${esc(r.url || '')}" target="_blank" rel="noopener" aria-label="פתיחה"><span class="ms">open_in_new</span></a>
+    </div></div>`;
+}
+const END = `<div class="slide end" id="feedEnd"><div><span class="ms">done_all</span><b>ראיתם הכל</b><p>סרטונים חדשים מבודפשט נוספים לבד כל כמה שעות.<br>אפשר לראות את כולם על הגלובוס.</p></div></div>`;
+function feedStart() {
+  const f = $('#feed');
+  if (!f.children.length) {
+    FEED = REELS.filter(feedable).sort((a, b) => (b.ai ? 1 : 0) - (a.ai ? 1 : 0) || String(b.published || '').localeCompare(String(a.published || '')));
+    f.innerHTML = FEED.map(feedSlide).join('') + END;
+    feedObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) feedActivate(e.target) }), { root: f, threshold: 0.6 });
+    f.querySelectorAll('.slide').forEach(s => feedObs.observe(s));
+  } else if (feedCur) feedActivate(feedCur, true);
+}
+function feedMore() {   // new videos that arrived: added at the end
+  const f = $('#feed'); if (!f.children.length) return;
+  const have = new Set(FEED.map(r => r.id)), add = REELS.filter(r => feedable(r) && !have.has(r.id));
+  if (!add.length) return;
+  FEED.push(...add);
+  $('#feedEnd').insertAdjacentHTML('beforebegin', add.map(feedSlide).join(''));
+  add.forEach(r => feedObs.observe(f.querySelector(`.slide[data-id="${CSS.escape(r.id)}"]`)));
+}
+function unmount(s) { const m = s.querySelector('.media'); if (m && m.firstChild) m.innerHTML = '' }
+function feedStop() { clearTimeout(seenT); document.querySelectorAll('#feed .slide .media').forEach(m => m.innerHTML = '') }
+const ytCmd = (fr, func) => { try { fr.contentWindow.postMessage(JSON.stringify({ event: 'command', func, args: [] }), '*') } catch {} };
+function feedActivate(s, force) {
+  if (cur !== 'disc' || discTab !== 'feed') return;
+  if (s === feedCur && !force) return;
+  document.querySelectorAll('#feed .slide').forEach(x => x !== s && unmount(x));
+  feedCur = s; clearTimeout(seenT);
+  if (s.id === 'feedEnd') { loadServer(); return }
+  const r = REELS.find(x => x.id === s.dataset.id); if (!r) return;
+  const box = s.querySelector('.media');
+  if (!box.firstChild) {
+    if (r.source === 'youtube') {
+      box.innerHTML = `<iframe class="yt" allow="autoplay; encrypted-media" src="https://www.youtube.com/embed/${esc(r.code)}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${esc(r.code)}&rel=0&modestbranding=1&enablejsapi=1"></iframe>`;
+      const fr = box.firstChild; fr.onload = () => { if (!muted) setTimeout(() => ytCmd(fr, 'unMute'), 600) };
+    } else {
+      const v = document.createElement('video'); v.src = r.video; v.muted = muted; v.loop = true; v.playsInline = true; v.autoplay = true; if (r.thumb) v.poster = r.thumb;
+      box.appendChild(v); v.play().catch(() => { v.muted = true; v.play().catch(() => {}) });
+    }
+  }
+  const nx = s.nextElementSibling; if (nx?.dataset.id) { const n = REELS.find(x => x.id === nx.dataset.id); if (n && n.source !== 'youtube') { const l = document.createElement('link'); l.rel = 'preload'; l.as = 'video'; l.href = n.video; document.head.appendChild(l) } }
+  seenT = setTimeout(() => markSeen(r), 1500);
+}
+function setMuted(m) {
+  muted = m;
+  document.querySelectorAll('#feed [data-fl="mute"] .ms').forEach(x => x.textContent = m ? 'volume_off' : 'volume_up');
+  const box = feedCur?.querySelector('.media'); if (!box) return;
+  const v = box.querySelector('video'); if (v) { v.muted = m; v.play().catch(() => {}) }
+  const fr = box.querySelector('iframe'); if (fr) ytCmd(fr, m ? 'mute' : 'unMute');
+}
+function feedHearts() { document.querySelectorAll('#feed .slide[data-id]').forEach(s => { const r = REELS.find(x => x.id === s.dataset.id); s.querySelector('[data-fl="save"]')?.classList.toggle('on', r?.trip === 'budapest') }) }
+$('#feed').addEventListener('click', e => {
+  const s = e.target.closest('.slide'); if (!s?.dataset.id) return;
+  const r = REELS.find(x => x.id === s.dataset.id);
+  const b = e.target.closest('[data-fl]');
+  if (e.target.closest('a')) return;
+  if (!b && e.target.closest('.ov p')) { e.target.closest('.ov p').classList.toggle('open'); return }
+  if (!b) return setMuted(!muted);
+  if (b.dataset.fl === 'mute') setMuted(!muted);
+  if (b.dataset.fl === 'save' && r) saveReel(r);
+  if (b.dataset.fl === 'map' && r) { const pt = reelPoint(r); setDisc('globe'); openGlobe(pt) }
+});
+
+/* ── the AI "watches" Instagram videos: this phone takes frames from the saved video and sends them ── */
+const watchTried = new Set();
+function grabFrames(src) {
+  return new Promise(ok => {
+    const v = document.createElement('video'), c = document.createElement('canvas'), out = [];
+    let times = [];
+    const done = () => { clearTimeout(t0); v.removeAttribute('src'); v.load(); ok(out) }, t0 = setTimeout(done, 30000);
+    v.crossOrigin = 'anonymous'; v.muted = true; v.preload = 'auto'; v.playsInline = true;
+    v.onloadedmetadata = () => { const d = isFinite(v.duration) ? v.duration : 10; times = [.06, .25, .45, .65, .85].map(f => f * d); v.currentTime = times.shift() };
+    v.onseeked = () => {
+      const w = 384, h = Math.round(w * (v.videoHeight || 16) / (v.videoWidth || 9)); c.width = w; c.height = h;
+      try { c.getContext('2d').drawImage(v, 0, 0, w, h); out.push(c.toDataURL('image/jpeg', .72).split(',')[1]) } catch { return done() }
+      times.length ? (v.currentTime = times.shift()) : done();
+    };
+    v.onerror = done; v.src = src;
+  });
+}
+async function watchIG() {
+  if (!RG_ON || document.hidden || watchIG.busy) return;
+  const r = REELS.find(x => x.source === 'instagram' && x.ai && !x.ai.watched && playable(x) && !watchTried.has(x.id)); if (!r) return;
+  watchIG.busy = true; watchTried.add(r.id);
+  try {
+    const frames = await grabFrames(r.video);
+    if (frames.length >= 2) { const o = await api({ id: r.id, frames }); if (o.reel) { Object.assign(r, o.reel); store.set('reels2', REELS); rebuild() } }
+  } catch {}
+  watchIG.busy = false; setTimeout(watchIG, 4000);
 }
 
 /* ── info ── */
@@ -763,18 +1089,39 @@ renderChecks();
 $('#tips').innerHTML = T.tips.map(t => `<div class="card tip"><div class="i">${t.icon}</div><div><b>${esc(t.title)}</b><p>${esc(t.body)}</p></div></div>`).join('');
 $('#phrases').innerHTML = T.phrases.map(p => `<div class="ph"><div><b style="font-size:14.5px">${esc(p.he)}</b><br><small>${esc(p.say)}</small></div><div class="hu">${esc(p.hu)}</div></div>`).join('');
 
-/* ── nav ── */
-function go(s) { $(`#nav button[data-s="${s}"]`)?.click() }
-$('#nav').onclick = e => {
-  const b = e.target.closest('button'); if (!b) return;
-  document.querySelectorAll('#nav button').forEach(x => x.classList.toggle('on', x === b));
-  document.querySelectorAll('.screen').forEach(p => p.classList.toggle('on', p.id === 's-' + b.dataset.s));
-  closeSheet();
-  if (b.dataset.s === 'map') { initMap(); if (GM) google.maps.event.trigger(GM, 'resize') }
-  if (b.dataset.s !== 'map') scrollTo({ top: 0 });
-};
-rebuild(); loadServer();
-document.addEventListener('visibilitychange', () => { if (!document.hidden) loadServer() });
+/* ── navigation + the back gesture: closes what is open, then one page back (תמיד חוזרים ללו״ז לפני שיוצאים) ── */
+let cur = 'plan', pendingGo = null;
+const hs = () => history.state || { s: 'plan', l: [], d: 0 };
+function show(s) {
+  cur = s;
+  document.querySelectorAll('#nav button').forEach(x => x.classList.toggle('on', x.dataset.s === s));
+  document.querySelectorAll('.screen').forEach(p => p.classList.toggle('on', p.id === 's-' + s));
+  document.body.classList.toggle('mapmode', s === 'map' && view === 'map');
+  if (s === 'map' && view === 'map') openMine();
+  if (s === 'disc') setDisc(discTab); else feedStop();
+  if (!(s === 'map' && view === 'map') && s !== 'disc') scrollTo({ top: 0 });
+}
+function hideLayers(keep = []) { if (!keep.includes('viewer') && !$('#viewer').hidden) hideViewer(); if (!keep.includes('sheet') && $('#sheet').classList.contains('on')) hideSheet() }
+function pushLayer(name) { const st = hs(); if (!st.l.includes(name)) history.pushState({ ...st, l: [...st.l, name], d: st.d + 1 }, '') }
+function closeLayer(name) { if (hs().l.includes(name)) history.back(); else name === 'sheet' ? hideSheet() : hideViewer() }
+function go(s) {
+  const d = hs().d; hideLayers();
+  if (s === 'plan') { if (d) history.go(-d); else show('plan'); return }
+  if (d === 0) { history.pushState({ s, l: [], d: 1 }, ''); show(s); return }
+  if (d === 1) { history.replaceState({ s, l: [], d: 1 }, ''); show(s); return }
+  pendingGo = s; history.go(-(d - 1));
+}
+addEventListener('popstate', () => {
+  const st = hs();
+  if (pendingGo) { const s = pendingGo; pendingGo = null; history.replaceState({ s, l: [], d: 1 }, ''); hideLayers(); show(s); return }
+  hideLayers(st.l);
+  if (st.s !== cur) show(st.s);
+});
+$('#nav').onclick = e => { const b = e.target.closest('button'); if (b && b.dataset.s !== cur) go(b.dataset.s) };
+if (!history.state) history.replaceState({ s: 'plan', l: [], d: 0 }, ''); else if (hs().s !== 'plan') show(hs().s);
+applyTheme(); rebuild(); loadServer();
+setTimeout(watchIG, 8000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { loadServer(); setTimeout(watchIG, 5000) } else feedStop() });
 </script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(()=>{})</script>
 </body>
