@@ -1,6 +1,6 @@
 // The trip app's AI (Budapest). Called by the app, no secret:
 //   {plan: true, favs, extra, days, hotel, facts}   an AI schedule from the places they liked (not saved)
-//   {chat: [{role, content}], ctx}                  "בודי", the trip assistant: answers and acts with tools
+//   {chat: [{role, content}], ctx}                  "דונה", the trip assistant: answers and acts with tools
 // Shared state lives in trip_state (plan, favs, adds), the same rows the `trip` function and the app use.
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 import Anthropic from "npm:@anthropic-ai/sdk@0.68.0";
@@ -75,7 +75,7 @@ ${RULES}
   return { plan: { ...out, made: new Date().toISOString(), favs: [...favs] } };
 }
 
-// ── בודי: the chat assistant ──
+// ── דונה: the chat assistant ──
 const TOOLS: any[] = [
   { name: "search_videos", description: "Search the trip's Instagram reels library (reels whose whole video was watched and analysed by AI) by place or topic. Returns AI summaries of what each video shows. Use it whenever the user asks about videos, or to learn what a place is like.",
     input_schema: { type: "object", additionalProperties: false, required: ["query"], properties: { query: { type: "string", description: "place name (English or Hebrew) or topic, e.g. 'christmas market', 'langos', 'Szimpla'" }, place_key: { type: "string", description: "optional: the key of one of their places" } } } },
@@ -220,7 +220,7 @@ async function runTool(name: string, x: any, run: Run): Promise<unknown> {
 function chatSystem(ctx: any, st: any) {
   const places = (ctx.places ?? []).map((p: any) => `${p.key} | ${p.name}${p.en && p.en !== p.name ? " / " + p.en : ""} | ${p.cat}${p.where ? " | " + p.where : ""}${p.fav ? " | ♥" : ""}${p.reels?.length ? ` | ${p.reels.length} videos` : ""}`).join("\n");
   const sched = (st.plan?.days ?? ctx.days ?? []).map((d: any) => `${d.date} ${d.title}:\n${(d.items ?? []).map((i: any) => `  ${i.t} ${i.icon ?? ""} ${i.name}${i.place ? ` [${i.place}]` : ""}`).join("\n") || "  (empty)"}`).join("\n");
-  return `את/ה "בודי" (Budi), העוזר האישי והחמוד של משה ופס לטיול שלהם לבודפשט. ALWAYS answer in Hebrew (never English), warm, natural and SHORT (a few sentences or a short list; use **bold** sparingly; no headings, no tables). Friendly, a bit playful, never overdo emojis (0-2 per reply).
+  return `את "דונה" (Duna, the Danube in Hungarian), העוזרת האישית של משה ופס לטיול שלהם לבודפשט. You are female: speak about yourself in feminine Hebrew forms (בדקתי, סידרתי, אני שמחה). ALWAYS answer in Hebrew (never English), warm, natural and SHORT (a few sentences or a short list; use **bold** sparingly; no headings, no tables). Friendly, a bit playful, never overdo emojis (0-2 per reply).
 You can act, not only talk: use the tools to check videos, find locations, check the weather and change the schedule. When the user asks you to change something, do it with the tools and then say briefly what you changed. If the request is unclear or would wipe a lot of their plan, ask one short question first. Never invent videos, prices or opening hours; say when you are not sure. The app shows the cards your tools produce (videos, places, the changed day) under your message, so don't paste links or long lists of the same things in the text.
 Trip facts: ${CITY}. Travelers: Moshe and Pas (Israeli). Hotel: ${ctx.hotel?.name ?? ""}, ${ctx.hotel?.addr ?? ""}. Flights: ${(ctx.flights ?? []).map((f: any) => `${f.dir} ${f.date} ${f.from}->${f.to} ${f.code} dep ${f.dep} arr ${f.arr}`).join("; ")}. Today is ${ctx.today ?? ""}.
 ${RULES}
