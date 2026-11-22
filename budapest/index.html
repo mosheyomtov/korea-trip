@@ -150,7 +150,7 @@ a{color:inherit;text-decoration:none}
 .p-violet{background:var(--violet-light);color:var(--violet)}.p-gray{background:var(--surface-2);color:var(--ink-3)}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 20px 6px;margin:0 -20px}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;padding:8px 14px;border-radius:99px;background:var(--surface);border:1.5px solid var(--border);font-size:13.5px;font-weight:500;white-space:nowrap}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;padding:8px 14px;border-radius:99px;background:var(--surface);border:1.5px solid var(--border);font-size:13.5px;font-weight:500;white-space:nowrap}
 .chip.on{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
 
 /* places */
@@ -173,7 +173,7 @@ a{color:inherit;text-decoration:none}
 .reel-row::-webkit-scrollbar{display:none}
 .th{flex:0 0 auto;width:72px;height:108px;border-radius:12px;background:var(--surface-3) center/cover;position:relative;overflow:hidden;box-shadow:var(--sh-sm)}
 .th video{width:100%;height:100%;object-fit:cover;pointer-events:none}
-.th::after{content:'play_arrow';font-family:'Material Symbols Rounded';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:28px;text-shadow:0 1px 8px rgba(0,0,0,.5);font-variation-settings:'FILL' 1}
+.th::after{content:'\e3d0';font-family:'Phosphor-Fill';font-size:24px!important;position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:28px;text-shadow:0 1px 8px rgba(0,0,0,.5);font-variation-settings:'FILL' 1}
 .th .src{position:absolute;bottom:4px;right:4px;z-index:1;font-size:9px;font-weight:700;background:rgba(0,0,0,.55);color:#fff;border-radius:6px;padding:1px 5px}
 .pending{background:var(--amber-light);border:1px solid rgba(245,158,11,.25);border-radius:var(--r);padding:12px 14px;margin-top:12px;font-size:13.5px}
 .pending .r{display:flex;gap:8px;margin-top:8px}
@@ -190,7 +190,7 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 .mapwrap{position:fixed;inset:0;background:var(--surface-3)}
 .gm{width:100%;height:100%}
 .gm iframe{width:100%;height:100%;border:0}
-.ctl{position:fixed;top:calc(var(--barH,124px) + 10px);left:0;right:0;z-index:39;padding:0 12px;pointer-events:none}
+.ctl{position:fixed;top:calc(var(--top) + 72px);left:0;right:0;z-index:39;padding:0 12px;pointer-events:none}
 .ctl > *{pointer-events:auto}
 .ctl .chips{margin:0;padding:2px 0 6px}
 .ctl .chip{box-shadow:0 2px 10px rgba(0,0,0,.12);border-color:transparent}
@@ -204,9 +204,7 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 .me{position:absolute;width:18px;height:18px;border-radius:50%;background:#1a73e8;border:3px solid #fff;box-shadow:0 0 0 7px rgba(26,115,232,.22);transform:translate(-50%,-50%);pointer-events:none;z-index:9}
 /* DISCOVER */
 #s-disc{padding:0;min-height:0}
-.disc-top{position:fixed;top:calc(var(--top) + 12px);left:12px;right:12px;z-index:60;display:flex;align-items:center;gap:8px}
-.disc-top .circle{background:var(--glass);box-shadow:0 4px 24px rgba(0,0,0,.14)}
-.globe-note{position:fixed;top:calc(var(--top) + 70px);left:50%;transform:translateX(-50%);z-index:39;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--ink-2);box-shadow:var(--sh-md);white-space:nowrap}
+.globe-note{position:fixed;top:calc(var(--top) + 72px);left:50%;transform:translateX(-50%);z-index:39;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:99px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--ink-2);box-shadow:var(--sh-md);white-space:nowrap}
 .mk.seen{opacity:.55}
 .mk.seen .bub{border-color:var(--ink-4)}
 .feed{position:fixed;inset:0;overflow-y:scroll;scroll-snap-type:y mandatory;background:#000;overscroll-behavior:contain;scrollbar-width:none}
@@ -217,7 +215,7 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 .slide iframe.yt{height:calc(100% + 120px);top:-60px}
 .slide .ov{position:absolute;left:0;right:0;bottom:0;padding:90px 16px calc(100px + var(--bot)) 78px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff;pointer-events:none}
 .slide .ov h3{font-size:18px;font-weight:700;line-height:1.35;text-shadow:0 1px 6px rgba(0,0,0,.4)}
-.slide .ov p{font-size:13.5px;line-height:1.6;margin-top:6px;opacity:.92;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;pointer-events:auto}
+.slide .ov p{font-size:13.5px;line-height:1.6;margin-top:6px;opacity:.92;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;pointer-events:auto}
 .slide .ov p.open{-webkit-line-clamp:unset}
 .slide .ov .where{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
 .slide .ov .where span{font-size:12px;font-weight:600;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border-radius:99px;padding:4px 10px}
@@ -232,10 +230,45 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 .slide.end p{opacity:.8;font-size:14px;line-height:1.6}
 .vacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .viewer .cap li .pa{margin-right:auto;flex:0 0 auto;align-self:center}
+.viewer .cap li .pa .ms{color:inherit}
 .seg{flex:1;display:flex;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:99px;padding:5px;box-shadow:0 4px 24px rgba(0,0,0,.14)}
 .seg button{flex:1;padding:9px 6px;border-radius:99px;font-size:14px;font-weight:600;color:var(--ink-3);display:flex;align-items:center;justify-content:center;gap:5px;transition:.2s}
 .seg button .ms{font-size:18px}
 .seg button.on{background:var(--brand);color:#fff;box-shadow:0 4px 14px rgba(59,110,245,.35)}
+
+/* floating glass controls (like the bottom bar): page tabs + theme */
+:root{--glass-f:rgba(255,255,255,.66);--glass-b:rgba(255,255,255,.55)}
+:root[data-theme=dark]{--glass-f:rgba(28,30,38,.58);--glass-b:rgba(255,255,255,.08)}
+.float-top{position:fixed;top:calc(var(--top) + 12px);left:12px;right:12px;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}
+.float-top > *{pointer-events:auto}
+.seg.icons,.float-top .circle,.glassy,.nav .in{background:var(--glass-f)!important;backdrop-filter:blur(14px) saturate(170%);-webkit-backdrop-filter:blur(14px) saturate(170%);border:1px solid var(--glass-b);box-shadow:0 4px 20px rgba(0,0,0,.12)}
+.seg.icons{flex:0 0 auto;padding:4px;gap:2px}
+.seg.icons button{width:54px;height:40px;padding:0;flex:0 0 auto}
+.seg.icons button .ms{font-size:21px}
+.seg.icons button:not(.on){color:var(--ink-2)}
+.float-top .circle{color:var(--ink)}
+#listView{padding-top:calc(var(--top) + 66px)}
+.pl-sub{font-size:13px;color:var(--ink-3);margin:2px 2px 0}
+.ctl-row{display:flex;align-items:center;gap:8px}
+.ctl-row .chips{flex:1;min-width:0}
+.ctl-row .circle{width:42px;height:42px;flex:0 0 auto;color:var(--brand)}
+/* reels feed: tap = pause, double tap = like */
+.slide .pp{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:2}
+.slide .pp .ms{font-size:74px;color:rgba(255,255,255,.9);opacity:0;transform:scale(.8);transition:.2s;text-shadow:0 2px 20px rgba(0,0,0,.35)}
+.slide.paused .pp .ms{opacity:1;transform:none}
+.slide .burst{position:absolute;z-index:4;pointer-events:none;font-size:110px;color:#ff3b5c;transform:translate(-50%,-50%) scale(.2);opacity:0;animation:burst .9s var(--spring) forwards;filter:drop-shadow(0 6px 24px rgba(0,0,0,.35))}
+@keyframes burst{15%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}35%{transform:translate(-50%,-50%) scale(.95)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%) scale(1)}}
+.slide .ov{transition:background .3s,padding .3s}
+.slide .ov.open{background:linear-gradient(transparent,rgba(0,0,0,.6) 18%,rgba(0,0,0,.88));padding-top:160px}
+.slide .side .on{color:#ff3b5c;background:rgba(255,255,255,.95)}
+.mk.hl{z-index:20;transform:translate(-50%,-100%) scale(1.35)}
+.mk.hl .bub{border-color:var(--brand);box-shadow:0 0 0 4px rgba(59,110,245,.35),0 6px 20px rgba(0,0,0,.35);animation:hl 1.4s ease-in-out infinite}
+@keyframes hl{50%{box-shadow:0 0 0 10px rgba(59,110,245,.12),0 6px 20px rgba(0,0,0,.35)}}
+/* icons: Phosphor (self-hosted), Material is the fallback */
+@font-face{font-family:'Phosphor';src:url('fonts/Phosphor.woff2') format('woff2');font-display:block}
+@font-face{font-family:'Phosphor-Fill';src:url('fonts/Phosphor-Fill.woff2') format('woff2');font-display:block}
+.ms.phi{font-family:'Phosphor'!important;font-variation-settings:normal!important;width:1em;height:1em;line-height:1;overflow:visible;transform:translateY(-.08em)}
+.ms.phi.fill,.on > .ms.phi,.act.rose .ms.phi,.fav.on .ms.phi{font-family:'Phosphor-Fill'!important}
 /* markers */
 .mk{position:absolute;transform:translate(-50%,-100%);cursor:pointer;transition:transform .2s var(--spring)}
 .mk:hover,.mk.sel{transform:translate(-50%,-100%) scale(1.15);z-index:5}
@@ -342,16 +375,15 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 
 <!-- ═══ PLACES + MAP (one page, list or map) ═══ -->
 <section class="screen" id="s-map">
-  <div class="app-bar"><div class="wrap">
-    <h1>המקומות שלנו<small id="plSub"></small></h1>
-    <button class="circle" id="plAddReel" aria-label="הוספת ריל"><span class="ms">add_link</span></button>
+  <div class="float-top">
+    <div class="seg icons" id="viewSeg">
+      <button data-v="list" class="on" aria-label="רשימה"><span class="ms">view_list</span></button>
+      <button data-v="map" aria-label="מפה"><span class="ms">map</span></button>
+    </div>
     <button class="circle theme" aria-label="מצב כהה"><span class="ms">dark_mode</span></button>
   </div>
-  <div class="wrap"><div class="tabs" id="viewSeg">
-    <button data-v="list" class="on"><span class="ms">view_list</span>רשימה</button>
-    <button data-v="map"><span class="ms">map</span>מפה</button>
-  </div></div></div>
   <div class="wrap" id="listView">
+    <div class="pl-sub" id="plSub"></div>
     <div id="pendingBox"></div>
     <label class="search"><span class="ms">search</span><input id="plSearch" type="search" placeholder="חיפוש מקום, מסעדה, בר..."></label>
     <div class="chips" id="plCats"></div>
@@ -365,8 +397,7 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
   <div id="mapView" hidden>
     <div class="mapwrap"><div class="gm" id="gmap"></div></div>
     <div class="ctl">
-      <div class="mini" id="pinSeg"><button data-p="reels"><span class="ms">smart_display</span>רילסים ששמרנו</button><button data-p="icons"><span class="ms">location_on</span>אייקונים</button></div>
-      <div class="chips" id="mapChips"></div>
+      <div class="ctl-row"><div class="chips" id="mapChips"></div><button class="circle glassy" id="pinToggle" aria-label="רילסים או אייקונים"><span class="ms">smart_display</span></button></div>
     </div>
     <div class="fabs">
       <button class="circle" id="mapLocate" aria-label="המיקום שלי"><span class="ms">my_location</span></button>
@@ -377,10 +408,10 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 
 <!-- ═══ DISCOVER: globe of reels + reels feed ═══ -->
 <section class="screen" id="s-disc">
-  <div class="disc-top">
-    <div class="seg" id="discSeg">
-      <button data-d="globe" class="on"><span class="ms">public</span>גלובוס</button>
-      <button data-d="feed"><span class="ms">smart_display</span>רילסים</button>
+  <div class="float-top">
+    <div class="seg icons" id="discSeg">
+      <button data-d="globe" class="on" aria-label="גלובוס"><span class="ms">public</span></button>
+      <button data-d="feed" aria-label="רילסים"><span class="ms">smart_display</span></button>
     </div>
     <button class="circle theme" aria-label="מצב כהה"><span class="ms">dark_mode</span></button>
   </div>
@@ -428,6 +459,15 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 <script src="trip.js"></script>
 <script src="places.js"></script>
 <script>
+/* icons: the Material names in the markup are drawn with Phosphor (nicer, rounder); unknown names stay Material */
+const PH = {favorite:'\ue2a8',near_me:'\ueade',dark_mode:'\ue330',light_mode:'\ue472',auto_awesome:'\ue6a2',smart_display:'\ue792',map:'\ue31a',location_on:'\ue316',open_in_new:'\ue5de',my_location:'\ue1d6',chevron_left:'\ue138',zoom_out_map:'\ue0a2',view_list:'\ue2f2',synagogue:'\ue89e',search_off:'\ue30c',search:'\ue30c',refresh:'\ue036',public:'\ue28a',playlist_remove:'\ue2f4',luggage:'\ue9b0',info:'\ue2ce',hotel:'\ue0cc',explore:'\ue1c8',event_note:'\ue7b4',done_all:'\ue53a',close:'\ue4f6',check:'\ue182',calendar_month:'\ue10a',arrow_forward:'\ue06c',add_link:'\ue2e6',add:'\ue3d4',volume_off:'\ue45a',volume_up:'\ue44a',play_arrow:'\ue3d0',pause:'\ue39e',send:'\ue398',arrow_upward:'\ue08e',delete:'\ue4a6',smart_toy:'\ue762'};
+function phIcons(root) {
+  const list = root.classList?.contains('ms') ? [root] : root.querySelectorAll ? root.querySelectorAll('.ms') : [];
+  for (const el of list) { const n = el.textContent.trim(); if (PH[n]) { el.dataset.i = n; el.classList.add('phi'); el.textContent = PH[n] } }
+}
+new MutationObserver(ms => { for (const m of ms) { const t = m.type === 'characterData' ? m.target.parentElement : m.target; if (t?.classList?.contains('ms')) phIcons(t); m.addedNodes?.forEach(n => n.nodeType === 1 && phIcons(n)) } })
+  .observe(document.body, { childList: true, subtree: true, characterData: true });
+phIcons(document.body);
 const T = window.TRIP;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -575,6 +615,20 @@ function sheet(html) {
 }
 function hideSheet() { $('#sheet').classList.remove('on'); $('#sheetBg').classList.remove('on'); sheetPlace = null }
 const closeSheet = () => closeLayer('sheet');
+{ // drag the sheet down to close it (from the handle anywhere, or from the content when it is scrolled to the top)
+  const sh = $('#sheet'); let y0 = null, dy = 0, t0 = 0;
+  sh.addEventListener('touchstart', e => { if (sh.scrollTop > 0 && !e.target.closest('.grab')) return; y0 = e.touches[0].clientY; dy = 0; t0 = Date.now(); sh.style.transition = 'none' }, { passive: true });
+  sh.addEventListener('touchmove', e => {
+    if (y0 === null) return; dy = e.touches[0].clientY - y0;
+    if (dy <= 0) { sh.style.transform = ''; return }
+    if (e.cancelable) e.preventDefault(); sh.style.transform = `translateY(${dy}px)`; $('#sheetBg').style.opacity = String(Math.max(0, 1 - dy / 400));
+  }, { passive: false });
+  sh.addEventListener('touchend', () => {
+    if (y0 === null) return; y0 = null; sh.style.transition = ''; $('#sheetBg').style.opacity = '';
+    const fast = dy > 60 && Date.now() - t0 < 250;
+    if (dy > 120 || fast) { sh.style.transform = ''; closeSheet() } else sh.style.transform = '';
+  });
+}
 $('#sheetBg').onclick = closeSheet;
 let draft = null;
 function planHtml(p, approved) {
@@ -682,13 +736,14 @@ function markSeen(r) { if (seen.has(r.id)) return; seen.add(r.id); store.set('se
 
 /* ── a reel joins the trip: its places go on the map and get a heart ── */
 const reelKeys = r => PL.flatMap(c => c.items).filter(it => it.reels.some(x => x.r.id === r.id)).map(it => it.key);
-function saveReel(r) {
-  const on = r.trip !== 'budapest';
+function saveReel(r, quiet, force) {
+  const on = force ?? r.trip !== 'budapest';
+  if (on === (r.trip === 'budapest')) return;
   if (!on) reelKeys(r).forEach(k => favs.delete(k));
   r.trip = on ? 'budapest' : null; store.set('reels2', REELS); rebuild();
   const keys = on ? reelKeys(r) : [];
   keys.forEach(k => favs.add(k)); store.set('favs2', [...favs]);
-  say(on ? (keys.length ? `נשמר ♥ ${keys.length === 1 ? 'המקום נוסף' : keys.length + ' מקומות נוספו'} למקומות שלכם` : 'נשמר ♥') : 'הוסר מהמקומות שלכם');
+  if (!quiet) say(on ? (keys.length ? `נשמר ♥ ${keys.length === 1 ? 'המקום נוסף' : keys.length + ' מקומות נוספו'} למקומות שלכם` : 'נשמר ♥') : 'הוסר מהמקומות שלכם');
   if (RG_ON) { STATE.favs = [...favs]; api({ favs: [...favs] }).catch(() => {}); api({ id: r.id, save: on }).catch(() => say('לא הצלחתי לשמור בשרת, נסו שוב')) }
   afterChange();
 }
@@ -768,11 +823,6 @@ async function shareLink(link) {
   say('הריל נשמר ✓ הניתוח והשיוך למקום יופיעו בעוד כדקה');
   setTimeout(loadServer, 45000); setTimeout(loadServer, 100000);
 }
-$('#plAddReel').onclick = () => {
-  const txt = prompt('מדביקים קישור לריל מאינסטגרם'); if (!txt) return;
-  const link = txt.match(/https?:\/\/(?:www\.)?instagram\.com\/\S+/)?.[0];
-  link ? shareLink(link) : say('זה לא נראה כמו קישור של אינסטגרם');
-};
 function renderPending() {
   const list = (Array.isArray(STATE.pending) ? STATE.pending : []).filter(x => x.id && x.why === 'place');
   $('#pendingBox').innerHTML = list.map(x => `<div class="pending"><b>ריל ששיתפתם מחכה למיקום</b><br><span style="color:var(--ink-3)">לא הצלחתי להבין איפה הוא צולם. איפה זה?</span>
@@ -860,10 +910,10 @@ function setView(v, focus) {
   document.querySelectorAll('#viewSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
   $('#listView').hidden = v !== 'list'; $('#mapView').hidden = v !== 'map';
   document.body.classList.toggle('mapmode', v === 'map');
-  if (v === 'map') { document.documentElement.style.setProperty('--barH', $('#s-map .app-bar').offsetHeight + 'px'); openMine(focus) } else scrollTo({ top: 0 });
+  if (v === 'map') openMine(focus); else scrollTo({ top: 0 });
 }
 $('#viewSeg').onclick = e => { const b = e.target.closest('button'); if (b) setView(b.dataset.v) };
-$('#pinSeg').onclick = e => { const b = e.target.closest('button'); if (!b) return; pinStyle = b.dataset.p; store.set('pinStyle', pinStyle); drawMine() };
+$('#pinToggle').onclick = () => { pinStyle = pinStyle === 'reels' ? 'icons' : 'reels'; store.set('pinStyle', pinStyle); drawMine() };
 $('#mapChips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; mapCat = b.dataset.c; drawMine() };
 $('#mapFit').onclick = () => MAPS.mine && fitTo(MAPS.mine, mineItems(), { top: 200, bottom: 110, left: 30, right: 30 });
 async function openMine(focus) {
@@ -879,7 +929,7 @@ function mineItems() {
   return [...hotel, ...PL.flatMap(c => c.items).filter(it => it.lat && (mapCat === 'all' ? true : mapCat === 'fav' ? favs.has(it.key) : mapCat === 'vid' ? it.reels.length : it.cat === mapCat))];
 }
 function drawMine() {
-  document.querySelectorAll('#pinSeg button').forEach(b => b.classList.toggle('on', b.dataset.p === pinStyle));
+  $('#pinToggle .ms').textContent = pinStyle === 'reels' ? 'smart_display' : 'location_on';
   $('#mapChips').innerHTML = [['all', 'הכל'], ['fav', '♥ שמרנו'], ['vid', '🎬 עם סרטון'], ...PL.map(c => [c.id, `${c.icon} ${c.title}`])].map(([id, t]) => `<button class="chip ${mapCat === id ? 'on' : ''}" data-c="${id}">${esc(t)}</button>`).join('');
   const m = MAPS.mine; if (!m) return;
   setMarkers(m, mineItems().map(it => {
@@ -943,11 +993,13 @@ function setDisc(t) {
   discTab = t;
   document.querySelectorAll('#discSeg button').forEach(b => b.classList.toggle('on', b.dataset.d === t));
   $('#globeView').hidden = t !== 'globe'; $('#feedView').hidden = t !== 'feed';
-  if (t === 'globe') { feedStop(); openGlobe() } else feedStart();
+  if (t === 'globe') { feedStop(); openGlobe(); applyTheme() } else { feedStart(); document.querySelector('meta[name=theme-color]').content = '#000000' }
 }
 $('#discSeg').onclick = e => { const b = e.target.closest('button'); if (b) setDisc(b.dataset.d) };
 const globeReels = () => REELS.filter(r => relevant(r) && r.ai);
-async function openGlobe(focus) {
+let globeHL = null;
+async function openGlobe(focus, id) {
+  globeHL = id || null;
   try {
     const first = !MAPS.globe, m = await getMap('globe', $('#gglobe'));
     drawGlobe();
@@ -964,7 +1016,7 @@ function drawGlobe() {
     let pt = reelPoint(r); if (!pt) return null;
     const k = pt.lat.toFixed(4) + ',' + pt.lng.toFixed(4), i = at[k] = (at[k] ?? -1) + 1;   // a few videos of one place: spread around it
     if (i) pt = { lat: pt.lat + Math.sin(i * 2.4) * 0.00045 * Math.sqrt(i), lng: pt.lng + Math.cos(i * 2.4) * 0.00065 * Math.sqrt(i) };
-    const div = document.createElement('div'); div.className = `mk ${seen.has(r.id) ? 'seen' : ''} ${r.trip === 'budapest' ? 'fv' : ''}`;
+    const div = document.createElement('div'); div.className = `mk ${seen.has(r.id) && r.id !== globeHL ? 'seen' : ''} ${r.trip === 'budapest' ? 'fv' : ''} ${r.id === globeHL ? 'hl' : ''}`;
     div.innerHTML = bub(r);
     div.onclick = ev => { ev.stopPropagation(); openReel(r) };
     return [pt, div];
@@ -978,7 +1030,7 @@ function feedSlide(r) {
   const a = r.ai || {}, t = thumb(r), pt = reelPoint(r);
   const names = (a.places || []).slice(0, 4).map(s => `<span>📍 ${esc(s.name_he)}</span>`).join('');
   return `<div class="slide" data-id="${esc(r.id)}">
-    <div class="poster" style="${t ? `background-image:url('${esc(t)}')` : ''}"></div><div class="media"></div>
+    <div class="poster" style="${t ? `background-image:url('${esc(t)}')` : ''}"></div><div class="media"></div><div class="pp"><span class="ms">play_arrow</span></div>
     <div class="ov"><h3>${esc(a.title_he || r.title || '')}</h3>${a.summary_he ? `<p>${esc(a.summary_he)}</p>` : ''}${names ? `<div class="where">${names}</div>` : ''}</div>
     <div class="side">
       <button data-fl="save" class="${r.trip === 'budapest' ? 'on' : ''}" aria-label="שמירה"><span class="ms">favorite</span></button>
@@ -1006,13 +1058,13 @@ function feedMore() {   // new videos that arrived: added at the end
   add.forEach(r => feedObs.observe(f.querySelector(`.slide[data-id="${CSS.escape(r.id)}"]`)));
 }
 function unmount(s) { const m = s.querySelector('.media'); if (m && m.firstChild) m.innerHTML = '' }
-function feedStop() { clearTimeout(seenT); document.querySelectorAll('#feed .slide .media').forEach(m => m.innerHTML = '') }
+function feedStop() { clearTimeout(seenT); if (cur !== 'disc' || discTab !== 'feed') applyTheme(); document.querySelectorAll('#feed .slide .media').forEach(m => m.innerHTML = '') }
 const ytCmd = (fr, func) => { try { fr.contentWindow.postMessage(JSON.stringify({ event: 'command', func, args: [] }), '*') } catch {} };
 function feedActivate(s, force) {
   if (cur !== 'disc' || discTab !== 'feed') return;
   if (s === feedCur && !force) return;
   document.querySelectorAll('#feed .slide').forEach(x => x !== s && unmount(x));
-  feedCur = s; clearTimeout(seenT);
+  feedCur = s; clearTimeout(seenT); s.classList.remove('paused');
   if (s.id === 'feedEnd') { loadServer(); return }
   const r = REELS.find(x => x.id === s.dataset.id); if (!r) return;
   const box = s.querySelector('.media');
@@ -1036,17 +1088,39 @@ function setMuted(m) {
   const fr = box.querySelector('iframe'); if (fr) ytCmd(fr, m ? 'mute' : 'unMute');
 }
 function feedHearts() { document.querySelectorAll('#feed .slide[data-id]').forEach(s => { const r = REELS.find(x => x.id === s.dataset.id); s.querySelector('[data-fl="save"]')?.classList.toggle('on', r?.trip === 'budapest') }) }
+let tapT = null, tapAt = 0;
+function togglePause(s) {
+  const box = s.querySelector('.media'), v = box.querySelector('video'), fr = box.querySelector('iframe');
+  const pause = !s.classList.contains('paused');
+  s.classList.toggle('paused', pause);
+  if (v) pause ? v.pause() : v.play().catch(() => {});
+  if (fr) ytCmd(fr, pause ? 'pauseVideo' : 'playVideo');
+}
+function burst(s, x, y) {
+  const h = document.createElement('span'); h.className = 'ms burst fill'; h.textContent = 'favorite';
+  const rc = s.getBoundingClientRect(); h.style.left = (x - rc.left) + 'px'; h.style.top = (y - rc.top) + 'px';
+  s.appendChild(h); setTimeout(() => h.remove(), 950);
+}
 $('#feed').addEventListener('click', e => {
   const s = e.target.closest('.slide'); if (!s?.dataset.id) return;
   const r = REELS.find(x => x.id === s.dataset.id);
   const b = e.target.closest('[data-fl]');
   if (e.target.closest('a')) return;
-  if (!b && e.target.closest('.ov p')) { e.target.closest('.ov p').classList.toggle('open'); return }
-  if (!b) return setMuted(!muted);
-  if (b.dataset.fl === 'mute') setMuted(!muted);
-  if (b.dataset.fl === 'save' && r) saveReel(r);
-  if (b.dataset.fl === 'map' && r) { const pt = reelPoint(r); setDisc('globe'); openGlobe(pt) }
+  if (b) {
+    if (b.dataset.fl === 'mute') setMuted(!muted);
+    if (b.dataset.fl === 'save' && r) saveReel(r, true);
+    if (b.dataset.fl === 'map' && r) { const pt = reelPoint(r); setDisc('globe'); openGlobe(pt, r.id) }
+    return;
+  }
+  const now = Date.now();
+  if (now - tapAt < 300) {                     // double tap: like (never unlikes, like Instagram)
+    clearTimeout(tapT); tapAt = 0; burst(s, e.clientX, e.clientY); if (r) saveReel(r, true, true); return;
+  }
+  tapAt = now;
+  const onText = e.target.closest('.ov p');
+  tapT = setTimeout(() => { if (onText) { onText.classList.toggle('open'); onText.closest('.ov').classList.toggle('open', onText.classList.contains('open')) } else togglePause(s) }, 300);
 });
+$('#feed').addEventListener('dblclick', e => e.preventDefault());
 
 /* ── the AI "watches" Instagram videos: this phone takes frames from the saved video and sends them ── */
 const watchTried = new Set();
