@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>בודפשט</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{
@@ -28,9 +28,9 @@
   --sh:0 8px 24px rgba(60,40,10,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--t1);font-family:'Heebo',system-ui,sans-serif;min-height:100vh;
+body{background:var(--bg);color:var(--t1);font-family:'Google Sans',system-ui,sans-serif;min-height:100vh;
   padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px);transition:background .3s,color .3s}
-h1,h2,h3,.serif{font-family:'Frank Ruhl Libre',serif}
+h1,h2,h3,.serif{font-family:'Google Sans',system-ui,sans-serif}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 a{color:inherit}
 .wrap{max-width:640px;margin:0 auto;padding:0 16px}
@@ -51,7 +51,7 @@ a{color:inherit}
 .count{display:flex;gap:10px;margin-top:22px;position:relative;z-index:1}
 .count div{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:16px;padding:12px 6px;text-align:center;backdrop-filter:blur(8px)}
 :root[data-theme=light] .count div{background:rgba(255,255,255,.6)}
-.count b{display:block;font-family:'Frank Ruhl Libre',serif;font-size:28px;color:var(--gold)}
+.count b{display:block;font-family:'Google Sans',system-ui,sans-serif;font-size:28px;color:var(--gold)}
 .count small{color:var(--t2);font-size:12px}
 .today-banner{margin-top:22px;background:var(--gold);color:#1b1407;border-radius:16px;padding:14px 16px;font-weight:600;position:relative;z-index:1}
 
@@ -60,14 +60,14 @@ a{color:inherit}
 .page.on{display:block}
 @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .sec-title{font-size:26px;font-weight:700;margin:26px 0 14px}
-.sec-title small{display:block;font-family:'Heebo';font-size:14px;color:var(--t3);font-weight:400;margin-top:2px}
+.sec-title small{display:block;font-family:'Google Sans',system-ui,sans-serif;font-size:14px;color:var(--t3);font-weight:400;margin-top:2px}
 
 /* day chips */
 .chips{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 8px;margin:0 -16px;scrollbar-width:none;scroll-snap-type:x mandatory;scroll-padding-inline:16px}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:0 0 auto;scroll-snap-align:start;min-width:68px;padding:10px 12px;border-radius:16px;background:var(--card);border:1px solid var(--line2);text-align:center;transition:.25s var(--ease)}
 .chip .wd{font-size:12px;color:var(--t3)}
-.chip .dn{font-family:'Frank Ruhl Libre',serif;font-size:22px;font-weight:700}
+.chip .dn{font-family:'Google Sans',system-ui,sans-serif;font-size:22px;font-weight:700}
 .chip.on{background:var(--gold);color:#1b1407;border-color:transparent}
 .chip.on .wd{color:#5a4410}
 .chip.is-today:not(.on){border-color:var(--gold)}
@@ -84,7 +84,7 @@ a{color:inherit}
 .ev .dot i{font-style:normal;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:19px;background:var(--card2);border:1px solid var(--line)}
 .ev .dot b{font-size:12px;color:var(--gold);font-weight:600;background:var(--bg);padding:2px 4px;border-radius:6px}
 .ev .body{flex:1;background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh)}
-.ev h3{font-family:'Heebo';font-size:16px;font-weight:600}
+.ev h3{font-family:'Google Sans',system-ui,sans-serif;font-size:16px;font-weight:600}
 .ev p{color:var(--t2);font-size:14px;line-height:1.55;margin-top:4px}
 .tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:99px;margin-top:8px;margin-left:6px;border:1px solid currentColor;opacity:.9}
 .tag.food{color:var(--paprika)}.tag.sight{color:var(--gold)}.tag.bath{color:var(--danube)}
@@ -94,7 +94,7 @@ a{color:inherit}
 /* cards */
 .card{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:12px}
 .flight{display:flex;align-items:center;gap:14px}
-.flight .ap{font-family:'Frank Ruhl Libre',serif;font-size:26px;font-weight:700}
+.flight .ap{font-family:'Google Sans',system-ui,sans-serif;font-size:26px;font-weight:700}
 .flight .mid{flex:1;text-align:center;color:var(--t3);font-size:12px;position:relative}
 .flight .mid::before{content:'';position:absolute;top:50%;left:0;right:0;border-top:1px dashed var(--line)}
 .flight .mid span{position:relative;background:var(--card);padding:0 8px}
@@ -103,10 +103,10 @@ a{color:inherit}
 
 /* map */
 #map{height:calc(100vh - 260px);min-height:360px;border-radius:var(--r);overflow:hidden;border:1px solid var(--line2)}
-.leaflet-container{background:var(--bg2);font-family:'Heebo'}
+.leaflet-container{background:var(--bg2);font-family:'Google Sans',system-ui,sans-serif}
 .pin{width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;background:var(--gold);border:2px solid #1b1407;box-shadow:0 4px 10px rgba(0,0,0,.4)}
 .pin span{transform:rotate(45deg);font-size:14px}
-.leaflet-popup-content{direction:rtl;text-align:right;font-family:'Heebo';margin:10px 14px}
+.leaflet-popup-content{direction:rtl;text-align:right;font-family:'Google Sans',system-ui,sans-serif;margin:10px 14px}
 .legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
 .legend button{padding:6px 12px;border-radius:99px;background:var(--card);border:1px solid var(--line2);font-size:13px}
 .legend button.on{background:var(--gold);color:#1b1407}
@@ -127,10 +127,10 @@ a{color:inherit}
 /* tips & phrases */
 .tip{display:flex;gap:14px}
 .tip .ico{font-size:26px}
-.tip h3{font-family:'Heebo';font-size:16px;font-weight:600}
+.tip h3{font-family:'Google Sans',system-ui,sans-serif;font-size:16px;font-weight:600}
 .tip p{color:var(--t2);font-size:14px;line-height:1.6;margin-top:2px}
 .ph{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 12px}
-.ph .hu{font-family:'Frank Ruhl Libre',serif;font-size:20px;direction:ltr;text-align:left;color:var(--gold)}
+.ph .hu{font-family:'Google Sans',system-ui,sans-serif;font-size:20px;direction:ltr;text-align:left;color:var(--gold)}
 .ph .say{color:var(--t3);font-size:13px}
 
 /* nav */
@@ -142,6 +142,10 @@ nav button i{font-style:normal;font-size:20px;filter:grayscale(1);opacity:.7;tra
 nav button.on{color:var(--gold)}
 nav button.on i{filter:none;opacity:1;transform:translateY(-2px)}
 </style>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+<meta name="apple-mobile-web-app-title" content="טיולים">
 </head>
 <body>
 
@@ -344,5 +348,6 @@ $('#nav').onclick = e => {
   scrollTo({ top: 0, behavior: 'smooth' });
 };
 </script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(()=>{})</script>
 </body>
 </html>
