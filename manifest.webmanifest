@@ -15,7 +15,7 @@
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
     { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
-  "share_target": { "action": "./budapest/", "method": "GET", "params": { "title": "title", "text": "text", "url": "url" } },
+  "share_target": { "action": "./budapest/share.html", "method": "GET", "params": { "title": "title", "text": "text", "url": "url" } },
   "shortcuts": [
     { "name": "בודפשט", "url": "budapest/", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "קוריאה", "url": "korea/", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }

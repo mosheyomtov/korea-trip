@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3B6EF5">
+<title>שומר ריל</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:grid;place-items:center;background:#3B6EF5;color:#fff;font-family:'Google Sans',system-ui,sans-serif;text-align:center}
+.c{width:96px;height:96px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;margin:0 auto 18px;font-size:46px;animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+h1{font-size:24px}
+p{opacity:.85;margin-top:6px;font-size:15px}
+a{display:inline-block;margin-top:22px;color:#3B6EF5;background:#fff;border-radius:99px;padding:11px 20px;font-weight:700;text-decoration:none;font-size:14px}
+</style>
+</head>
+<body>
+<div>
+  <div class="c" id="ic">⏳</div>
+  <h1 id="t">שומר…</h1>
+  <p id="s">אפשר לחזור לאינסטגרם</p>
+  <a href="./" id="open" hidden>לפתוח את האפליקציה</a>
+</div>
+<script src="trip.js"></script>
+<script>
+// Opened from Instagram's share menu: hand the link to the server and get out of the way.
+// The server saves the video, finds the place with AI and adds it to the app on its own.
+(async () => {
+  const sp = new URLSearchParams(location.search);
+  const link = [sp.get('url'), sp.get('text'), sp.get('title')].join(' ').match(/https?:\/\/(?:www\.)?instagram\.com\/\S+/)?.[0];
+  const rg = window.TRIP?.reelglobe || {};
+  const show = (ic, t, s) => { document.getElementById('ic').textContent = ic; document.getElementById('t').textContent = t; document.getElementById('s').textContent = s };
+  if (!link) { show('🤔', 'לא מצאתי קישור לריל', 'שתפו ריל מאינסטגרם'); document.getElementById('open').hidden = false; return }
+  try {
+    const res = await fetch(rg.api + '/functions/v1/trip', { method: 'POST',
+      headers: { apikey: rg.anonKey, Authorization: 'Bearer ' + rg.anonKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ trip: 'budapest', share: link }) });
+    const o = await res.json();
+    if (!o.ok) throw 0;
+    show('✓', 'נשמר!', 'הריל יופיע באפליקציה בעוד כדקה');
+    setTimeout(() => { window.close(); setTimeout(() => { document.getElementById('open').hidden = false }, 400) }, 1300);
+  } catch { show('⚠️', 'לא הצלחתי לשמור', 'בדקו חיבור לאינטרנט ונסו שוב'); document.getElementById('open').hidden = false }
+})();
+</script>
+</body>
+</html>
