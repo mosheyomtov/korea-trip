@@ -74,6 +74,10 @@ window.PLACES = [
       desc: '3 דקות מהמלון. תצפית יפה מלמעלה על אורות הכריסמס.' },
     { name: 'בית הטרור', en: 'House of Terror Museum', rec: true, lat: 47.5069, lng: 19.0653,
       desc: 'מוזיאון עוצמתי במפקדה המקורית של המשטרה החשאית הנאצית והקומוניסטית. לחובבי היסטוריה. סגור בימי שני.' },
+    { name: 'ספריית ארווין סאבו', en: 'Szabó Ervin Library Wenckheim Palace', lat: 47.4904, lng: 19.0636,
+      desc: 'ספרייה בתוך ארמון מהמאה ה-19, עם אולמות קריאה מעוטרים בעץ ובזהב באווירה של הוגוורטס. לתיירים יש כרטיס ביקור.' },
+    { name: 'The Magic', en: 'The Magic Budapest',
+      desc: 'בית קפה ובר בעיצוב של עולם הקוסמים: שיקויים מעשנים, משקאות צבעוניים וקינוחים. אווירת הארי פוטר.' },
     { name: 'Cinema Mystica', en: 'Cinema Mystica Budapest',
       desc: 'מוזיאון אמנות דיגיטלית עם מיצגי אור אינטראקטיביים. פתרון מצוין לערב קפוא או גשום.' },
     { name: 'סיור עם בר (פפריקה)', en: 'Paprika Budapest walking tour in Hebrew', lat: 47.4977, lng: 19.0544,
@@ -226,6 +230,7 @@ window.PLACE_ICONS = {
   'Széchenyi Thermal Bath': '♨️', 'Rudas Thermal Bath': '♨️', 'Lukács Bath': '♨️',
   'Dohány Street Synagogue': '🕍', 'Rumbach Street Synagogue': '🕍', 'Kazinczy Street Synagogue': '🕍', 'Memorial for Victims of the German Occupation': '🕯️',
   'Danube evening cruise Budapest': '🛳️', 'Central Market Hall Budapest': '🧺', 'Budapest Eye': '🎡', 'House of Terror Museum': '🖼️',
+  'Szabó Ervin Library Wenckheim Palace': '📚', 'The Magic Budapest': '🔮',
   'Cinema Mystica Budapest': '🎬', 'Paprika Budapest walking tour in Hebrew': '🚶',
   'Westend Budapest': '🛍️', 'Arena Mall Budapest': '🛍️', 'Premier Outlet Budapest': '🏷️', 'Allee Shopping Center': '🛍️', 'Etele Plaza Budapest': '🛍️',
   'Váci Street Budapest': '👗', 'Andrássy Avenue shops': '👜',
@@ -263,6 +268,7 @@ window.PLACE_AREAS = {
   'Széchenyi Thermal Bath': 'park', 'Rudas Thermal Bath': 'buda', 'Lukács Bath': 'buda',
   'Dohány Street Synagogue': 'jq', 'Rumbach Street Synagogue': 'jq', 'Kazinczy Street Synagogue': 'jq', 'Memorial for Victims of the German Occupation': 'bas',
   // אטרקציות
+  'Szabó Ervin Library Wenckheim Palace': 'south',
   'Central Market Hall Budapest': 'south', 'Budapest Eye': 'deak', 'House of Terror Museum': 'andr', 'Paprika Budapest walking tour in Hebrew': 'deak',
   // קניות
   'Westend Budapest': 'north', 'Arena Mall Budapest': 'out', 'Premier Outlet Budapest': 'out', 'Allee Shopping Center': 'buda', 'Etele Plaza Budapest': 'out',
