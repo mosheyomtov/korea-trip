@@ -176,7 +176,7 @@ window.PLACES = [
       desc: 'קפה ספשלטי איכותי, ליד האופרה.' },
     { name: "Blueberry", en: "Blueberry Budapest",
       desc: 'בית קפה לארוחת בוקר ומתוקים.' },
-    { name: "Bebka Deli", en: "Bebka Deli Budapest",
+    { name: "Babka Deli", en: "Babka Deli Budapest",
       desc: 'דלי ומאפייה, בבקות ומאפים.' },
   ]},
   { id: 'night', title: 'חיי לילה', icon: '🍸', items: [
@@ -216,7 +216,7 @@ window.PLACE_ICONS = {
   "David's Kitchen Budapest": '🥯',
   "Kaffa Opera Budapest": '☕',
   "Blueberry Budapest": '🫐',
-  "Bebka Deli Budapest": '🍞',
+  "Babka Deli Budapest": '🍞',
   'Circo Pizza Budapest': '🍕', 'Café Gerbeaud': '🍰', 'Jardin Cocktail Bar Budapest': '🍸', 'Museum of Sweets and Selfies Budapest': '📸',
   "St. Stephen's Basilica": '⛪', 'Vörösmarty Square': '🎄', 'Fashion Street Budapest': '✨', 'Városháza Park': '🎪',
   'Lumina Park Budapest Margaret Island': '💡', 'City Park Ice Rink Budapest': '⛸️',
@@ -237,4 +237,49 @@ window.PLACE_ICONS = {
   'Cinamood Budapest': '🥨', '2Sweet Budapest': '🧇', 'Café Brunch Budapest': '🍳',
   'Szimpla Kert Budapest': '🍻', 'Gozsdu Udvar Budapest': '🍸', '360 Bar Budapest': '🌃', 'High Note SkyBar Budapest': '🌃',
   'Instant-Fogas Complex Budapest': '🪩', 'Ötkert Budapest': '🪩', 'Doboz Budapest': '🪩', 'Akvárium Klub': '🎶',
+};
+
+// ═══ אזורים: לכל מקום האזור שלו בעיר, כדי לבחור מה רלוונטי למקום שבו מטיילים ═══
+window.AREAS = [
+  { id: 'jq',    title: 'ליד המלון', note: 'הרובע היהודי, קיראי וקזינצי' },
+  { id: 'deak',  title: 'וורשמארטי וואצי', note: 'כיכר דאק, פאשן סטריט, ואצי' },
+  { id: 'bas',   title: 'בזיליקה ופרלמנט', note: 'רובע 5 הצפוני, ליד הדנובה' },
+  { id: 'andr',  title: 'אנדראשי ואופרה', note: 'רובע 6, עד אוקטוגון' },
+  { id: 'park',  title: 'סיטי פארק', note: 'כיכר הגיבורים, סצ׳ני, ההחלקה' },
+  { id: 'north', title: 'גשר מרגיט', note: 'אי מרגיט, וסטאנד, ניוגאטי' },
+  { id: 'south', title: 'השוק הגדול', note: 'השוק, המוזיאון הלאומי' },
+  { id: 'buda',  title: 'בודה', note: 'גבעת הטירה ומעבר לנהר' },
+  { id: 'out',   title: 'מחוץ למרכז', note: 'צריך נסיעה' },
+];
+window.PLACE_AREAS = {
+  // כריסמס
+  "St. Stephen's Basilica": 'bas', 'Vörösmarty Square': 'deak', 'Fashion Street Budapest': 'deak', 'Városháza Park': 'deak',
+  'Lumina Park Budapest Margaret Island': 'north', 'City Park Ice Rink Budapest': 'park',
+  // אתרים
+  'Hungarian Parliament Building': 'bas', 'Shoes on the Danube Bank': 'bas', "Fisherman's Bastion": 'buda', 'Matthias Church': 'buda',
+  'Buda Castle': 'buda', 'Széchenyi Chain Bridge': 'bas', "Heroes' Square": 'park', 'Vajdahunyad Castle': 'park', 'Hungarian State Opera': 'andr',
+  'Andrássy Avenue': 'andr', 'Budapest Nyugati Railway Station': 'north', 'Szabadság tér': 'bas', 'Tőzsdepalota': 'bas',
+  // מרחצאות ויהדות
+  'Széchenyi Thermal Bath': 'park', 'Rudas Thermal Bath': 'buda', 'Lukács Bath': 'buda',
+  'Dohány Street Synagogue': 'jq', 'Rumbach Street Synagogue': 'jq', 'Kazinczy Street Synagogue': 'jq', 'Memorial for Victims of the German Occupation': 'bas',
+  // אטרקציות
+  'Central Market Hall Budapest': 'south', 'Budapest Eye': 'deak', 'House of Terror Museum': 'andr', 'Paprika Budapest walking tour in Hebrew': 'deak',
+  // קניות
+  'Westend Budapest': 'north', 'Arena Mall Budapest': 'out', 'Premier Outlet Budapest': 'out', 'Allee Shopping Center': 'buda', 'Etele Plaza Budapest': 'out',
+  'Váci Street Budapest': 'deak', 'Andrássy Avenue shops': 'andr',
+  // כשר
+  'Nitavalo Kosher Chef Restaurant Budapest': 'jq', 'Carmel Restaurant Budapest kosher': 'jq', 'Marrakesh Budapest kosher': 'jq', 'Cafe Tamar Budapest': 'jq',
+  'Tel Aviv Cafe Budapest Kazinczy': 'jq', 'Brooklyn Bagel Budapest': 'north', 'ASHIS Budapest kosher': 'jq',
+  // אוכל
+  "Trattoria Pomo D'Oro Budapest": 'bas', 'Twentysix Budapest Király utca': 'jq', 'Popolare Budapest': 'jq', 'La Botte Paprika Budapest': 'deak', 'Mazel Tov Budapest': 'jq',
+  // בתי קפה
+  'New York Café Budapest': 'jq', 'Auguszt Cukrászda Belváros': 'deak', 'First Strudel House of Pest': 'bas', 'Gelarto Rosa Budapest': 'bas',
+  'Cinamood Budapest': 'bas', 'Café Brunch Budapest': 'bas', 'Café Gerbeaud': 'deak',
+  // מאפיות ובראנצ׳ים
+  'VAJ Bakery Budapest': 'jq', 'Aran Bakery Budapest': 'andr', 'Cirkusz Cafe Budapest': 'jq', 'Cookie Beacon Budapest': 'bas', 'Mokka Cukka Budapest': 'bas',
+  'Nor/ma Grand Budapest': 'buda', 'Aranypinty Budapest': 'south', "David's Kitchen Budapest": 'bas', 'Kaffa Opera Budapest': 'andr',
+  'Blueberry Budapest': 'bas', 'Babka Deli Budapest': 'north',
+  // לילה
+  'Szimpla Kert Budapest': 'jq', 'Gozsdu Udvar Budapest': 'jq', '360 Bar Budapest': 'andr', 'High Note SkyBar Budapest': 'bas',
+  'Instant-Fogas Complex Budapest': 'jq', 'Ötkert Budapest': 'bas', 'Doboz Budapest': 'jq', 'Akvárium Klub': 'deak',
 };
