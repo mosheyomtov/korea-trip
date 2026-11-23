@@ -252,6 +252,8 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
 .pl-sub{font-size:13px;color:var(--ink-3);margin:2px 2px 0}
 .ctl-row{display:flex;align-items:center;gap:8px}
 .ctl-row .chips{flex:1;min-width:0}
+.chips.areas .chip{font-size:12.5px;padding:6px 11px}
+.chips.areas .chip .ms{font-size:15px}
 .ctl-row .circle{width:42px;height:42px;flex:0 0 auto;color:var(--brand)}
 /* reels feed: tap = pause, double tap = like */
 .slide .pp{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:2}
@@ -388,6 +390,7 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
     <div id="pendingBox"></div>
     <label class="search"><span class="ms">search</span><input id="plSearch" type="search" placeholder="חיפוש מקום, מסעדה, בר..."></label>
     <div class="chips" id="plCats"></div>
+    <div class="chips areas" id="plAreas"></div>
     <div class="filters">
       <button class="chip" id="plFav"><span class="ms fill" style="font-size:16px;color:var(--rose)">favorite</span> שמרנו</button>
       <button class="chip" id="plRec">⭐ מומלצים</button>
@@ -399,6 +402,7 @@ body.mapmode #s-map .app-bar{position:fixed;left:0;right:0}
     <div class="mapwrap"><div class="gm" id="gmap"></div></div>
     <div class="ctl">
       <div class="ctl-row"><div class="chips" id="mapChips"></div><button class="circle glassy" id="pinToggle" aria-label="רילסים או אייקונים"><span class="ms">smart_display</span></button></div>
+      <div class="chips areas" id="mapAreas"></div>
     </div>
     <div class="fabs">
       <button class="circle" id="mapLocate" aria-label="המיקום שלי"><span class="ms">my_location</span></button>
@@ -520,7 +524,7 @@ function sameName(it, s) {   // only the very same name counts (a place on the s
   return [it.en, it.name].some(n => norm(n) === a);
 }
 function rebuild() {
-  PL = (window.PLACES || []).map(c => ({ ...c, items: c.items.map(it => ({ ...it, key: it.en || it.name, cat: c.id, reels: [] })) }));
+  PL = (window.PLACES || []).map(c => ({ ...c, items: c.items.map(it => ({ ...it, key: it.en || it.name, cat: c.id, area: (window.PLACE_AREAS || {})[it.en || it.name], reels: [] })) }));
   const all = () => PL.flatMap(c => c.items);
   const geo = store.get('geo', {});
   all().forEach(it => { if (!it.lat && geo[it.key]) Object.assign(it, geo[it.key]) });
@@ -635,7 +639,7 @@ $('#sheetBg').onclick = closeSheet;
 // the smart schedule lives in its own page: sched.js
 
 /* ── places list ── */
-let plCat = 'all', plRec = false, plFav = false, plVid = false, plQ = '';
+let plCat = 'all', plArea = 'all', plRec = false, plFav = false, plVid = false, plQ = '';
 function placeByKey(k) { return k && PL.flatMap(c => c.items).find(it => it.key === k) }
 function thumb(r) { return r.source === 'youtube' ? `https://i.ytimg.com/vi/${r.code}/hqdefault.jpg` : r.thumb }
 function thHtml(r, cls = 'th') { const t = thumb(r); return `<button class="${cls}" data-reel="${esc(r.id)}" style="${t ? `background-image:url('${esc(t)}')` : ''}">${!t && r.video ? `<video muted playsinline preload="metadata" src="${esc(r.video)}#t=0.5"></video>` : ''}<span class="src">${r.source === 'youtube' ? 'YT' : 'IG'}</span></button>` }
@@ -643,14 +647,24 @@ function toggleFav(k) {
   favs.has(k) ? favs.delete(k) : favs.add(k); store.set('favs2', [...favs]);
   if (RG_ON) { STATE.favs = [...favs]; api({ favs: [...favs] }).catch(() => {}) }
 }
+const AREA = Object.fromEntries((window.AREAS || []).map(a => [a.id, a]));
+const inArea = it => plArea === 'all' || it.area === plArea;
+// area chips: shared by the list and the map, so picking an area on one shows the same area on the other
+function areaChips(items) {
+  const n = id => items.filter(it => it.area === id).length;
+  return `<button class="chip ${plArea === 'all' ? 'on' : ''}" data-a="all"><span class="ms">location_on</span>כל האזורים</button>` +
+    (window.AREAS || []).filter(a => n(a.id)).map(a => `<button class="chip ${plArea === a.id ? 'on' : ''}" data-a="${a.id}" title="${esc(a.note || '')}">${esc(a.title)}</button>`).join('');
+}
+function setArea(a) { plArea = a; renderPlaces(); drawMine() }
 function renderPlaces() {
   const all = PL.flatMap(c => c.items);
   $('#plSub').textContent = `${all.length} מקומות · ${all.filter(it => favs.has(it.key)).length} ♥ · ${all.filter(it => it.reels.length).length} עם סרטונים`;
   $('#plCats').innerHTML = `<button class="chip ${plCat === 'all' ? 'on' : ''}" data-c="all">הכל</button>` + PL.map(c => `<button class="chip ${plCat === c.id ? 'on' : ''}" data-c="${c.id}">${c.icon} ${esc(c.title)}</button>`).join('');
+  $('#plAreas').innerHTML = areaChips(all);
   $('#plRec').classList.toggle('on', plRec); $('#plFav').classList.toggle('on', plFav); $('#plVid').classList.toggle('on', plVid);
   const q = plQ.trim().toLowerCase();
   $('#plList').innerHTML = PL.filter(c => plCat === 'all' || c.id === plCat).map(c => {
-    const items = c.items.filter(it => (!plRec || it.rec) && (!plFav || favs.has(it.key)) && (!plVid || it.reels.length) && (!q || [it.name, it.en, it.desc, c.title].join(' ').toLowerCase().includes(q)));
+    const items = c.items.filter(it => inArea(it) && (!plRec || it.rec) && (!plFav || favs.has(it.key)) && (!plVid || it.reels.length) && (!q || [it.name, it.en, it.desc, c.title].join(' ').toLowerCase().includes(q)));
     if (!items.length) return '';
     return `<div class="cat-h"><h3>${c.icon} ${esc(c.title)}</h3>${c.note ? `<span>${esc(c.note)}</span>` : ''}</div>` + items.map(it => `
       <div class="pl">
@@ -660,7 +674,7 @@ function renderPlaces() {
         ${it.reels.length ? `<div class="reel-row">${it.reels.map(x => thHtml(x.r)).join('')}</div>` : ''}
         <div class="tags">
           ${it.rec ? '<span class="pill p-amber">⭐ מומלץ</span>' : ''}${it.type ? `<span class="pill p-green">${esc(it.type)}</span>` : ''}
-          ${it.fromReel ? '<span class="pill p-violet">🎬 מריל ששיתפתם</span>' : ''}${it.added ? '<span class="pill p-violet">✨ מהגילוי</span>' : ''}
+          ${AREA[it.area] ? `<span class="pill p-gray" data-area="${it.area}">📍 ${esc(AREA[it.area].title)}</span>` : ''}${it.fromReel ? '<span class="pill p-violet">🎬 מריל ששיתפתם</span>' : ''}${it.added ? '<span class="pill p-violet">✨ מהגילוי</span>' : ''}
           ${it.reels.length ? `<span class="pill p-blue">${it.reels.length} סרטונים</span>` : ''}
           <span style="flex:1"></span>
           <a class="act ghost" style="padding:6px 11px" target="_blank" rel="noopener" href="${gmapsUrl(it.lat, it.lng, it.en || it.name)}"><span class="ms">near_me</span>ניווט</a>
@@ -671,6 +685,7 @@ function renderPlaces() {
   renderPending();
 }
 $('#plCats').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; plCat = b.dataset.c; renderPlaces() };
+$('#plAreas').onclick = e => { const b = e.target.closest('.chip'); if (b) setArea(b.dataset.a) };
 $('#plRec').onclick = () => { plRec = !plRec; renderPlaces() };
 $('#plFav').onclick = () => { plFav = !plFav; renderPlaces() };
 $('#plVid').onclick = () => { plVid = !plVid; renderPlaces() };
@@ -680,6 +695,8 @@ document.addEventListener('click', e => {
   if (rv) { const r = REELS.find(x => x.id === rv.dataset.reel); if (r) openReel(r); return }
   const f = e.target.closest('[data-fav]');
   if (f) { toggleFav(f.dataset.fav); afterChange(); return }
+  const ar = e.target.closest('[data-area]');
+  if (ar && ar.closest('#plList')) { setArea(ar.dataset.area); scrollTo({ top: 0, behavior: 'smooth' }); return }
   const m = e.target.closest('[data-onmap]');
   if (m) { const p = placeByKey(m.dataset.onmap); go('map'); setView('map', p); return }
   const sv = e.target.closest('[data-save]');
@@ -892,6 +909,7 @@ function setView(v, focus) {
 }
 $('#viewSeg').onclick = e => { const b = e.target.closest('button'); if (b) setView(b.dataset.v) };
 $('#pinToggle').onclick = () => { pinStyle = pinStyle === 'reels' ? 'icons' : 'reels'; store.set('pinStyle', pinStyle); drawMine() };
+$('#mapAreas').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; setArea(b.dataset.a); MAPS.mine && fitTo(MAPS.mine, mineItems(), { top: 240, bottom: 110, left: 30, right: 30 }) };
 $('#mapChips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; mapCat = b.dataset.c; drawMine() };
 $('#mapFit').onclick = () => MAPS.mine && fitTo(MAPS.mine, mineItems(), { top: 200, bottom: 110, left: 30, right: 30 });
 async function openMine(focus) {
@@ -904,11 +922,12 @@ async function openMine(focus) {
 }
 function mineItems() {
   const hotel = T.hotels.map(h => ({ key: 'hotel', name: h.name, en: h.addr, lat: h.lat, lng: h.lng, hotel: true, reels: [] }));
-  return [...hotel, ...PL.flatMap(c => c.items).filter(it => it.lat && (mapCat === 'all' ? true : mapCat === 'fav' ? favs.has(it.key) : mapCat === 'vid' ? it.reels.length : it.cat === mapCat))];
+  return [...hotel, ...PL.flatMap(c => c.items).filter(it => it.lat && inArea(it) && (mapCat === 'all' ? true : mapCat === 'fav' ? favs.has(it.key) : mapCat === 'vid' ? it.reels.length : it.cat === mapCat))];
 }
 function drawMine() {
   $('#pinToggle .ms').textContent = pinStyle === 'reels' ? 'smart_display' : 'location_on';
   $('#mapChips').innerHTML = [['all', 'הכל'], ['fav', '♥ שמרנו'], ['vid', '🎬 עם סרטון'], ...PL.map(c => [c.id, `${c.icon} ${c.title}`])].map(([id, t]) => `<button class="chip ${mapCat === id ? 'on' : ''}" data-c="${id}">${esc(t)}</button>`).join('');
+  $('#mapAreas').innerHTML = areaChips(PL.flatMap(c => c.items).filter(it => it.lat));
   const m = MAPS.mine; if (!m) return;
   setMarkers(m, mineItems().map(it => {
     const div = document.createElement('div'), r0 = it.reels[0]?.r;
