@@ -109,8 +109,10 @@
 
   /* ── map: the day's stops in order, joined by a route line ── */
   // markers 1..n for the day's stops, the hotel, and a line with arrows between them
+  // a schedule item on the map: its own coordinates, else the place it points to (incl. places geocoded on this phone)
+  const located = items => items.map(it => { if (it.lat) return it; const p = it.place && placeByKey(it.place); return p?.lat ? { ...it, lat: p.lat, lng: p.lng } : it }).filter(it => it.lat);
   async function drawRoute(id, el, items) {
-    const h = T.hotels?.[0], stops = items.filter(it => it.lat);
+    const h = T.hotels?.[0], stops = located(items);
     let m; try { m = await getMap(id, el) } catch { el.innerHTML = '<div class="empty">המפה לא נטענה</div>'; return null }
     const pin = (html, cls) => { const d = document.createElement('div'); d.className = 'sc-pin ' + cls; d.innerHTML = html; return d };
     const list = stops.map((it, n) => [{ lat: it.lat, lng: it.lng }, pin(`<b>${n + 1}</b>`, '')]);
@@ -127,7 +129,7 @@
     if (path.length === 1) m.gm.setZoom(15);
     return m;
   }
-  const stopsHtml = items => { const stops = items.filter(it => it.lat); return stops.length ? `<ol class="sc-stops">${stops.map((it, n) => `<li data-stop="${n}"><span class="no">${n + 1}</span><span class="tm">${esc(it.t || '')}</span><span class="nm">${it.icon || ''} ${esc(it.name)}</span><a target="_blank" rel="noopener" href="${gmapsUrl(it.lat, it.lng)}" aria-label="ניווט"><span class="ms">near_me</span></a></li>`).join('')}</ol>`
+  const stopsHtml = items => { const stops = located(items); return stops.length ? `<ol class="sc-stops">${stops.map((it, n) => `<li data-stop="${n}"><span class="no">${n + 1}</span><span class="tm">${esc(it.t || '')}</span><span class="nm">${it.icon || ''} ${esc(it.name)}</span><a target="_blank" rel="noopener" href="${gmapsUrl(it.lat, it.lng)}" aria-label="ניווט"><span class="ms">near_me</span></a></li>`).join('')}</ol>`
     : `<div class="empty"><span class="ms">map</span><b>אין ביום הזה מקומות על המפה</b></div>` };
   const panTo = (id, n) => { try { const m = MAPS[id], it = m.stops[n]; m.gm.panTo({ lat: it.lat, lng: it.lng }); m.gm.setZoom(16) } catch {} };
   async function renderMap(p) {
