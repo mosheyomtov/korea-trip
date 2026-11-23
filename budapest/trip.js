@@ -55,7 +55,7 @@ window.TRIP = {
       { t: '18:50', icon: '👞', name: 'אנדרטת הנעליים על הדנובה', desc: '5 דקות הליכה מהפרלמנט.', place: 'Shoes on the Danube Bank', lat: 47.5045, lng: 19.0448 },
       { t: '19:10', icon: '🦅', name: 'כיכר החירות', desc: 'בדרך למסעדה.', place: 'Szabadság tér', lat: 47.5030, lng: 19.0505 },
       { t: '19:30', icon: '🍝', name: 'ארוחת ערב ב-Pomo D\'Oro', desc: 'ליד הבזיליקה. להזמין שולחן מראש. חלופה: Forni di Napoli.', place: "Trattoria Pomo D'Oro Budapest", lat: 47.5025, lng: 19.0515 },
-      { t: '21:15', icon: '🎰', name: 'קזינו Las Vegas', desc: 'ליד גשר השלשלאות, פתוח 24 שעות. לקחת דרכונים. אופציונלי.', lat: 47.4993, lng: 19.0478 },
+      { t: '21:15', icon: '🎰', name: 'קזינו Las Vegas', dk: 'Las Vegas Casino', desc: 'ליד גשר השלשלאות, פתוח 24 שעות. לקחת דרכונים. אופציונלי.', lat: 47.4993, lng: 19.0478 },
     ] },
     { date: '2026-11-27', title: 'בלאק פריידי, ובערב הבזיליקה וסימפלה', items: [
       { t: '08:30', icon: '🥐', name: 'ארוחת בוקר ב-VAJ', desc: 'חלופה: Cinamood.', place: 'VAJ Bakery Budapest' },
@@ -64,7 +64,7 @@ window.TRIP = {
       { t: '12:30', icon: '🚕', name: 'Bolt חזרה למלון', desc: 'לא יאוחר מ-13:00.' },
       { t: '13:30', icon: '🏨', name: 'במלון: מנוחה והכנות לשבת', desc: '', lat: 47.4987, lng: 19.0567 },
       { t: '15:45', icon: '🕯️', name: 'הדלקת נרות', desc: 'בערך. לבדוק את הזמן המדויק.' },
-      { t: '17:30', icon: '🍷', name: 'ארוחת ליל שבת ב-Hanna', desc: 'Kazinczy 29. בהזמנה ותשלום מראש (בערך 50 עד 70 אירו לאדם). לבדוק מתי מסתיימת.', lat: 47.4983, lng: 19.0617 },
+      { t: '17:30', icon: '🍷', name: 'ארוחת ליל שבת ב-Hanna', dk: 'Hanna', desc: 'Kazinczy 29. בהזמנה ותשלום מראש (בערך 50 עד 70 אירו לאדם). לבדוק מתי מסתיימת.', lat: 47.4983, lng: 19.0617 },
       { t: '20:00', icon: '🎄', name: 'שוק הבזיליקה ומופע האורות', desc: 'כ-8 דקות הליכה. יין חם וקיורטוש. לבדוק עד מתי פתוח בשישי.', place: "St. Stephen's Basilica", lat: 47.5009, lng: 19.0539 },
       { t: '21:00', icon: '🎡', name: 'הגלגל הענק', desc: '5 דקות מהבזיליקה. לבדוק שעת סגירה.', place: 'Budapest Eye', lat: 47.4985, lng: 19.0525 },
       { t: '22:00', icon: '🍸', name: 'סימפלה', desc: 'בר ההריסות המפורסם. בשישי יש תור.', place: 'Szimpla Kert Budapest', lat: 47.4970, lng: 19.0634 },
@@ -73,7 +73,7 @@ window.TRIP = {
     { date: '2026-11-28', title: 'שבת ברגל, ובלילה Sparty', items: [
       { t: '10:00', icon: '☕', name: 'ארוחת בוקר במלון', desc: 'קמים מאוחר.', lat: 47.4987, lng: 19.0567 },
       { t: '11:00', icon: '🌉', name: 'הליכה לגשר השלשלאות', desc: 'כ-15 דקות ברגל. נוף לגבעת בודה באור יום.', place: 'Széchenyi Chain Bridge', lat: 47.4989, lng: 19.0438 },
-      { t: '12:30', icon: '🍽️', name: 'ארוחת שבת ב-Hanna', desc: 'בהזמנה ותשלום מראש.', lat: 47.4983, lng: 19.0617 },
+      { t: '12:30', icon: '🍽️', name: 'ארוחת שבת ב-Hanna', dk: 'Hanna', desc: 'בהזמנה ותשלום מראש.', lat: 47.4983, lng: 19.0617 },
       { t: '14:30', icon: '🛏️', name: 'מנוחה במלון', desc: '', lat: 47.4987, lng: 19.0567 },
       { t: '17:00', icon: '🎄', name: 'שוק וורשמארטי', desc: 'צאת שבת בערך ב-17:00. יין חם וקיורטוש.', place: 'Vörösmarty Square', lat: 47.4968, lng: 19.0505 },
       { t: '19:00', icon: '🥩', name: 'ארוחת ערב ב-Nitavalo', desc: 'מסעדת שף בשרית כשרה, Dob 32. להזמין שולחן.', place: 'Nitavalo Kosher Chef Restaurant Budapest', lat: 47.4983, lng: 19.0628 },
