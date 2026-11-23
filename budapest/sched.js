@@ -11,9 +11,11 @@
   let draft = store.get('sched-draft', null);     // a proposal they have not approved yet (kept on this phone)
   let dayI = Math.max(0, T.days.findIndex(d => d.date === todayStr));
   let view = 'list', loading = false, error = null, loadT = null;
-  const plan = () => draft || (STATE.plan?.approved ? STATE.plan : null);
+  // a draft made before the shared plan was last approved is stale: the approved plan wins
+  const staleDraft = () => draft && STATE.plan?.approved && (!draft.saved_at || draft.saved_at < STATE.plan.approved);
+  const plan = () => { if (staleDraft()) { draft = null; saveDraft() } return draft || (STATE.plan?.approved ? STATE.plan : null) };
   const pday = (p, date) => p?.days?.find(d => d.date === date);
-  const saveDraft = () => store.set('sched-draft', draft);
+  function saveDraft() { if (draft && !draft.saved_at) draft.saved_at = new Date().toISOString(); store.set('sched-draft', draft) }
 
   /* ── skeleton: the map stays in the page so Google Maps is created once ── */
   root.innerHTML = `
