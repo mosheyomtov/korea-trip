@@ -18,6 +18,8 @@ window.PLACES = [
       desc: 'פארק אורות חורפי באי מרגיט: מסלול של כ-1.5 ק"מ עם מעל 200 מיצגי אור. פתוח 16:30 עד 21:00, סגור בימי שני.' },
     { name: 'משטח ההחלקה בסיטי פארק', en: 'City Park Ice Rink Budapest', rec: true, lat: 47.5155, lng: 19.0820,
       desc: 'משטח ההחלקה החיצוני מהגדולים והיפים באירופה, למרגלות טירת ויידהוניאד. חוויה אדירה גם בלי לדעת להחליק.' },
+    { name: 'Happy Wonderland', en: 'Happy Wonderland Budapest', rec: true, lat: 47.5157, lng: 19.0812,
+      desc: 'לונה פארק חורפי בסיטי פארק, ליד טירת ויידהוניאד ומשטח ההחלקה. כניסה חינם, משלמים לפי מתקן. הכי יפה בערב כשהכול מואר. 27/11 עד 10/1.' },
   ]},
   { id: 'sights', title: 'אתרי חובה ותצפיות', icon: '🏰', items: [
     { name: 'בניין הפרלמנט', en: 'Hungarian Parliament Building', rec: true, lat: 47.5071, lng: 19.0457,
@@ -118,6 +120,8 @@ window.PLACES = [
       desc: 'מסעדה אסייתית וסושי כשרה. מהרשימה של פז.' },
   ]},
   { id: 'food', title: 'איטלקי, חלבי ואווירה', icon: '🍝', note: 'לא כשר. מעולה לפסטות, פיצות ודגים', items: [
+    { name: 'Pizza George', en: 'Pizza George Budapest', lat: 47.4906, lng: 19.0581,
+      desc: 'הפיצה הוויראלית מהריל: סלייסים זולים בסגנון ניו יורק. בעיקר טייק אווי. Egyetem tér 5, ליד השוק הגדול.' },
     { name: 'Trattoria Pomo D\'Oro', en: "Trattoria Pomo D'Oro Budapest", rec: true,
       desc: 'מהאיטלקיות הנחשבות בעיר, ליד הבזיליקה. חובה להזמין שולחן מראש.' },
     { name: 'Forni di Napoli', en: 'Forni di Napoli Budapest', rec: true,
@@ -223,7 +227,7 @@ window.PLACE_ICONS = {
   "Babka Deli Budapest": '🍞',
   'Circo Pizza Budapest': '🍕', 'Café Gerbeaud': '🍰', 'Jardin Cocktail Bar Budapest': '🍸', 'Museum of Sweets and Selfies Budapest': '📸',
   "St. Stephen's Basilica": '⛪', 'Vörösmarty Square': '🎄', 'Fashion Street Budapest': '✨', 'Városháza Park': '🎪',
-  'Lumina Park Budapest Margaret Island': '💡', 'City Park Ice Rink Budapest': '⛸️',
+  'Lumina Park Budapest Margaret Island': '💡', 'City Park Ice Rink Budapest': '⛸️', 'Happy Wonderland Budapest': '🎢', 'Pizza George Budapest': '🍕',
   'Hungarian Parliament Building': '🏛️', 'Shoes on the Danube Bank': '👞', "Fisherman's Bastion": '🏰', 'Matthias Church': '⛪',
   'Buda Castle': '👑', 'Széchenyi Chain Bridge': '🌉', "Heroes' Square": '🗽', 'Vajdahunyad Castle': '🏰',
   'Hungarian State Opera': '🎭', 'Andrássy Avenue': '🌳', 'Budapest Nyugati Railway Station': '🚉', 'Szabadság tér': '🌳', 'Tőzsdepalota': '🏛️',
@@ -259,7 +263,7 @@ window.AREAS = [
 window.PLACE_AREAS = {
   // כריסמס
   "St. Stephen's Basilica": 'bas', 'Vörösmarty Square': 'deak', 'Fashion Street Budapest': 'deak', 'Városháza Park': 'deak',
-  'Lumina Park Budapest Margaret Island': 'north', 'City Park Ice Rink Budapest': 'park',
+  'Lumina Park Budapest Margaret Island': 'north', 'City Park Ice Rink Budapest': 'park', 'Happy Wonderland Budapest': 'park', 'Pizza George Budapest': 'south',
   // אתרים
   'Hungarian Parliament Building': 'bas', 'Shoes on the Danube Bank': 'bas', "Fisherman's Bastion": 'buda', 'Matthias Church': 'buda',
   'Buda Castle': 'buda', 'Széchenyi Chain Bridge': 'bas', "Heroes' Square": 'park', 'Vajdahunyad Castle': 'park', 'Hungarian State Opera': 'andr',
