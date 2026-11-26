@@ -22,6 +22,12 @@ window.PLACES = [
       desc: 'לונה פארק חורפי בסיטי פארק, ליד טירת ויידהוניאד ומשטח ההחלקה. כניסה חינם, משלמים לפי מתקן. הכי יפה בערב כשהכול מואר. 27/11 עד 10/1.' },
   ]},
   { id: 'sights', title: 'אתרי חובה ותצפיות', icon: '🏰', items: [
+    { name: 'גבעת גלרט והמצודה', en: 'Citadella Budapest', rec: true, lat: 47.4868, lng: 19.0470,
+      desc: 'המצודה על גבעת גלרט נפתחה מחדש ב-2026 אחרי שיפוץ: פארק חדש, פסל החירות ומרפסות תצפית חינם על הדנובה והגשרים.' },
+    { name: 'גשר החירות', en: 'Liberty Bridge Budapest', lat: 47.4859, lng: 19.0556,
+      desc: 'הגשר הירוק המפורסם, יוצא ממש מהשוק הגדול לגבעת גלרט.' },
+    { name: 'שדרת Bartók Béla', en: 'Bartók Béla út Budapest', lat: 47.4800, lng: 19.0530,
+      desc: 'רחוב מקומי ויפה בבודה, עם ארכיטקטורה קלאסית, בתי קפה ומאפיות ובלי מלכודות תיירים.' },
     { name: 'בניין הפרלמנט', en: 'Hungarian Parliament Building', rec: true, lat: 47.5071, lng: 19.0457,
       desc: 'המבנה האייקוני של העיר. הכי יפה מואר בלילה, מהצד השני של הנהר או משיט. לסיור בפנים חובה להזמין כרטיסים מראש.' },
     { name: 'אנדרטת הנעליים', en: 'Shoes on the Danube Bank', rec: true, lat: 47.5045, lng: 19.0448,
@@ -227,7 +233,7 @@ window.PLACE_ICONS = {
   "Babka Deli Budapest": '🍞',
   'Circo Pizza Budapest': '🍕', 'Café Gerbeaud': '🍰', 'Jardin Cocktail Bar Budapest': '🍸', 'Museum of Sweets and Selfies Budapest': '📸',
   "St. Stephen's Basilica": '⛪', 'Vörösmarty Square': '🎄', 'Fashion Street Budapest': '✨', 'Városháza Park': '🎪',
-  'Lumina Park Budapest Margaret Island': '💡', 'City Park Ice Rink Budapest': '⛸️', 'Happy Wonderland Budapest': '🎢', 'Pizza George Budapest': '🍕',
+  'Lumina Park Budapest Margaret Island': '💡', 'City Park Ice Rink Budapest': '⛸️', 'Happy Wonderland Budapest': '🎢', 'Pizza George Budapest': '🍕', 'Citadella Budapest': '⛰️', 'Liberty Bridge Budapest': '🌉', 'Bartók Béla út Budapest': '🥐',
   'Hungarian Parliament Building': '🏛️', 'Shoes on the Danube Bank': '👞', "Fisherman's Bastion": '🏰', 'Matthias Church': '⛪',
   'Buda Castle': '👑', 'Széchenyi Chain Bridge': '🌉', "Heroes' Square": '🗽', 'Vajdahunyad Castle': '🏰',
   'Hungarian State Opera': '🎭', 'Andrássy Avenue': '🌳', 'Budapest Nyugati Railway Station': '🚉', 'Szabadság tér': '🌳', 'Tőzsdepalota': '🏛️',
@@ -263,7 +269,7 @@ window.AREAS = [
 window.PLACE_AREAS = {
   // כריסמס
   "St. Stephen's Basilica": 'bas', 'Vörösmarty Square': 'deak', 'Fashion Street Budapest': 'deak', 'Városháza Park': 'deak',
-  'Lumina Park Budapest Margaret Island': 'north', 'City Park Ice Rink Budapest': 'park', 'Happy Wonderland Budapest': 'park', 'Pizza George Budapest': 'south',
+  'Lumina Park Budapest Margaret Island': 'north', 'City Park Ice Rink Budapest': 'park', 'Happy Wonderland Budapest': 'park', 'Pizza George Budapest': 'south', 'Citadella Budapest': 'buda', 'Liberty Bridge Budapest': 'south', 'Bartók Béla út Budapest': 'buda',
   // אתרים
   'Hungarian Parliament Building': 'bas', 'Shoes on the Danube Bank': 'bas', "Fisherman's Bastion": 'buda', 'Matthias Church': 'buda',
   'Buda Castle': 'buda', 'Széchenyi Chain Bridge': 'bas', "Heroes' Square": 'park', 'Vajdahunyad Castle': 'park', 'Hungarian State Opera': 'andr',
