@@ -45,6 +45,7 @@ window.TRIP = {
       { t: '23:30', icon: '🏨', name: 'צ׳ק-אין ב-Barceló', desc: 'Király utca 16.', lat: 47.4987, lng: 19.0567 },
     ] },
     { date: '2026-11-26', title: 'בזיליקה, בית הכנסת הגדול, גבעת גלרט ושוק כריסמס', items: [
+      { t: '09:50', icon: '🏨', name: 'יציאה מהמלון', desc: 'Barceló, Király utca 16.', lat: 47.4987, lng: 19.0567 },
       { t: '10:00', icon: '☕', name: 'ארוחת בוקר ב-Tel Aviv Cafe', desc: 'ליד המלון, עד 10:30. חלופות: קפה תמר או Cirkusz.', place: 'Tel Aviv Cafe Budapest Kazinczy', lat: 47.4980, lng: 19.0618 },
       { t: '10:45', icon: '⛪', name: 'הבזיליקה מבפנים ותצפית 360° מהכיפה', desc: 'עד 11:45. 8 דקות הליכה מהמלון. נכנסים פנימה ועולים במעלית לתצפית על כל העיר.', place: "St. Stephen's Basilica", lat: 47.5009, lng: 19.0539 },
       { t: '12:00', icon: '🕍', name: 'בית הכנסת הגדול', desc: 'עד 13:00. כ-15 דקות הליכה מהבזיליקה. הכרטיס כולל סיור מודרך, המוזיאון היהודי ועץ הערבה הבוכייה. זה היום הכי טוב: בשישי פתוח רק עד הצהריים ובשבת סגור.', place: 'Dohány Street Synagogue', lat: 47.4960, lng: 19.0607 },
@@ -58,8 +59,10 @@ window.TRIP = {
       { t: '18:30', icon: '🍝', name: 'ארוחת ערב ב-Pomo D\'Oro', desc: 'אם יש שולחן. חלופות: Forni di Napoli ליד הבזיליקה, או איטלקי ליד המלון.', place: "Trattoria Pomo D'Oro Budapest", lat: 47.5025, lng: 19.0515 },
       { t: '20:30', icon: '🍻', name: 'סימפלה', desc: 'בר ההריסות המפורסם.', place: 'Szimpla Kert Budapest', lat: 47.4970, lng: 19.0634 },
       { t: '21:30', icon: '🍸', name: 'חצר גוז׳דו', desc: 'ברים או בר קוקטיילים.', place: 'Gozsdu Udvar Budapest', lat: 47.4983, lng: 19.0580 },
+      { t: '23:00', icon: '🏨', name: 'חזרה למלון', desc: 'כ-5 דקות הליכה מגוז׳דו.', lat: 47.4987, lng: 19.0567 },
     ] },
     { date: '2026-11-27', title: 'בלאק פריידי וליל שבת', items: [
+      { t: '09:15', icon: '🏨', name: 'יציאה מהמלון', desc: 'Barceló, Király utca 16.', lat: 47.4987, lng: 19.0567 },
       { t: '09:30', icon: '🥐', name: 'ארוחת בוקר ב-VAJ', desc: 'חלופה: Cinamood.', place: 'VAJ Bakery Budapest' },
       { t: '10:30', icon: '🛍️', name: 'בלאק פריידי בוסטאנד', desc: 'מקורה, ליד Nyugati.', place: 'Westend Budapest', lat: 47.5130, lng: 19.0590 },
       { t: '12:45', icon: '👗', name: 'ואצי אוצה', desc: 'ו/או במקום וסטאנד. עד 14:15.', place: 'Váci Street Budapest', lat: 47.4935, lng: 19.0525 },
@@ -70,6 +73,7 @@ window.TRIP = {
       { t: '20:00', icon: '🎄', name: 'שוק הבזיליקה ומופע האורות', desc: 'לבדוק עד מתי פתוח בשישי.', place: "St. Stephen's Basilica", lat: 47.5009, lng: 19.0539 },
       { t: '21:00', icon: '🎡', name: 'הגלגל הענק', desc: 'לבדוק שעת סגירה.', place: 'Budapest Eye', lat: 47.4985, lng: 19.0525 },
       { t: '21:45', icon: '🍸', name: 'חצר גוז׳דו', desc: 'דרינק, רק אם זורם לפז.', place: 'Gozsdu Udvar Budapest', lat: 47.4983, lng: 19.0580 },
+      { t: '22:30', icon: '🏨', name: 'חזרה למלון', desc: 'כ-5 דקות הליכה מגוז׳דו.', lat: 47.4987, lng: 19.0567 },
     ] },
     { date: '2026-11-28', title: 'שבת ברגל, ובלילה מרחצאות', items: [
       { t: '10:00', icon: '☕', name: 'ארוחת בוקר במלון', desc: '', lat: 47.4987, lng: 19.0567 },
@@ -84,8 +88,10 @@ window.TRIP = {
       { t: '19:00', icon: '🥩', name: 'ארוחת ערב ב-Nitavalo', desc: 'להזמין שולחן.', place: 'Nitavalo Kosher Chef Restaurant Budapest', lat: 47.4983, lng: 19.0628 },
       { t: '21:15', icon: '🚕', name: 'Bolt לסצ׳ני', desc: 'בגד ים, כפכפים ומגבת.' },
       { t: '21:30', icon: '♨️', name: 'Sparty בסצ׳ני', desc: 'אם קר מדי: מרחצאות רודאש, עם רחצה לילית מקורה.', place: 'Széchenyi Thermal Bath', lat: 47.5186, lng: 19.0819 },
+      { t: '00:30', icon: '🏨', name: 'חזרה למלון', desc: 'Bolt מסצ׳ני, כ-10 דקות.', lat: 47.4987, lng: 19.0567 },
     ] },
     { date: '2026-11-29', title: 'יום השמש ופרלמנט מואר', items: [
+      { t: '09:45', icon: '🏨', name: 'יציאה מהמלון', desc: 'Barceló, Király utca 16.', lat: 47.4987, lng: 19.0567 },
       { t: '10:00', icon: '🥞', name: 'בראנץ׳ ב-Blueberry', desc: 'חלופות: Cookie Beacon או Café Brunch.', place: 'Blueberry Budapest', lat: 47.5016, lng: 19.0525 },
       { t: '12:30', icon: '🚕', name: 'Bolt או אוטובוס 16 לבודה', desc: '' },
       { t: '13:00', icon: '🏰', name: 'באסטיון הדייגים', desc: '', place: "Fisherman's Bastion", lat: 47.5022, lng: 19.0348 },
@@ -99,6 +105,7 @@ window.TRIP = {
       { t: '18:35', icon: '👞', name: 'אנדרטת הנעליים', desc: 'על הדרך למלון.', place: 'Shoes on the Danube Bank', lat: 47.5045, lng: 19.0448 },
       { t: '19:00', icon: '🍕', name: 'ארוחת ערב ב-Twentysix', desc: 'חלופות: Circo או Popolare.', place: 'Twentysix Budapest Király utca', lat: 47.4993, lng: 19.0585 },
       { t: '21:00', icon: '🌃', name: 'סגירת טיול: High Note', desc: 'או 360 Bar, או קזינו (דרכונים).', place: 'High Note SkyBar Budapest', lat: 47.5005, lng: 19.0527 },
+      { t: '23:00', icon: '🏨', name: 'חזרה למלון', desc: 'כ-5 דקות הליכה מ-High Note.', lat: 47.4987, lng: 19.0567 },
     ] },
     { date: '2026-11-30', title: 'טיסה', items: [
       { t: '09:00', icon: '☕', name: 'ארוחת בוקר', desc: '' },
