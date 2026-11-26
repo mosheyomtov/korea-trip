@@ -1,6 +1,6 @@
 // Network first: every open checks GitHub for the latest version (bypassing the browser's 10-minute cache),
 // and the last copy is kept so the app still opens with no internet (useful abroad).
-const CACHE = 'trips-v18';
+const CACHE = 'trips-v19';
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(
   caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())
