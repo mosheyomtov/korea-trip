@@ -44,7 +44,7 @@ window.TRIP = {
       { t: '22:45', icon: '🚕', name: 'Bolt למלון', desc: 'כ-35 דקות.' },
       { t: '23:30', icon: '🏨', name: 'צ׳ק-אין ב-Barceló', desc: 'Király utca 16.', lat: 47.4987, lng: 19.0567 },
     ] },
-    { date: '2026-11-26', title: 'בית הכנסת הגדול, גבעת גלרט, והבזיליקה עם שוק הכריסמס', items: [
+    { date: '2026-11-26', title: 'בית הכנסת, גבעת גלרט, הבזיליקה וקניון ארנה', items: [
       { t: '09:50', icon: '🏨', name: 'יציאה מהמלון', desc: 'Barceló, Király utca 16.', lat: 47.4987, lng: 19.0567 },
       { t: '10:00', icon: '☕', name: 'ארוחת בוקר ב-Tel Aviv Cafe', desc: 'ליד המלון, עד 10:30. חלופות: קפה תמר או Cirkusz.', place: 'Tel Aviv Cafe Budapest Kazinczy', lat: 47.4980, lng: 19.0618 },
       { t: '10:45', icon: '🕍', name: 'בית הכנסת הגדול', desc: 'עד 11:45. 3 דקות הליכה מהקפה. הכרטיס כולל סיור מודרך, המוזיאון היהודי ועץ הערבה הבוכייה. היום הכי טוב: בשישי פתוח רק עד הצהריים ובשבת סגור.', place: 'Dohány Street Synagogue', lat: 47.4960, lng: 19.0607 },
@@ -57,9 +57,11 @@ window.TRIP = {
       { t: '16:00', icon: '⛪', name: 'הבזיליקה מבפנים ותצפית 360° מהכיפה', desc: 'עד 17:00. קודם עולים לכיפה (נסגרת בסביבות 17:15), לראות את העיר בשקיעה ובאורות. אחר כך מבפנים.', place: "St. Stephen's Basilica", lat: 47.5009, lng: 19.0539 },
       { t: '17:00', icon: '🎄', name: 'שוק הכריסמס של הבזיליקה', desc: 'בכיכר שמול הכנסייה, עם מופע האורות על החזית כל חצי שעה. היום אפשר לקנות ולטעום (בשישי בערב כבר שבת). קיורטוש ויין חם. 5 דקות הליכה למסעדה.', place: "St. Stephen's Basilica", lat: 47.5009, lng: 19.0539 },
       { t: '18:30', icon: '🍝', name: 'ארוחת ערב ב-Pomo D\'Oro', desc: 'אם יש שולחן. חלופות: Forni di Napoli ליד הבזיליקה, או איטלקי ליד המלון.', place: "Trattoria Pomo D'Oro Budapest", lat: 47.5025, lng: 19.0515 },
-      { t: '20:30', icon: '🍻', name: 'סימפלה', desc: 'בר ההריסות המפורסם.', place: 'Szimpla Kert Budapest', lat: 47.4970, lng: 19.0634 },
-      { t: '21:30', icon: '🍸', name: 'חצר גוז׳דו', desc: 'ברים או בר קוקטיילים.', place: 'Gozsdu Udvar Budapest', lat: 47.4983, lng: 19.0580 },
-      { t: '23:00', icon: '🏨', name: 'חזרה למלון', desc: 'כ-5 דקות הליכה מגוז׳דו.', lat: 47.4987, lng: 19.0567 },
+      { t: '19:45', icon: '🚕', name: 'Bolt לקניון ארנה', desc: 'כ-10 דקות.' },
+      { t: '20:00', icon: '🛍️', name: 'קניון ארנה', desc: 'עד 21:00, שעת הסגירה. Primark, Zara, H&M ועוד. ליד Keleti.', place: 'Arena Mall Budapest', lat: 47.4993, lng: 19.0909 },
+      { t: '21:15', icon: '🍻', name: 'סימפלה', desc: 'בר ההריסות המפורסם. Bolt מהקניון, כ-10 דקות.', place: 'Szimpla Kert Budapest', lat: 47.4970, lng: 19.0634 },
+      { t: '22:15', icon: '🍸', name: 'חצר גוז׳דו', desc: 'ברים או בר קוקטיילים.', place: 'Gozsdu Udvar Budapest', lat: 47.4983, lng: 19.0580 },
+      { t: '23:15', icon: '🏨', name: 'חזרה למלון', desc: 'כ-5 דקות הליכה מגוז׳דו.', lat: 47.4987, lng: 19.0567 },
     ] },
     { date: '2026-11-27', title: 'בלאק פריידי וליל שבת', items: [
       { t: '09:15', icon: '🏨', name: 'יציאה מהמלון', desc: 'Barceló, Király utca 16.', lat: 47.4987, lng: 19.0567 },
