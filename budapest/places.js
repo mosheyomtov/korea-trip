@@ -96,6 +96,8 @@ window.PLACES = [
   { id: 'shop', title: 'קניות', icon: '🛍️', items: [
     { name: 'קניון וסטאנד', en: 'Westend Budapest', rec: true, lat: 47.5130, lng: 19.0590,
       desc: 'כמעט 400 חנויות של מותגים בינלאומיים, מסעדות, בתי קפה ואזור אוכל. מיקום מרכזי ונוח מאוד, ליד תחנת Nyugati.' },
+    { name: 'Half Price', en: 'HalfPrice Budapest Vörösmarty tér', lat: 47.4966, lng: 19.0510,
+      desc: 'חנות אוף-פרייס של רשת CCC: מותגים של בגדים, נעליים ותיקים בהנחה גדולה. בכיכר וורשמארטי, בתחילת ואצי.' },
     { name: 'קניון ארנה', en: 'Arena Mall Budapest',
       desc: 'הבחירה הראשונה של פז: אחד הקניונים הגדולים בעיר, עם Primark, Zara, H&M ועוד. מגוון אופנה, הנעלה וקוסמטיקה, מעולה ליום קניות רציני. פחות צפוף מווסטאנד, ויש קולנוע IMAX.' },
     { name: 'אאוטלט פרמייר', en: 'Premier Outlet Budapest', lat: 47.4637, lng: 18.8424,
@@ -242,7 +244,7 @@ window.PLACE_ICONS = {
   'Danube evening cruise Budapest': '🛳️', 'Central Market Hall Budapest': '🧺', 'Budapest Eye': '🎡', 'House of Terror Museum': '🖼️',
   'Szabó Ervin Library Wenckheim Palace': '📚', 'The Magic Budapest': '🔮',
   'Cinema Mystica Budapest': '🎬', 'Paprika Budapest walking tour in Hebrew': '🚶',
-  'Westend Budapest': '🛍️', 'Arena Mall Budapest': '🛍️', 'Premier Outlet Budapest': '🏷️', 'Allee Shopping Center': '🛍️', 'Etele Plaza Budapest': '🛍️',
+  'Westend Budapest': '🛍️', 'Arena Mall Budapest': '🛍️', 'HalfPrice Budapest Vörösmarty tér': '🏷️', 'Premier Outlet Budapest': '🏷️', 'Allee Shopping Center': '🛍️', 'Etele Plaza Budapest': '🛍️',
   'Váci Street Budapest': '👗', 'Andrássy Avenue shops': '👜',
   'Nitavalo Kosher Chef Restaurant Budapest': '🥩', 'Carmel Restaurant Budapest kosher': '🍲', 'Marrakesh Budapest kosher': '🥙', 'Cafe Tamar Budapest': '🥐',
   'Tel Aviv Cafe Budapest Kazinczy': '☕', 'Brooklyn Bagel Budapest': '🥯', 'ASHIS Budapest kosher': '🍣',
@@ -281,7 +283,7 @@ window.PLACE_AREAS = {
   'Szabó Ervin Library Wenckheim Palace': 'south',
   'Central Market Hall Budapest': 'south', 'Budapest Eye': 'deak', 'House of Terror Museum': 'andr', 'Paprika Budapest walking tour in Hebrew': 'deak',
   // קניות
-  'Westend Budapest': 'north', 'Arena Mall Budapest': 'out', 'Premier Outlet Budapest': 'out', 'Allee Shopping Center': 'buda', 'Etele Plaza Budapest': 'out',
+  'Westend Budapest': 'north', 'Arena Mall Budapest': 'out', 'HalfPrice Budapest Vörösmarty tér': 'deak', 'Premier Outlet Budapest': 'out', 'Allee Shopping Center': 'buda', 'Etele Plaza Budapest': 'out',
   'Váci Street Budapest': 'deak', 'Andrássy Avenue shops': 'andr',
   // כשר
   'Nitavalo Kosher Chef Restaurant Budapest': 'jq', 'Carmel Restaurant Budapest kosher': 'jq', 'Marrakesh Budapest kosher': 'jq', 'Cafe Tamar Budapest': 'jq',
