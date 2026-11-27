@@ -166,6 +166,8 @@ window.PLACES = [
       desc: 'בית קפה וקונדיטוריה היסטורית ומפורסמת בכיכר וורשמארטי, ליד שוק חג המולד. לא כשר.' },
   ]},
   { id: 'brunch', title: 'מאפיות ובראנצ׳ים', icon: '🥐', note: 'לא כשר. מהרשימה של פז', items: [
+    { name: 'SIRAP', en: 'SIRAP Brunch Budapest', lat: 47.4915, lng: 19.0565,
+      desc: 'בית קפה קטן וחמוד: פנקייקים, אגז בנדיקט, פרנץ׳ טוסט, ומשקאות עם דובונים מקפה או שוקולד. Veres Pálné u. 14. כדאי להגיע מוקדם.' },
     { name: "VAJ", en: "VAJ Bakery Budapest",
       desc: 'מאפייה מעולה, מהטובות בעיר.' },
     { name: "Aran Bakery", en: "Aran Bakery Budapest",
@@ -251,7 +253,7 @@ window.PLACE_ICONS = {
   "Trattoria Pomo D'Oro Budapest": '🍝', 'Forni di Napoli Budapest': '🍕', 'Twentysix Budapest Király utca': '🌿', 'Popolare Budapest': '🍕',
   'La Botte Paprika Budapest': '🍝', 'Mazel Tov Budapest': '🥗', 'Seno Sushi Budapest': '🍣',
   'New York Café Budapest': '☕', 'Auguszt Cukrászda Belváros': '🍰', 'First Strudel House of Pest': '🥧', 'Gelarto Rosa Budapest': '🍦',
-  'Cinamood Budapest': '🥨', '2Sweet Budapest': '🧇', 'Café Brunch Budapest': '🍳',
+  'Cinamood Budapest': '🥨', '2Sweet Budapest': '🧇', 'Café Brunch Budapest': '🍳', 'SIRAP Brunch Budapest': '🧸',
   'Szimpla Kert Budapest': '🍻', 'Gozsdu Udvar Budapest': '🍸', '360 Bar Budapest': '🌃', 'High Note SkyBar Budapest': '🌃',
   'Instant-Fogas Complex Budapest': '🪩', 'Ötkert Budapest': '🪩', 'Doboz Budapest': '🪩', 'Akvárium Klub': '🎶',
 };
@@ -292,7 +294,7 @@ window.PLACE_AREAS = {
   "Trattoria Pomo D'Oro Budapest": 'bas', 'Twentysix Budapest Király utca': 'jq', 'Popolare Budapest': 'jq', 'La Botte Paprika Budapest': 'deak', 'Mazel Tov Budapest': 'jq',
   // בתי קפה
   'New York Café Budapest': 'jq', 'Auguszt Cukrászda Belváros': 'deak', 'First Strudel House of Pest': 'bas', 'Gelarto Rosa Budapest': 'bas',
-  'Cinamood Budapest': 'bas', 'Café Brunch Budapest': 'bas', 'Café Gerbeaud': 'deak',
+  'Cinamood Budapest': 'bas', 'Café Brunch Budapest': 'bas', 'SIRAP Brunch Budapest': 'south', 'Café Gerbeaud': 'deak',
   // מאפיות ובראנצ׳ים
   'VAJ Bakery Budapest': 'jq', 'Aran Bakery Budapest': 'andr', 'Cirkusz Cafe Budapest': 'jq', 'Cookie Beacon Budapest': 'bas', 'Mokka Cukka Budapest': 'bas',
   'Nor/ma Grand Budapest': 'buda', 'Aranypinty Budapest': 'south', "David's Kitchen Budapest": 'bas', 'Kaffa Opera Budapest': 'andr',
