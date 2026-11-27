@@ -65,7 +65,7 @@ window.TRIP = {
     ] },
     { date: '2026-11-27', title: 'בלאק פריידי וליל שבת', items: [
       { t: '09:15', icon: '🏨', name: 'יציאה מהמלון', desc: 'Barceló, Király utca 16.', lat: 47.4987, lng: 19.0567 },
-      { t: '09:30', icon: '🥐', name: 'ארוחת בוקר ב-VAJ', desc: 'חלופה: Cinamood.', place: 'VAJ Bakery Budapest' },
+      { t: '09:30', icon: '🧸', name: 'ארוחת בוקר ב-SIRAP', desc: 'בית קפה קטן עם בראנץ׳, פנקייקים ואגז בנדיקט, ומשקאות שמוגשים עם דובונים. כדאי להגיע מוקדם. לא כשר. כ-15 דקות הליכה מהמלון, ומשם כ-10 דקות ל-Half Price.', place: 'SIRAP Brunch Budapest', lat: 47.4915, lng: 19.0565 },
       { t: '10:30', icon: '🏷️', name: 'בלאק פריידי ב-Half Price', desc: 'מותגים בהנחה (של רשת CCC). בכיכר וורשמארטי, ממש בתחילת ואצי. עד 12:45.', place: 'HalfPrice Budapest Vörösmarty tér', lat: 47.4966, lng: 19.0510 },
       { t: '12:45', icon: '👗', name: 'ואצי אוצה', desc: 'ממשיכים ישר מ-Half Price. עד 13:45.', place: 'Váci Street Budapest', lat: 47.4935, lng: 19.0525 },
       { t: '13:45', icon: '✨', name: 'פאשן סטריט', desc: 'בדרך חזרה למלון.', place: 'Fashion Street Budapest', lat: 47.4980, lng: 19.0530 },
